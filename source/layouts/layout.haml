@@ -13,10 +13,10 @@
       = current_page.data.title || "DHData"
     
     = stylesheet_link_tag "all"
-    = javascript_include_tag  "all"
   
   %body{:class => page_classes}
     %a.sr-only(href="#main-content") Skip to main content
+
     .navbar.navbar-default.navbar-fixed-top(role="navigation")
       .container
         .navbar-header
@@ -40,20 +40,53 @@
       = yield_content :jumbotron
 
     .container
-      .row
-        .col-md-3
-          .well.well-sm
-            %h1 Guides
-            = link_to 'Data Wrangling', '/data-wrangling'
-            %br
-            = link_to 'DH Data Guide', '/dhdata'
+      .col-md-3
+        .well.well-sm
+          %h1 Guides
+          = link_to 'Data Wrangling', '/data-wrangling'
+          %br
+          = link_to 'DH Data Guide', '/dhdata'
 
-          .well.well-sm
-            %h1 Subscribe
-            = link_to 'Recent articles and recipes', '/rss.xml'
-            %br
-            = link_to 'Recent datasets', '/feeds/dataset.atom'
-        .col-md-9
-          - if current_page.data.title
-            %h1= current_page.data.title
-          = yield
+        .well.well-sm
+          %h1 Subscribe
+          = link_to 'Recent articles and recipes', '/rss.xml'
+          %br
+          = link_to 'Recent datasets', '/feeds/dataset.atom'
+      .col-md-9
+        - if current_page.data.title
+          %h1= current_page.data.title
+        = yield
+    %footer
+      .container
+        .col-md-4
+          %ul.list-unstyled
+            %li
+              = link_to 'About DH Data', '/about'
+            %li
+              %a(href="http://lists.dhdata.org/") Mailing Lists
+            %li
+              = link_to 'Policies', '/policies'
+        .col-md-4
+          %ul.list-unstyled
+            %li
+              %a(href="http://docs.ckan.org/en/ckan-2.0/api.html") CKAN API
+            %li
+              %a(href="http://www.opendefinition.org/okd/") Open Data
+            %li
+              %a(href="http://www.okfn.org/") Open Knowledge Foundation
+        .col-md-4
+          %ul.list-unstyled
+            %li
+              Powered by
+              %a(href="http://ckan.org") CKAN
+              and
+              %a(href="http://middlemanapp.com/") Middleman
+            %li
+              Hosted by
+              %a(href="http://www.umd.edu/") UMD
+              %a(href="http://mith.umd.edu/") MITH
+            %li
+              Released under the
+              %a(href="http://creativecommons.org/licenses/by/3.0/") CC-BY
+              license
+    = javascript_include_tag  "all"
