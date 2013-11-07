@@ -9,3 +9,48 @@ prose:
           placeholder: "Page Title"
           element: "text"
           value: ""
+    source/about:
+      - name: "title"
+        field:
+          label: "Title"
+          placeholder: "Page Title"
+          element: "text"
+          value: ""
+    source/data-wrangling:
+      - name: "title"
+        field:
+          label: "Title"
+          placeholder: "Page Title"
+          element: "text"
+          value: ""
+    source/dhdata:
+      - name: "title"
+        field:
+          label: "Title"
+          placeholder: "Page Title"
+          element: "text"
+          value: ""
+    source/recipes:
+      - name: "title"
+        field:
+          label: "Title"
+          placeholder: "Page Title"
+          element: "text"
+          value: ""
+      - name: "category"
+        field:
+          label: "Section"
+          element: "select"
+          options:
+            - name: "Dates and Times"
+              value: "dates-and-times"
+            - name: "Geometry"
+              value: "geometry"
+            - name: "Statistical Analysis"
+              value: "statistical-analysis"
+            - name: "Strings"
+              value: "strings"
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "recipe"

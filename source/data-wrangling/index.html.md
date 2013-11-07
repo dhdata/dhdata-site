@@ -1,5 +1,6 @@
 ---
-Title: Data Wrangling
+title: Data Wrangling
+layout: cookbook
 ---
 Digital Humanities is many things to many people. It combines the precision of computing with the fuzziness of human nature, the certainty of numbers with the shifting fashions of creativity. For every certain definition, there is someone somewhere doing Digital Humanities who doesn't fit, but that doesn't keep the field from thriving.
 
@@ -20,13 +21,3 @@ In general, we target the current version of each language that the language dev
 ## How to Use This Book
 
 We didn't design this book to be read from cover to cover. It's a cookbook, and you should treat it like one. Identify the problem you are facing, and then see if there's a recipe that fits. Even if we don't have a recipe that matches exactly the problem you're working on, we might have something close enough that you can change a few things and get something that will work for you. Feel free to report your modifications and the problem you were working on to the [DHData-Discuss list](http://lists.dhdata.org/listinfo/dhdata-discuss) so that we can see if we need to add another recipe.
-
-## Section Summaries
-
-### [Dates and Times](/data-wrangling/dates-and-times)
-
-### [Geometry](/data-wrangling/geometry)
-
-### [Statistical Analysis](/data-wrangling/statistical-analysis)
-
-### [Strings](/data-wrangling/strings)
