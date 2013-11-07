@@ -1,0 +1,26 @@
+/*
+ * = require 'vendor/bootstrap/bootstrap.less'
+ */
+
+@import "vendor/bootstrap/variables.less";
+
+body {
+  padding-top: @navbar-height + 5;
+}
+
+a.navbar-brand {
+   padding-top: ceil(@navbar-padding-vertical - 5);
+   padding-bottom: ceil(@navbar-padding-vertical - 5);
+}
+
+button#front-page-search-button {
+  width: ceil(@font-size-base * 0.85 * 2.5);
+  height: ceil(@font-size-base * 0.85 * 2.5);
+  position: absolute;
+  right: ceil(@font-size-base * 0.85 * 5/3);
+  top: ceil(@font-size-base * 0.85 * 2/3);
+  background: none;
+  border: none;
+  font-size: ceil(@font-size-base * 1.7); // ~24px;
+  color: @gray-light;
+}

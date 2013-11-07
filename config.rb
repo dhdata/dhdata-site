@@ -35,6 +35,8 @@
 # Automatic image dimensions on image_tag helper
 activate :automatic_image_sizes
 
+activate :bootstrap_navbar
+
 # Reload the browser automatically whenever files change
 # activate :livereload
 
@@ -52,6 +54,10 @@ set :js_dir, 'javascripts'
 set :images_dir, 'images'
 
 sprockets.append_path File.join "#{root}", "bower_components"
+
+#BootstrapNavbar.configure do |config|
+#  config.bootstrap_version = '3.0.1'
+#end
 
 # Build-specific configuration
 configure :build do

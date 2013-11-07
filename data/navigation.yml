@@ -1,0 +1,9 @@
+links:
+  - link: "/dataset"
+    name: "Datasets"
+  - link: "/organization"
+    name: "Organizations"
+  - link: "/group"
+    name: Groups
+  - link: "/about"
+    name: About

@@ -1,8 +1,35 @@
 ---
-title: Welcome to Middleman
 ---
 
-.welcome
-  %h1 Middleman is Watching
-  %p.doc
-    = link_to "Read Online Documentation", "http://middlemanapp.com/"
+- content_for :jumbotron do
+  .container
+    .row
+      .col-sm-4
+        .well.well-sm
+          %h1 Find Data
+          %form.form-horizontal(method="GET" action="/dataset")
+            .form-group
+              .col-sm-12
+                %input.form-control(type="text" placeholder="Find datasets" name="q")
+                %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
+      .col-sm-4
+        .well.well-sm
+          %h1 Share Data
+
+          %p
+            Add your own datasets to share them with others and to find other people interested in your data.
+
+          %button.btn.btn-primary.pull-right Sign in &raquo;
+          .clearfix
+
+      .col-sm-4
+        .well.well-sm
+          %h1 Collaborate
+
+          %p
+            Find out more about working with open data and Digital Humanities by exploring these resources:
+
+          %ul
+            %li= link_to 'DH Data Guide', '/dhdata'
+            %li= link_to 'DH Curation Guide', 'http://dhcuration.org/'
+            %li= link_to 'School of Data Handbook', '#'
