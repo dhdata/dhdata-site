@@ -1,0 +1,15 @@
+- wrap_layout :layout do
+
+  = yield
+
+  .row
+    - siblings = current_page.parent.children.sort_by(&:path)
+    - current_page_pos = siblings.index(current_page)
+    .col-sm-4.text-left
+      - if current_page_pos > 0
+        = link_to siblings[current_page_pos-1].data.title, [ '/', siblings[current_page_pos-1].path ].join('')
+    .col-sm-4.text-center
+      = link_to 'up', [ '/', current_page.parent.path ].join('')
+    .col-sm-4.text-right
+      - if current_page_pos < siblings.length-1
+        = link_to siblings[current_page_pos+1].data.title, [ '/', siblings[current_page_pos+1].path ].join('')

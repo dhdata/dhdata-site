@@ -7,3 +7,7 @@ The DHData website is built as a static site in conjunction with a CKAN installa
 To contribute a new recipe or to add a solution in a new language for an existing recipe, fork this repository, add your contributions, and open a pull request.
 
 More complete instructions will be added soon.
+
+## License
+
+Unless explicitely stated otherwise, the content in this repository is licensed under a [CC-BY](http://creativecommons.org/licenses/by/3.0/) license.

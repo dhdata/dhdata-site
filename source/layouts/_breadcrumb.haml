@@ -1,0 +1,7 @@
+- if page.parent
+  = partial '/layouts/breadcrumb', :locals => { :page => page.parent }
+  %li
+    %a{:href => ['/', page.path ].join('')}= page.data.title
+- else
+  %li
+    %a(href='/') Home

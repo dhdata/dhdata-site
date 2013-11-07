@@ -22,6 +22,12 @@ gem "therubyracer"
 
 gem "middleman-bootstrap-navbar"
 
+gem "middleman-blog"
+
+gem "middleman-syntax"
+
+gem "builder", "~>3.0"
+
 # Cross-templating language block fix for Ruby 1.8
 platforms :mri_18 do
   gem "ruby18_source_location"

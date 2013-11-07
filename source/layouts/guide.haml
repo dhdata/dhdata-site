@@ -1,0 +1,7 @@
+- wrap_layout :layout do
+
+  = partial '/layouts/outline', :locals => { :pages => current_page.children.sort_by(&:path) }
+
+  = yield
+
+  
