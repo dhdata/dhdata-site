@@ -5,5 +5,7 @@ prose:
     source:
       - name: "title"
         field:
+          label: "Title"
+          placeholder: "Page Title"
           element: "text"
           value: ""
