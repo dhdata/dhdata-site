@@ -1,3 +1,9 @@
 prose:
   rooturl: "source"
   media: "source/images"
+  metadata:
+    source:
+      - name: "title"
+        field:
+          element: "text"
+          value: ""
