@@ -22,7 +22,7 @@ gem "therubyracer"
 
 gem "middleman-bootstrap-navbar"
 
-gem "middleman-blog"
+#gem "middleman-blog"
 
 gem "middleman-syntax"
 
