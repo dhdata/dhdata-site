@@ -31,29 +31,41 @@
         .collapse.navbar-collapse
           %ul.nav.navbar-nav
             - data.navigation.links.each do |info|
-              - if current_url?(info['link'])
-                %li.active
-                  %a{:href => info['link']}= info['name']
-              - else
-                %li
-                  %a{:href => info['link']}= info['name']
+              - liclasses = []
+              - aclasses = []
+              - liclasses.push "active" if current_url?(info['link'])
+              - if info['links']
+                - aclasses.push "dropdown-toggle"
+                - atoggle = 'dropdown'
+                - liclasses.push "dropdown"
+                - info['links'].each do |subinfo|
+                  - liclasses |= [ 'active' ] if current_url?(subinfo['link'])
+
+              %li{:class => liclasses.join(' ')}
+                - if info['link']
+                  %a{:href => info['link'], 'data-toggle' => atoggle, :class => aclasses.join(' ')}
+                    = info['name']
+                    - if info['links']
+                      %b.caret
+                - else
+                  - if liclasses.include?('dropdown')
+                    %a{:href => '#', 'data-toggle' => atoggle, :class => aclasses.join(' ')}
+                      = info['name']
+                      %b.caret
+                  - else
+                    = info['name']
+
+                - if liclasses.include?('dropdown')
+                  %ul.dropdown-menu
+                    - info['links'].each do |subinfo|
+                      %li
+                        %a{:href => subinfo['link']}= subinfo['name']
+              
     - if content_for?(:jumbotron)
       = yield_content :jumbotron
 
     .container
-      .col-md-3
-        .well.well-sm
-          %h1 Guides
-          = link_to 'Data Wrangling', '/data-wrangling'
-          %br
-          = link_to 'DH Data Guide', '/dhdata'
-
-        .well.well-sm
-          %h1 Subscribe
-          = link_to 'Recent articles and recipes', '/rss.xml'
-          %br
-          = link_to 'Recent datasets', '/feeds/dataset.atom'
-      .col-md-9
+      .col-md-12
         - if current_page.parent
           %ol.breadcrumb
             = partial "/layouts/breadcrumb", :locals => { :page => current_page.parent }
@@ -63,7 +75,7 @@
         = yield
     %footer
       .container
-        .col-md-4
+        .col-xs-12.col-sm-4
           %ul.list-unstyled
             %li
               = link_to 'About DH Data', '/about'
@@ -71,7 +83,7 @@
               %a(href="http://lists.dhdata.org/") Mailing Lists
             %li
               = link_to 'Policies', '/policies'
-        .col-md-4
+        .col-xs-12.col-sm-4
           %ul.list-unstyled
             %li
               %a(href="http://docs.ckan.org/en/ckan-2.0/api.html") CKAN API
@@ -79,7 +91,7 @@
               %a(href="http://www.opendefinition.org/okd/") Open Data
             %li
               %a(href="http://www.okfn.org/") Open Knowledge Foundation
-        .col-md-4
+        .col-xs-12.col-sm-4
           %ul.list-unstyled
             %li
               Powered by
@@ -96,3 +108,5 @@
               license
     = javascript_include_tag  "all"
     = javascript_include_tag "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    - if content_for?(:scripts)
+      = yield_content :scripts

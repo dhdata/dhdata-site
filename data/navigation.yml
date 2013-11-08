@@ -5,5 +5,11 @@ links:
     name: "Organizations"
   - link: "/group"
     name: Groups
+  - name: "Guides"
+    links:
+      - link: "/cookbook"
+        name: "Data Cookbook"
+      - link: "/dhdata"
+        name: "DH Data Guide"
   - link: "/about"
     name: About

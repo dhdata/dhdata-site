@@ -1,5 +1,5 @@
 ---
-title: Data Wrangling
+title: Data Cookbook
 layout: cookbook
 ---
 Digital Humanities is many things to many people. It combines the precision of computing with the fuzziness of human nature, the certainty of numbers with the shifting fashions of creativity. For every certain definition, there is someone somewhere doing Digital Humanities who doesn't fit, but that doesn't keep the field from thriving.

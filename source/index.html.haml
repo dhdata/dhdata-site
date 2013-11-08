@@ -1,28 +1,17 @@
----
----
-
 - content_for :jumbotron do
   .container
     .row
-      .col-sm-4
-        .well.well-sm
-          %h1 Find Data
-          %form.form-horizontal(method="GET" action="/dataset")
-            .form-group
-              .col-sm-12
-                %input.form-control(type="text" placeholder="Find datasets" name="q")
-                %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
-      .col-sm-4
+      .col-md-4
         .well.well-sm
           %h1 Share Data
 
           %p
             Add your own datasets to share them with others and to find other people interested in your data.
 
-          %button.btn.btn-primary.pull-right Sign in &raquo;
+          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="/user") 
+            Sign in to CKAN &raquo;
           .clearfix
-
-      .col-sm-4
+      .col-md-4
         .well.well-sm
           %h1 Collaborate
 
@@ -32,4 +21,98 @@
           %ul
             %li= link_to 'DH Data Guide', '/dhdata'
             %li= link_to 'DH Curation Guide', 'http://dhcuration.org/'
-            %li= link_to 'School of Data Handbook', '#'
+            %li= link_to 'School of Data Handbook', 'http://datapatterns.org/'
+      .col-md-4
+        .well.well-sm
+          %h1 Share Code
+
+          %p
+            Add your data processing solutions to the Data Cookbook by forking this website on GitHub, adding your recipes, and sending a pull request.
+
+          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="https://github.com/dhdata/dhdata-site") 
+            Fork on GitHub &raquo;
+          .clearfix
+
+
+.row
+  .col-md-6
+    %h2 Datasets
+    / this part needs to be driven by javascript since we need to query the CKAN api
+    %form.form-horizontal(method="GET" action="/dataset")
+      .form-group
+        .col-sm-12
+          %input.form-control(type="text" placeholder="Find datasets" name="q")
+          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
+    #tag-list
+
+    %dl#dataset-list
+
+  .col-md-6
+    %h2 Recipes
+    %form.form-horizontal(method="GET" action="/search.html")
+      .form-group
+        .col-sm-12
+          %input.form-control(type="text" placeholder="Find recipes" name="q")
+          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
+
+    %dl
+    - (sitemap.resources.select { |p| p.source_file =~ /\/recipes\// }.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
+      %dt
+        %a{:href => [ '/', p.path ].join('')}= p.data.title
+      %dd
+        - stuff = p.render({:layout => false}).split(/<\/?h2.*?>/)
+        = stuff[2]
+
+- content_for :scripts do
+  :coffeescript
+    jQuery ->
+      tags = []
+      displayTags = ->
+        tags = tags.sort (a,b) ->
+          if a.toLowerCase() < b.toLowerCase()
+            -1
+          else if a.toLowerCase() == b.toLowerCase()
+            0
+          else
+            1
+        for tag in tags
+          el = $("<a class='btn btn-primary btn-xs' href='/dataset?tags=" + tag + "'></a>")
+          el.text(tag)
+          $('#tag-list').append(el)
+          $('#tag-list').append(" ")
+      jQuery.ajax 'https://www.dhdata.org/api/3/action/package_list',
+        dataType: 'json'
+        success: (data) ->
+          if data?.success and data?.result?
+            tags = []
+            nomsRemaining = 5
+            for nom in data.result[0..4]
+              do (nom) ->
+                dtEl = $("<dt></dt>")
+                $("dl#dataset-list").append(dtEl)
+                ddEl = $("<dd></dd>")
+                $("dl#dataset-list").append(ddEl)
+                jQuery.ajax "https://www.dhdata.org/api/3/action/package_show?id=" + nom,
+                  dataType: 'json'
+                  success: (info) ->
+                    if info.success and info?.result?
+                      aEl = $("<a></a>")
+                      dtEl.append(aEl)
+                      aEl.attr
+                        href: 'https://www.dhdata.org/dataset/' + nom
+                      aEl.text info.result.title
+                      pEl = $("<p></p>")
+                      ddEl.append(pEl)
+                      pEl.text info.result.notes
+                      if info.result.tags?
+                        for tag in info.result.tags
+                          tags.push tag.display_name if tag.display_name not in tags
+
+                    nomsRemaining -= 1
+                    if nomsRemaining < 1
+                      displayTags()
+                  error: ->
+                    nomsRemaining -= 1
+                    if nomsRemaining < 1
+                      displayTags()
+
