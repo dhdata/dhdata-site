@@ -94,6 +94,15 @@ configure :build do
   # Minify Javascript on build
   activate :minify_javascript
 
+  activate :imageoptim do |options|
+    options.pngout_options = false
+    options.optipng_options = false
+    options.advpng_options = false
+    options.jpegoptim_options = false
+    options.jpegtran_options = false
+    options.gifsicle_options = false
+  end
+
   # Enable cache buster
   activate :asset_hash
 

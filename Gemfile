@@ -26,6 +26,8 @@ gem "middleman-bootstrap-navbar"
 
 gem "middleman-syntax"
 
+gem "middleman-imageoptim", "~>0.1.3"
+
 gem "builder", "~>3.0"
 
 # Cross-templating language block fix for Ruby 1.8
