@@ -1,2 +1,2 @@
-//= require vendor/jquery
-//= require vendor/bootstrap
+//= require vendor/_jquery
+//= require vendor/_bootstrap
