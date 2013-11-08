@@ -37,10 +37,13 @@ activate :automatic_image_sizes
 
 activate :syntax
 
+set :markdown_engine, :redcarpet
+set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => true, :superscript => true, :strikethrough => true, :disabe_indented_code_blocks => true, :tables => true, :no_intra_emphasis => true, :no_styles => true
+
 # This is needed for us to have access to current_url?() in the layouts
 activate :bootstrap_navbar
 
-require 'middleman-blog'
+#require 'middleman-blog'
 
 #activate :directory_indexes
 
@@ -75,11 +78,7 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
-set :markdown_engine, :redcarpet
-
-set :markdown, :fenced_code_blocks => true, :smartypants => true
-
-set :haml, { :ugly => false, :format => :html5 }
+set :haml, { :ugly => true, :format => :html5 }
 
 sprockets.append_path File.join "#{root}", "bower_components"
 
@@ -97,6 +96,8 @@ configure :build do
 
   # Enable cache buster
   activate :asset_hash
+
+  activate :gzip
 
   # Use relative URLs
   # activate :relative_assets

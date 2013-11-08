@@ -1,35 +1,7 @@
 prose:
-  rooturl: "source"
+  rooturl: "source/recipes"
   media: "source/images"
   metadata:
-    source:
-      - name: "title"
-        field:
-          label: "Title"
-          placeholder: "Page Title"
-          element: "text"
-          value: ""
-    source/about:
-      - name: "title"
-        field:
-          label: "Title"
-          placeholder: "Page Title"
-          element: "text"
-          value: ""
-    source/data-wrangling:
-      - name: "title"
-        field:
-          label: "Title"
-          placeholder: "Page Title"
-          element: "text"
-          value: ""
-    source/dhdata:
-      - name: "title"
-        field:
-          label: "Title"
-          placeholder: "Page Title"
-          element: "text"
-          value: ""
     source/recipes:
       - name: "title"
         field:
@@ -50,6 +22,15 @@ prose:
               value: "statistical-analysis"
             - name: "Strings"
               value: "strings"
+            - name: "Uncategorized"
+              value: "uncategorized"
+      - name: "date"
+        field:
+          label: "Creation Date"
+          element: "text"
+          value: ""
+          placeholder: "YYYY-MM-DD"
+          help: "The date on which this page was created. Used to order the recipes in RSS feeds."
       - name: "layout"
         field:
           element: "hidden"
