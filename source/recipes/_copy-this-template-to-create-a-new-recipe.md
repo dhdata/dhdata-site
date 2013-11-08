@@ -3,6 +3,7 @@ title: Recipe template
 category: uncategorized
 layout: recipe
 date: YYYY-MM-DD
+published: false
 ---
 ## Problem
 
