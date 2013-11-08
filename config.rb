@@ -38,7 +38,7 @@ activate :automatic_image_sizes
 activate :syntax
 
 set :markdown_engine, :redcarpet
-set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => true, :superscript => true, :strikethrough => true, :disabe_indented_code_blocks => true, :tables => true, :no_intra_emphasis => true, :no_styles => true
+set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => true, :strikethrough => true, :disabe_indented_code_blocks => true, :tables => true, :no_intra_emphasis => true, :no_styles => true
 
 # This is needed for us to have access to current_url?() in the layouts
 activate :bootstrap_navbar
