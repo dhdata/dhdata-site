@@ -2,6 +2,7 @@
 title: Translate BRL-encoded Braille to 6-dot Unicode
 category: strings
 layout: recipe
+date: 2013-07-04
 ---
 
 ## Problem

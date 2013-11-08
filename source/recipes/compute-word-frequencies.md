@@ -2,6 +2,7 @@
 title: Compute Word Frequencies
 category: strings
 layout: recipe
+date: 2013-05-25
 ---
 
 ## Problem

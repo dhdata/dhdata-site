@@ -49,7 +49,7 @@ ready do
     if "#{category}" != ""
       pages = pages.select { |p| p.path =~ /^recipes\// }
       pages.each do |page|
-        proxy "/data-wrangling/#{category}/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
+        proxy "/cookbook/#{category}/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
         ignore page.path
       end
       #proxy "data-wrangling/#{category}/index.html", "data-wrangling/templates/#{category}.html",
