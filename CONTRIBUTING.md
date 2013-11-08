@@ -21,6 +21,10 @@ Once you have added your recipe, run the `scripts/build.sh` script to make sure 
 
 If everything builds correctly, commit your new recipe (or changes to an existing recipe) and push up to your repository on GitHub. From there, create a pull request. After review, your recipe will be incorporated into the master repository, triggering a rebuild of the site.
 
+### Prose.io
+
+We've added a configuration file to the repository for [Prose.io](http://prose.io/). After forking this repostory, you can add and edit recipes by going to the [Prose.io](http://prose.io/) site and selecting your fork of the repository. You will be placed in the `source/recipes` directory into which you can add your recipe.
+
 ### Recipe Licensing
 
 All recipe contributions are assumed to be made under a [CC-BY] license. If particular code snippets are available under a different Creative Commons license, then this should be noted in the recipe along with links to the source material from which the recipe is derived. Recipes not provided under a Creative Commons license will not be accepted.
