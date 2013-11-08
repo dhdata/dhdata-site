@@ -24,6 +24,7 @@ if mkdir ${BUILD_DIR}; then
         fi
         echo "*** Building site"
         if middleman build ; then
+          chmod -R a+r ./build
           if cp -r $BUILD_DIR/dhdata-site/build/ /usr/share/nginx/dhdata-site/$DATE; then
             rm -f /usr/share/nginx/dhdata-site/current
             if [ -s /usr/share/nginx/dhdata-site/current ]; then
