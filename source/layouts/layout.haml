@@ -11,7 +11,9 @@
     // Use title if it's in the page YAML frontmatter
     %title
       = current_page.data.title || "DHData"
-    
+
+    = favicon_tag 'images/dhdata-navbar-logo.png'
+
     = stylesheet_link_tag "all"
     /stylesheet_link_tag "code"
   
@@ -67,9 +69,19 @@
     .container
       .col-md-12
         - if current_page.parent
-          %ol.breadcrumb
-            = partial "/layouts/breadcrumb", :locals => { :page => current_page.parent }
+          %ol.breadcrumb.hidden-xs
+            = partial "/layouts/breadcrumb", :locals => { :page => current_page.parent, :as_select => false }
             %li.active= current_page.data.title
+          %select#breadcrumb-select.visible-xs
+            = partial "/layouts/breadcrumb", :locals => { :page => current_page.parent, :as_select => true }
+            %option(value="#" selected="selected")= current_page.data.title
+          - content_for :scripts do
+            :coffeescript
+              jQuery ->
+                jQuery("#breadcrumb-select").bind 'change', (e) ->
+                  e.preventDefault()
+                  window.location.href = jQuery("#breadcrumb-select").val()
+
         - if current_page.data.title
           %h1= current_page.data.title
         = yield

@@ -104,7 +104,7 @@ configure :build do
   end
 
   # Enable cache buster
-  activate :asset_hash
+  #activate :asset_hash, :ignore => [ %r{^(images|fonts)/.*} ]
 
   activate :gzip
 

@@ -4,6 +4,7 @@
  */
 
 @import "vendor/bootstrap/_variables.less";
+@import "vendor/bootstrap/_mixins.less";
 
 body {
   padding-top: @navbar-height + 5;
@@ -30,4 +31,75 @@ footer {
   margin-top: ceil(@font-size-base * 2.5);
   padding: ceil(@font-size-base * 0.85 * 3);
   border-top: 1px solid @gray-light;
+}
+
+.gold {
+  color: #ffff00;
+}
+
+/*
+ * The following is copied from various parts of the CKAN less files to fill in.
+ * CKAN doesn't work with Bootstrap 3.x yet.
+ */
+
+.activity {
+  margin: 10px 0;
+  padding: 0;
+  list-style-type: none;
+  .item {
+    position: relative;
+    margin: 0 0 15px 0;
+    padding: 0;
+    .clearfix;
+    .icon {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      font-weight: normal;
+      margin-right: 10px;
+      .border-radius(100px);
+      .box-shadow(inset 0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    .gravatar {
+      .border-radius(100px);
+    }
+    .actor .gravatar {
+      position: absolute;
+      top: 0;
+      left: 40px;
+    }
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 5px 0 0 80px;
+    }
+    .date {
+      color: #999;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .new {
+      display: block;
+      position: absolute;
+      overflow: hidden;
+      top: -3px;
+      left: -3px;
+      width: 10px;
+      height: 10px;
+      background-color: #A35647;
+      border: 1px solid #FFF;
+      text-indent: -1000px;
+      .border-radius(100px);
+      .box-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+  }
+  .load-less {
+    margin-bottom: 15px;
+  }
 }
