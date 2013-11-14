@@ -26,6 +26,7 @@ Some text about the CoffeeScript solution.
 ### Haskell
 
 ```haskell
+
 ```
 
 ### Perl 5
@@ -39,16 +40,19 @@ Some text about the Perl solution.
 ### Perl 6
 
 ```perl
+
 ```
 
 ### Python
 
 ```python
+
 ```
 
 ### Scala
 
 ```scala
+
 ```
 
 
