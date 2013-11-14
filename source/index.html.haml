@@ -68,14 +68,16 @@
     jQuery ->
       tags = []
       displayTags = ->
-        tags = tags.sort (a,b) ->
+        tag_names = (tag for tag of tags).sort (a,b) -> tags[b] - tags[a]
+        tag_names = tag_names[0...Math.min(tag_names.length,5)]
+        tag_names = tag_names.sort (a,b) ->
           if a.toLowerCase() < b.toLowerCase()
             -1
           else if a.toLowerCase() == b.toLowerCase()
             0
           else
             1
-        for tag in tags
+        for tag in tag_names
           el = $("<a class='btn btn-primary btn-xs' href='/dataset?tags=" + tag + "'></a>")
           el.text(tag)
           $('#tag-list').append(el)
@@ -84,7 +86,7 @@
         dataType: 'json'
         success: (data) ->
           if data?.success and data?.result?
-            tags = []
+            tags = {}
             nomsRemaining = 5
             for nom in data.result[0..4]
               do (nom) ->
@@ -106,7 +108,7 @@
                       pEl.text info.result.notes
                       if info.result.tags?
                         for tag in info.result.tags
-                          tags.push tag.display_name if tag.display_name not in tags
+                          tags[tag.display_name] = if tag[tag.display_name]? then tag[tag.display_name] + 1 else 1
 
                     nomsRemaining -= 1
                     if nomsRemaining < 1
