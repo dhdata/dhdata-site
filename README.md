@@ -29,7 +29,7 @@ We've added a configuration file to the repository for [Prose.io](http://prose.i
 
 #### Recipe Licensing
 
-All recipe contributions are assumed to be made under a [CC-BY] license. If particular code snippets are available under a different Creative Commons license, then this should be noted in the recipe along with links to the source material from which the recipe is derived. Recipes not provided under a Creative Commons license will not be accepted.
+All recipe contributions are assumed to be made under a [CC-BY](http://creativecommons.org/licenses/by/3.0/) license. If particular code snippets are available under a different Creative Commons license, then this should be noted in the recipe along with links to the source material from which the recipe is derived. Recipes not provided under a Creative Commons license will not be accepted.
 
 ## Contributing Data
 
