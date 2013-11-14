@@ -103,9 +103,9 @@
                       aEl.attr
                         href: 'https://www.dhdata.org/dataset/' + nom
                       aEl.text info.result.title
-                      pEl = $("<p></p>")
-                      ddEl.append(pEl)
-                      pEl.text info.result.notes
+                      
+                      ddEl.append(markdown.toHTML(info.result.notes))
+                      
                       if info.result.tags?
                         for tag in info.result.tags
                           tags[tag.display_name] = if tag[tag.display_name]? then tag[tag.display_name] + 1 else 1
