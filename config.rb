@@ -32,6 +32,11 @@
 # Helpers
 ###
 
+$:.unshift './lib'
+require 'dh_data'
+
+activate :dh_data
+
 # Automatic image dimensions on image_tag helper
 activate :automatic_image_sizes
 

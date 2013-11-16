@@ -1,6 +1,7 @@
 ---
 title: Groups
 layout: guide_page
+published: true
 ---
 Groups allow you to group together datasets under a community (for example, Theater History data) or topic (e.g. Shakespeare, Music, Environment) to make it easier for users to browse datasets by theme. Datasets can be part of a group, but do not belong to the group for editing or authorisation purposes.
 

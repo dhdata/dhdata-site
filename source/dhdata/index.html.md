@@ -1,8 +1,8 @@
 ---
 title: DH Data Guide
 layout: guide
+published: true
 ---
-
 _This section contains material from the [Open Data Handbook](http://opendatahandbook.org/) available under the [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 The notion of open data&mdash;information, public or otherwise, which anyone is free to access and re-use for any purpose&mdash;has been around for some years. In 2009, open data started to become visible in the mainstream, with various governments (such as the USA, UK, Canada and New Zealand) announcing new initiatives towards opening up their public information. Open data is becoming the third aspect of scholarly publishing alongside open source software and open access journal articles.

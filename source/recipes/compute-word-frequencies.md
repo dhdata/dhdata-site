@@ -1,10 +1,10 @@
 ---
-title: Compute Word Frequencies
+title: Compute word frequencies
 category: strings
 layout: recipe
-date: 2013-05-25
+date: "2013-05-25"
+published: true
 ---
-
 ## Problem
 
 You have a text and you want to see how often different words show up. You don't care about the capitalization of the words, punctuation, or the most common words in the text, also known as "stop words."

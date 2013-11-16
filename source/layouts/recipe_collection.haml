@@ -1,25 +1,5 @@
 - wrap_layout :layout do
 
   = yield
-
-  %h3 Recipes
-
-  - if current_page.children.length > 0
-    %ul.list-unstyled
-      - current_page.children.sort_by(&:path).each do |recipe|
-        %li
-          = link_to recipe.data.title, ['/', recipe.path].join('')
-  - else
-    %p There are no recipes yet in this section.
   
-  .row
-    - siblings = current_page.parent.children.sort_by(&:path)
-    - current_page_pos = siblings.index(current_page)
-    .col-sm-4.text-left
-      - if current_page_pos > 0
-        = link_to siblings[current_page_pos-1].data.title, [ '/', siblings[current_page_pos-1].path ].join('')
-    .col-sm-4.text-center
-      = link_to 'up', [ '/', current_page.parent.path ].join('')
-    .col-sm-4.text-right
-      - if current_page_pos < siblings.length-1
-        = link_to siblings[current_page_pos+1].data.title, [ '/', siblings[current_page_pos+1].path ].join('')
+  = make_cookbook_nav(current_page, { :title => 'Recipes' })

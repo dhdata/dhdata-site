@@ -41,8 +41,10 @@
     %form.form-horizontal(method="GET" action="/dataset")
       .form-group
         .col-sm-12
-          %input.form-control(type="text" placeholder="Find datasets" name="q")
-          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
+          %label.sr-only(for="dataset-search") Find datasets
+          %input.form-control#dataset-search(type="text" placeholder="Find datasets" name="q")
+          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
+            %span.sr-only Search
     #tag-list
 
     %dl#dataset-list
@@ -52,11 +54,13 @@
     %form.form-horizontal(method="GET" action="/search.html")
       .form-group
         .col-sm-12
-          %input.form-control(type="text" placeholder="Find recipes" name="q")
-          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search") Submit
+          %label.sr-only(for="recipe-search") Find recipes
+          %input.form-control#recipe-search(type="text" placeholder="Find recipes" name="q")
+          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
+            %span.sr-only Search
 
     %dl
-    - (sitemap.resources.select { |p| p.source_file =~ /\/recipes\// }.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
+    - (sitemap.resources.select { |p| p.source_file =~ /\/recipes\// && p.data.published }.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
       %dt
         %a{:href => [ '/', p.path ].join('')}= p.data.title
       %dd
