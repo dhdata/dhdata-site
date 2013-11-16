@@ -2,9 +2,9 @@
 title: Translate BRL-encoded Braille to 6-dot Unicode
 category: strings
 layout: recipe
-date: 2013-07-04
+date: "2013-07-04"
+published: true
 ---
-
 ## Problem
 
 You have the BRL-encoded Braille translation of some text, but you need to display the 6-dot SimBraille to show how the Braille would appear when embossed.

@@ -2,7 +2,8 @@
 title: Check if a date lies within a range of days
 category: dates-and-times
 layout: recipe
-date: 2013-05-31
+date: "2013-05-31"
+published: true
 ---
 ## Problem
 

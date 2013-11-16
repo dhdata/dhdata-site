@@ -2,7 +2,8 @@
 title: Find the direction from one point to another point (2D coordinates)
 category: geometry
 layout: recipe
-date: 2013-07-12
+date: "2013-07-12"
+published: true
 ---
 ## Problem
 

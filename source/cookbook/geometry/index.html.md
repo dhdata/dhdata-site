@@ -1,6 +1,7 @@
 ---
 title: Geometry
 layout: recipe_collection
+published: true
 ---
 
 Geometry and geography are sufficiently different that they warrant different chapters. Many of the recipes you find here, you will also find in the Geography section with modifications to work on a planetary surface such as the Earth. The recipes in this section that work on a sphere assume a perfect sphere, which won't always work for real geography. Likewise, algorithms that assume a perfectly flat surface won't always work for geographic problems, even when the research area is small, such as a few square miles around a village.

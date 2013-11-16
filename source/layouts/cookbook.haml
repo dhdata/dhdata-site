@@ -2,8 +2,4 @@
 
   = yield
 
-  %h3 Sections
-
-  - current_page.children.sort_by(&:path).each do |page|
-    %li
-      = link_to page.data.title, ['/', page.path].join('')
+  = make_cookbook_nav(current_page, { :include_up => false, :include_siblings => false})

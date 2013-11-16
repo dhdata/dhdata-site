@@ -1,6 +1,7 @@
 ---
 title: Statistical Analysis
 layout: recipe_collection
+published: true
 ---
 
 Statistics is a mathematical endeavor that tries to provide quantitative summaries of large data collections. The validity of a statistical method depends on how well its application satisfies its assumptions. Typical statistical methods make statements about the data collection as a whole and say nothing about outliers or particular instances within the data collection.

@@ -1,6 +1,7 @@
 ---
 title: Linked Data Ontologies
 layout: guide_page
+published: true
 ---
 _This section contains material from [Linked Data](http://linkeddata.org/) available under the [CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0/) license._
 

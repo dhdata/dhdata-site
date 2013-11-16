@@ -1,6 +1,7 @@
 ---
 title: How to Open Up Data
 layout: guide_page
+published: true
 ---
 _This section contains material from the [Open Data Handbook](http://opendatahandbook.org/) available under the [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 

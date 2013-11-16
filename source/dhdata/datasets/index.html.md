@@ -1,8 +1,8 @@
 ---
 title: Datasets
 layout: guide_page
+published: true
 ---
-
 _This section contains material from the [Open Data Handbook](http://opendatahandbook.org/) available under the [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 Open data is a tremendous resource that is as yet largely untapped. Many individuals and organisations collect or generate a broad range of different types of data in the course of their research. Scholarly data is particular significant in this respect because of the quality of the data. The focused experience of the scholar allows them to make informed decisions on which data to include or exclude, which naming authorities to use, and what normalization should be applied to the data. The resulting data reflects these scholarly activities.

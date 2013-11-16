@@ -1,5 +1,6 @@
 ---
 title: About
+published: true
 ---
 Digital Humanities (DH) Data encourages the indexing and exploration of open data resources for humanities research. DH Data makes this easy for digital humanists and others conducting digital research by providing a growing number of visualizations and other tools or programming recipes for working with common forms of digital information arising from humanities research.
 
