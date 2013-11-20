@@ -16,6 +16,8 @@ prose:
           options:
             - name: "Dates and Times"
               value: "dates-and-times"
+            - name: "Files"
+              value: "files"
             - name: "Geometry"
               value: "geometry"
             - name: "Statistical Analysis"

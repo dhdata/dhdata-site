@@ -5,7 +5,6 @@ category: uncategorized
 date: "YYYY-MM-DD"
 published: false
 ---
-
 ## Problem
 
 You want to share the solution to a problem you've encountered before and feel that others are likely to encounter as well.
@@ -23,6 +22,7 @@ Some text about the CoffeeScript solution.
 ```coffeescript
 # coffeescript code here
 ```
+
 ### Haskell
 
 ```haskell
