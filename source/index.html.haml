@@ -9,6 +9,9 @@
           %input.form-control#dataset-search(type="text" placeholder="Find datasets" name="q")
           %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
             %span.sr-only Search
+    %div.alert.alert-warning(ng-show="error")
+      %strong Uh oh!
+      {{ error }}
     %ul.list-unstyled.list-inline
       %li(ng-repeat="tag in tags")
         %a.btn.btn-primary.btn-xs(href="/dataset?tags={{tag}}") {{tag}}
@@ -90,12 +93,15 @@
 
         packages = []
 
-        $http.get('https://www.dhdata.org/api/3/action/package_list').success (data) ->
+        tq = $http.get('https://www.dhdata.org/api/3/action/package_list')
+        tq.error ->
+          $scope.error = "Unable to retrieve datasets."
+        tq.success (data) ->
           if data?.success and data?.result?
             tags = {}
             nomsRemaining = 5
 
-            for i in [0..4]
+            for i in [0...nomsRemaining]
               do (i) ->
                 nom = data.result[i]
                 q = $http.get("https://www.dhdata.org/api/3/action/package_show?id=" + nom)
