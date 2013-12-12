@@ -1,0 +1,22 @@
+<% 
+  sets = []
+  find_datasets.each do |dataset|
+    resources = resources_for_dataset(dataset)
+    set = {
+      name: dataset.data.title,
+      license: dataset.data.license,
+      links: {
+        html: url_for(dataset)
+      },
+      formats: resources.map{ |r| r[:format] }.flatten.uniq,
+      types: resources.map{ |r| r[:type] }.flatten.uniq,
+      tags: (dataset.data.tags || []).sort_by(&:downcase),
+      description: dataset.render({:layout => false}).split(/<\/?h2.*?>/).first
+    }
+    license = data.licenses.select { |l| l.value == dataset.data.license }
+    if !license.empty? && !license.first.url.blank?
+      set[:license_link] = license.first.url
+    end
+    sets << set
+  end
+ %><%= sets.to_json %>

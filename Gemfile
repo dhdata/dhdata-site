@@ -20,7 +20,7 @@ gem "less"
 
 gem "therubyracer"
 
-gem "middleman-bootstrap-navbar"
+#gem "middleman-bootstrap-navbar"
 
 #gem "middleman-blog"
 
@@ -29,6 +29,9 @@ gem "middleman-syntax"
 gem "middleman-imageoptim", "~>0.1.3"
 
 gem "builder", "~>3.0"
+
+#gem "reverse_markdown"
+gem "nokogiri"
 
 # Cross-templating language block fix for Ruby 1.8
 platforms :mri_18 do

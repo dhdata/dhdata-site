@@ -1,0 +1,105 @@
+---
+title: Datasets
+layout: layout
+published: true
+---
+
+.row(ng-app="dataSetListApp" ng-controller="dataSetListCtrl")
+  
+  .col-md-3
+    / facets: license, tags, formats
+    %fieldset
+      %legend Tags
+      .checkbox(ng-repeat="tag in tags")
+        %label
+          %input(type="checkbox" value="{{tag}}" ng-checked="isTagSelected(tag)" ng-click="toggleTag(tag)")
+          {{tag}} ({{tag_counts[tag]}})
+  
+  .col-md-9
+    %div(ng-repeat="dataset in datasets | startFrom:currentPage*pageSize | limitTo:pageSize")
+      %h2
+        %a(href="{{ dataset.links.html }}") {{ dataset.name }}
+      %ul.list-inline.list-unstyled
+        %li(ng-repeat="tag in dataset.tags")
+          .small.text-muted(ng-click="toggleTag(tag)") {{tag}}
+      %div(ng-bind-html="dataset.description")
+    
+    .text-center
+      %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
+        Previous
+      {{currentPage+1}}/{{numberOfPages()}}
+      %button.btn.btn-sm(ng-disabled="currentPage >= datasets.length/pageSize-1" ng-click="currentPage=currentPage+1")
+        Next
+
+- content_for :scripts do
+  :coffeescript
+    app = angular.module('dataSetListApp', [])
+    arrayIntersect = (arg1, arg2) ->
+      arg for arg in arg1 when arg in arg2
+
+    app.controller 'dataSetListCtrl', [ 
+      '$scope', '$http', '$sce'
+      ($scope ,  $http ,  $sce) ->
+        $scope.currentPage = 0
+        $scope.pageSize = 10
+        $scope.datasets = []
+        $scope.tags = []
+        $scope.selected_tags = []
+        $scope.numberOfPages = ->
+          Math.ceil($scope.datasets.length / $scope.pageSize)
+        
+        matchesTags = (input, tags) ->
+          if tags.length == 0
+            input
+          else
+            dataset for dataset in input when arrayIntersect(dataset.tags, tags).length > 0
+        
+        filterDatasets = ->
+          $scope.datasets = matchesTags $scope.data, $scope.selected_tags
+          tags = {}
+          for dataset in $scope.datasets
+            for t in dataset.tags
+              tags[t] = if tags[t]? then tags[t] + 1 else 1
+          tag_names = (tag for tag of tags)
+          tag_names.sort (a,b) -> 
+            switch
+              when tags[a] < tags[b]
+                1
+              when tags[a] > tags[b]
+                -1
+              when a.toLowerCase() < b.toLowerCase()
+                -1
+              when a.toLowerCase() > b.toLowerCase()
+                1
+              else
+                0
+
+          $scope.tags = tag_names[0..10]
+          $scope.tag_counts = tags
+          if $scope.currentPage >= $scope.numberOfPages()
+            $scope.currentPage = $scope.numberOfPages()-1
+
+        $scope.toggleTag = (tag) ->
+          if tag in $scope.selected_tags
+            $scope.selected_tags.splice($scope.selected_tags.indexOf(tag), 1)
+          else
+            $scope.selected_tags.push tag
+          filterDatasets()
+
+        $scope.isTagSelected = (tag) -> -1 < $scope.selected_tags.indexOf(tag)
+
+        tq = $http.get('/api/v1/datasets.json')
+        tq.error ->
+          $scope.error = "Unable to retrieve datasets."
+        tq.success (data) ->
+          tags = []
+          for dataset in data
+            dataset.description = $sce.trustAsHtml(dataset.description)
+          $scope.data = data
+          filterDatasets()
+      ]
+    app.filter 'startFrom', ->
+      (input, start) ->
+        start = parseInt(start, 10)
+        input.slice(start)
+    

@@ -1,0 +1,55 @@
+---
+title: Groups
+layout: layout
+published: true
+---
+
+.row(ng-app="groupListApp" ng-controller="groupListCtrl")
+  
+  .col-md-12
+    %div(ng-repeat="group in groups | startFrom:currentPage*pageSize | limitTo:pageSize")
+      %div(style="float: right; margin-left: 5px; margin-bottom: 5px;")
+        %img(src="{{ group.links.logo}}" hspace="0" vspace="0" border="0")
+      %h2
+        %a(href="{{ group.links.html }}") {{ group.name }}
+      %div(ng-bind-html="group.description")
+    
+    .text-center
+      %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
+        Previous
+      {{currentPage+1}}/{{numberOfPages()}}
+      %button.btn.btn-sm(ng-disabled="currentPage >= groups.length/pageSize-1" ng-click="currentPage=currentPage+1")
+        Next
+
+- content_for :scripts do
+  :coffeescript
+    app = angular.module('groupListApp', [])
+    app.controller 'groupListCtrl', [ 
+      '$scope', '$http', '$sce'
+      ($scope ,  $http ,  $sce) ->
+        $scope.currentPage = 0
+        $scope.pageSize = 10
+        $scope.groups = []
+        $scope.numberOfPages = ->
+          Math.ceil($scope.groups.length / $scope.pageSize)
+        
+        filterGroups = ->
+          $scope.groups = $scope.data
+          if $scope.currentPage >= $scope.numberOfPages()
+            $scope.currentPage = $scope.numberOfPages()-1
+
+        tq = $http.get('/api/v1/groups.json')
+        tq.error ->
+          $scope.error = "Unable to retrieve groups."
+        tq.success (data) ->
+          data = (org for org in data when org?.value != "")
+          for group in data
+            group.description = $sce.trustAsHtml(group.description)
+          $scope.data = data
+          filterGroups()
+      ]
+    app.filter 'startFrom', ->
+      (input, start) ->
+        start = parseInt(start, 10)
+        input.slice(start)
+    

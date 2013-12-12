@@ -1,0 +1,14 @@
+<%  recipes = [] 
+    find_recipes.each do |recipe|
+      recipe_info = {
+        category: recipe.data.category,
+        title: recipe.data.title,
+        languages: [],
+        links: {
+          :html => '/'+url_for(recipe.path),
+          :json => '/'+url_for(recipe.path).sub(/\.html$/, '.json') 
+        }
+      }
+      recipes << recipe_info
+    end
+%><%= recipes.to_json %>

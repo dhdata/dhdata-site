@@ -1,0 +1,11 @@
+<%=
+  ([{ name: "None", value: "" }] + find_groups.map { |o| {
+    name: o.data.title,
+    value: o.path.sub(/\.html$/, '').split('/').last,
+    links: {
+    	html: url_for(o),
+    	logo: o.data.logo
+    },
+    description: o.render({:layout => false}).split(/<\/?h2.*?>/).first
+  }}.sort_by { |o| o[:name] }).to_json
+%>

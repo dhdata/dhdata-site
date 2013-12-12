@@ -1,0 +1,152 @@
+- name: Academic Free License
+  value: afl-3.0
+- name: Adaptive Public License
+  value: apl1.0
+- name: "Apache License, 2.0"
+  value: apache2.0
+- name: Apache Software License
+  value: apache
+- name: Apple Public Source License
+  value: apsl-2.0
+- name: Artistic license
+  value: artistic-license-2.0
+- name: Attribution Assurance Licenses
+  value: attribution
+- name: Common Development and Distribution License
+  value: cddl1
+- name: Common Public License 1.0
+  value: cpal_1.0
+- name: Computer Associates Trusted Open Source License 1.1
+  value: ca-tosl1.1
+- name: Creative Commons Attribution
+  value: cc-by
+- name: Creative Commons Attribution-ShareAlike
+  value: cc-by-sa
+- name: Creative Commons CCZero
+  value: cc-zero
+- name: Creative Commons Non-Commercial (Any)
+  value: cc-nc
+- name: Crown Copyright
+  value: ukcrown
+- name: CUA Office Public License Version 1.0
+  value: cuaoffice
+- name: Eclipse Public License
+  value: eclipse-1.0
+- name: Educational Community License
+  value: ecl2
+- name: Eiffel Forum License V2.0
+  value: ver2_eiffel
+- name: Eiffel Forum License
+  value: eiffel
+- name: Entessa Public License
+  value: entessa
+- name: EU DataGrid Software License
+  value: eudatagrid
+- name: Fair License
+  value: fair
+- name: Frameworx License
+  value: frameworx
+- name: GNU Free Documentation License (GFDL)
+  value: gfdl
+- name: GNU General Public License (GPL)
+  value: gpl-2.0
+- name: GNU General Public License v3 (GPLv3)
+  value: gpl-3.0
+- name: GNU Library or "Lesser" General Public License (LGPL)
+  value: lgpl-2.1
+- name: Higher Education Statistics Agency Copyright with data.gov.uk rights
+  value: hesa-withrights
+- name: IBM Public License
+  value: ibmpl
+- name: Intel Open Source License
+  value: intel-osl
+- name: Jabber Open Source License
+  value: jabber-osl
+- name: License Not Specified
+  value: notspecified
+- name: Local Authority Copyright with data.gov.uk rights
+  value: localauth-withrights
+- name: Lucent Public License (Plan9)
+  value: lucent-plan9
+- name: Lucent Public License Version 1.02
+  value: lucent1.02
+- name: MIT license
+  value: mit-license
+- name: MITRE Collaborative Virtual Workspace License (CVW License)
+  value: mitre
+- name: Motosoto License
+  value: motosoto
+- name: Mozilla Public License 1.0 (MPL)
+  value: mozilla
+- name: Mozilla Public License 1.1 (MPL)
+  value: mozilla1.1
+- name: NASA Open Source Agreement 1.3
+  value: nasa1.3
+- name: Naumen Public License
+  value: naumen
+- name: Nethack General Public License
+  value: nethack
+- name: New BSD license
+  value: bsd-license
+- name: Nokia Open Source License
+  value: nokia
+- name: Non-Commercial Other
+  value: other-nc
+- name: OCLC Research Public License 2.0
+  value: oclc2
+- name: Open Data Commons Open Database License (ODbL)
+  value: odc-odbl
+- name: Open Data Commons Public Domain Dedication and License (PDDL)
+  value: odc-pddl
+- name: Open Group Test Suite License
+  value: opengroup
+- name: Open Software License
+  value: osl-3.0
+- name: Other (Attribution)
+  value: other-at
+- name: Other (Public Domain)
+  value: other-pd
+- name: Other (Open)
+  value: other-open
+- name: PHP License
+  value: php
+- name: Public Domain
+  value: other-pd
+- name: Python license (CNRI Python License)
+  value: pythonpl
+- name: Python Software Foundation License
+  value: PythonSoftFoundation
+- name: Qt Public License (QPL)
+  value: qtpl
+- name: RealNetworks Public Source License V1.0
+  value: real
+- name: Reciprocal Public License
+  value: rpl1.5
+- name: Ricoh Source Code Public License
+  value: ricohpl
+- name: Sleepycat License
+  value: sleepycat
+- name: Sun Industry Standards Source License (SISSL)
+  value: sun-issl
+- name: Sun Public License
+  value: sunpublic
+- name: Sybase Open Watcom Public License 1.0
+  value: sybase
+- name: UK Click Use PSI
+  value: ukclickusepsi
+- name: UK Crown Copyright with data.gov.uk rights
+  value: ukcrown-withrights
+- name: University of Illinois/NCSA Open Source License
+  value: UoI-NCSA
+- name: Vovida Software License v. 1.0
+  value: vovidapl
+- name: W3C License
+  value: W3C
+- name: wxWindows Library License
+  value: wxwindows
+- name: X.Net License
+  value: xnet
+- name: zlib/libpng license
+  value: zlib-license
+- name: Zope Public License
+  value: zpl
