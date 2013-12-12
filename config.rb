@@ -45,25 +45,12 @@ activate :syntax
 set :markdown_engine, :redcarpet
 set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => true, :strikethrough => true, :disabe_indented_code_blocks => true, :tables => true, :no_intra_emphasis => true, :no_styles => true
 
-# This is needed for us to have access to current_url?() in the layouts
-activate :bootstrap_navbar
-
 #require 'middleman-blog'
 
 #activate :directory_indexes
 
 ready do
-  sitemap.resources.group_by { |p| p.data["category"] }.each do |category, pages|
-    if "#{category}" != ""
-      pages = pages.select { |p| p.path =~ /^recipes\// }
-      pages.each do |page|
-        proxy "/cookbook/#{category}/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
-        ignore page.path
-      end
-      #proxy "data-wrangling/#{category}/index.html", "data-wrangling/templates/#{category}.html",
-      #  :locals => { :category => category, :pages => pages}, :ignore => true
-    end
-  end
+
 end
 
 
@@ -83,13 +70,11 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
-set :haml, { :ugly => true, :format => :html5 }
+set :haml, { :ugly => true, :format => :xhtml }
 
 sprockets.append_path File.join "#{root}", "bower_components"
 
-#BootstrapNavbar.configure do |config|
-#  config.bootstrap_version = '3.0.1'
-#end
+I18n.enforce_available_locales = false
 
 # Build-specific configuration
 configure :build do
@@ -109,7 +94,7 @@ configure :build do
   end
 
   # Enable cache buster
-  #activate :asset_hash, :ignore => [ %r{^(images|fonts)/.*} ]
+  activate :asset_hash, :ignore => [ %r{^(images|fonts)/.*} ]
 
   activate :gzip
 

@@ -1,38 +1,80 @@
 prose:
-  rooturl: "source/recipes"
-  media: "source/images"
+  rooturl: "source/content"
+  media: "source/images/contributed"
   metadata:
-    source/recipes:
+    source/content/categories:
+      - name: "title"
+        field:
+          label: "Name"
+          placeholder: "Category Name"
+          element: "text"
+          value: ""
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "recipe_collection"
+    source/content/datasets:
+      - name: "title"
+        field:
+          label: "Name"
+          placeholder: "Dataset Name"
+          element: "text"
+          value: ""
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "dataset"
+      - name: "license"
+        field:
+          label: "License"
+          elenent: "select"
+          options: "http://www.dhdata.org/api/v1/licenses.json"
+      - name: "tags"
+        field:
+          label: "Tags"
+          element: "multiselect"
+          options: "http://www.dhdata.org/api/v1/tags.json"
+          alterable: true
+      - name: "organization"
+        field:
+          label: "Organization"
+          element: "select"
+          options: "http://www.dhdata.org/api/v1/organizations.json"
+    source/content/organizations:
+      - name: "title"
+        field:
+          label: "Name"
+          placeholder: "Organization Name"
+          element: "text"
+          value: ""
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "organization"
+      - name: "url"
+        field:
+          label: "Website URL"
+          placeholder: "Organization Website"
+          element: "text"
+          value: ""
+      - name: "logo"
+        field:
+          label: "Logo URL"
+          placeholder: "Organization Logo"
+          element: "text"
+          value: ""
+    source/content/recipes:
       - name: "title"
         field:
           label: "Title"
-          placeholder: "Page Title"
+          placeholder: "Recipe Title"
           element: "text"
           value: ""
       - name: "category"
         field:
           label: "Section"
           element: "select"
-          options:
-            - name: "Dates and Times"
-              value: "dates-and-times"
-            - name: "Files"
-              value: "files"
-            - name: "Geometry"
-              value: "geometry"
-            - name: "Statistical Analysis"
-              value: "statistical-analysis"
-            - name: "Strings"
-              value: "strings"
-            - name: "Uncategorized"
-              value: "uncategorized"
-      - name: "date"
-        field:
-          label: "Creation Date"
-          element: "text"
-          value: ""
-          placeholder: "YYYY-MM-DD"
-          help: "The date on which this page was created. Used to order the recipes in RSS feeds."
+          options: "http://www.dhdata.org/api/v1/categories.json"
       - name: "layout"
         field:
           element: "hidden"

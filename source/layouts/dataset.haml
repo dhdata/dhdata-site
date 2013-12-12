@@ -1,0 +1,69 @@
+- wrap_layout :layout do
+  
+  = current_page.render({:layout => false}).split(/<\/?h2.*?>/).first
+
+  %h2 Resources
+
+  - resources_for_dataset(current_page).each do |resource|
+    
+   
+    - preview_layout = "preview/" + resource[:format].downcase.gsub(/[^a-z]+/, '-')
+    - if locate_layout(preview_layout) || !resource[:url].blank?
+      .btn-group(style="float: right;")
+        %button.btn.btn-primary.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown")
+          Explore
+          %i.glyphicon.glyphicon-share-alt
+          %span.caret
+        %ul.dropdown-menu(role="menu")
+          - if locate_layout(preview_layout)
+            %li
+              %a{:href => "./resources/" + resource[:title].downcase.gsub(/[^a-z]+/, '-')}
+                Preview
+                %i.glyphicon.glyphicon-stats
+          - if !resource[:url].blank?
+            %li
+              %a{:href => resource[:url] }
+                - if resource[:mimetype] == 'text/html'
+                  Browse
+                  %i.glyphicon.glyphicon-cloud
+                - else
+                  Download
+                  %i.glyphicon.glyphicon-cloud-download
+    %h3
+      = resource[:title]
+    - if !resource[:description].blank?
+      = resource[:description]
+
+    %table.table.table-condensed.table-bordered
+      %tr
+        %th Key
+        %th Value
+      - resource.each do |k,v|
+        - if k != :description && k != :title && k != :mimetype
+          %tr
+            %td= k.to_s
+            %td
+              - if /^(https?|ftp):\/\//.match(v)
+                = link_to v, v
+              - else
+                = v
+
+  - content_for :sidebar do
+    - org = find_organization(current_page.data.organization)
+    - if !org.nil?
+      %h3 Organization
+      %a{:href => url_for(org)}
+        = org.data.title
+    - if !current_page.data.license.blank? 
+      - license = data.licenses.select{ |l| l[:value] == current_page.data.license }.first
+      - if !license.nil?
+        %h3 License
+        - if !license[:url].blank?
+          %a{:href => license[:url]} 
+            = license[:name]
+            - if !license[:logo].blank?
+              %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}
+        - else
+          = license[:name]
+          - if !license[:logo].blank?
+            %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}

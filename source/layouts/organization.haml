@@ -1,0 +1,31 @@
+- wrap_layout :layout do
+  - datasets = find_datasets_for_organization(current_page)
+  %h2= counter(datasets.length, '%d dataset%s found')
+
+  - datasets.sort_by{ |d| d.data.title}.each do |dataset|
+    %h3= link_to dataset.data.title, [ '/', dataset.path ].join('')
+
+    = dataset.render({:layout => false}).split(/<\/?h2.*?>/).first
+
+    / now list the types of resources available for this dataset
+    - resources = resources_for_dataset(dataset)
+    - if resources.length > 0
+      %ul.list-unstyled.list-inline
+        - resources.each do |resource|
+          %li
+            %a.btn.btn-primary.btn-xs{"data-format" => resource[:format].to_s, :href => [ '/', dataset.path ].join('') }= resource[:type]
+  - content_for :sidebar do
+    - if !current_page.data.logo.blank?
+      - if !current_page.data.url.blank?
+        %a{:href => current_page.data.url}
+          %img.img-thumbnail{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}", :width => "100%"}
+      - else
+        %img.img-thumbnail{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}", :width => "100%"}
+
+    = yield
+
+    - if !current_page.data.url.blank?
+      %p
+        Website:
+        %a{:href => current_page.data.url}
+          = current_page.data.url

@@ -32,7 +32,7 @@
             %span.sr-only Search
 
     %dl
-    - (sitemap.resources.select { |p| p.source_file =~ /\/recipes\// && p.data.published }.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
+    - (find_recipes.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
       %dt
         %a{:href => [ '/', p.path ].join('')}= p.data.title
       %dd

@@ -7,15 +7,19 @@ published: true
 ---
 ## Problem
 
-You want to know if a particular date lies within a range of days, and you don't care about the time of day.
+You want to know if a particular date lies within a range of days, and you
+don't care about the time of day.
 
 ## Solution
 
-In general, you want to see if your date in question is on or after the first day in the range and on or before the last day in the range. 
+In general, you want to see if your date in question is on or after the first
+day in the range and on or before the last day in the range.
 
 ### Perl 5
 
-For this solution, we assume that the `$startdate` and `$enddate` variables hold the start and end dates of the range and that the `$date` variable holds the date in question.
+For this solution, we assume that the `$startdate` and `$enddate` variables
+hold the start and end dates of the range and that the `$date` variable holds
+the date in question.
 
 ```perl
 ($startdate, $enddate) = ($enddate, $startdate) if $startdate > $enddate;
@@ -48,4 +52,9 @@ if($span->contains($date)) {
 
 ## Discussion
 
-The basic calculation here isn't difficult. It's a simple comparison against a beginning and ending value as would be done regardless of units (e.g., checking that a distance is between two values). However, because many date/time libraries track dates and times down to fractions of a second, you need to decide which units you want to use (seconds, minutes, hours, days, etc.) and truncate the date/time to those units before doing any comparisons.
+The basic calculation here isn't difficult. It's a simple comparison against a
+beginning and ending value as would be done regardless of units (e.g.,
+checking that a distance is between two values). However, because many
+date/time libraries track dates and times down to fractions of a second, you
+need to decide which units you want to use (seconds, minutes, hours, days,
+etc.) and truncate the date/time to those units before doing any comparisons.

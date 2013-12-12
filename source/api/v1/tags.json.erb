@@ -1,0 +1,5 @@
+<%= dataset_tags.sort_by(&:downcase).map{ |t| {
+  name: t,
+  value: t
+  }
+}.to_json %>

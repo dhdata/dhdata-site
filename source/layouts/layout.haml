@@ -15,8 +15,12 @@
     = favicon_tag 'images/dhdata-navbar-logo.png'
 
     = stylesheet_link_tag "all"
-    /stylesheet_link_tag "code"
-  
+
+    - if current_page.data.exhibit
+      %link{:href => current_page.data.exhibit, :type => "application/json", :rel => "exhibit/data" }
+      = javascript_include_tag  "all"
+      /= javascript_include_tag "http://code.jquery.com/jquery-migrate-1.2.1.js"
+      = javascript_include_tag "http://static.simile.mit.edu/exhibit/api-2.0/exhibit-api.js"
   %body{:class => page_classes}
     %a.sr-only(href="#main-content") Skip to main content
 
@@ -32,16 +36,17 @@
             = image_tag 'dhdata-navbar-logo.png'
         .collapse.navbar-collapse
           %ul.nav.navbar-nav
+            - current_path = "/" + current_page.path.sub(/index\.html$/,'').sub(/\/$/, '')
             - data.navigation.links.each do |info|
               - liclasses = []
               - aclasses = []
-              - liclasses.push "active" if current_url?(info['link'])
+              - liclasses.push "active" if !info['link'].nil? && current_path.start_with?(info['link'])
               - if info['links']
                 - aclasses.push "dropdown-toggle"
                 - atoggle = 'dropdown'
                 - liclasses.push "dropdown"
                 - info['links'].each do |subinfo|
-                  - liclasses |= [ 'active' ] if current_url?(subinfo['link'])
+                  - liclasses |= [ 'active' ] if !info['link'].nil? && current_path.start_with?(subinfo['link'])
 
               %li{:class => liclasses.join(' ')}
                 - if info['link']
@@ -63,16 +68,13 @@
                       %li
                         %a{:href => subinfo['link']}= subinfo['name']
               
-    - if content_for?(:banner)
-      %header(role="banner")
-        = yield_content :banner
-
+    
     .container
       .col-md-12
         - if current_page.parent
           %ol.breadcrumb.hidden-xs
             = make_breadcrumb_nav(current_page.parent, false)
-            %li.active= current_page.data.title
+            %li.active= truncate(current_page.data.title, 30)
           %label.visible-xs(for="breadcrumb-select") Site path
           %select#breadcrumb-select.visible-xs
             = make_breadcrumb_nav(current_page.parent, true)
@@ -84,27 +86,39 @@
                   e.preventDefault()
                   window.location.href = jQuery("#breadcrumb-select").val()
 
+        - if content_for?(:banner)
+          %header(role="banner")
+            = yield_content :banner
+
         %div(role="main")
-          - if current_page.data.title
-            %h1= current_page.data.title
-          #main-content
-            = yield
+          
+          - if content_for?(:sidebar)
+            .row
+              
+              .col-md-9.col-md-push-3
+                - if current_page.data.title
+                  %h1= current_page.data.title
+                = yield
+              .col-md-3.col-md-pull-9
+                .well
+                  = yield_content :sidebar
+          - else
+            #main-content
+              - if current_page.data.title
+                %h1= current_page.data.title
+              = yield
     %footer
       .container
         .col-xs-12.col-sm-4
           %ul.list-unstyled
             %li
-              = link_to 'About DH Data', '/about'
+              = link_to 'About', '/about'
+              and
+              = link_to 'Policies', '/policies'
             %li
               = link_to 'GitHub Repository', 'https://github.com/dhdata/dhdata-site'
-            /%li
-            /  %a(href="http://lists.dhdata.org/") Mailing Lists
-            %li
-              = link_to 'Policies', '/policies'
         .col-xs-12.col-sm-4
           %ul.list-unstyled
-            %li
-              %a(href="http://docs.ckan.org/en/ckan-2.0/api.html") CKAN API
             %li
               %a(href="http://www.opendefinition.org/okd/") Open Data
             %li
@@ -113,18 +127,13 @@
           %ul.list-unstyled
             %li
               Powered by
-              %a(href="http://ckan.org") CKAN
-              and
               %a(href="http://middlemanapp.com/") Middleman
             %li
-              Hosted by
-              %a(href="http://www.umd.edu/") UMD
-              %a(href="http://mith.umd.edu/") MITH
-            %li
               Released under the
-              %a(href="http://creativecommons.org/licenses/by/3.0/") CC-BY
+              %a(href="http://creativecommons.org/licenses/by/4.0/") CC-BY
               license
-    = javascript_include_tag  "all"
+    - if !current_page.data.exhibit
+      = javascript_include_tag  "all"
     - if content_for?(:scripts)
       = yield_content :scripts
     = javascript_include_tag "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"

@@ -1,0 +1,55 @@
+---
+title: Organizations
+layout: layout
+published: true
+---
+
+.row(ng-app="organizationListApp" ng-controller="organizationListCtrl")
+  
+  .col-md-12
+    %div(ng-repeat="organization in organizations | startFrom:currentPage*pageSize | limitTo:pageSize")
+      %div(style="float: right; margin-left: 5px; margin-bottom: 5px;")
+        %img(src="{{ organization.links.logo}}" hspace="0" vspace="0" border="0")
+      %h2
+        %a(href="{{ organization.links.html }}") {{ organization.name }}
+      %div(ng-bind-html="organization.description")
+    
+    .text-center
+      %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
+        Previous
+      {{currentPage+1}}/{{numberOfPages()}}
+      %button.btn.btn-sm(ng-disabled="currentPage >= organizations.length/pageSize-1" ng-click="currentPage=currentPage+1")
+        Next
+
+- content_for :scripts do
+  :coffeescript
+    app = angular.module('organizationListApp', [])
+    app.controller 'organizationListCtrl', [ 
+      '$scope', '$http', '$sce'
+      ($scope ,  $http ,  $sce) ->
+        $scope.currentPage = 0
+        $scope.pageSize = 10
+        $scope.organizations = []
+        $scope.numberOfPages = ->
+          Math.ceil($scope.organizations.length / $scope.pageSize)
+        
+        filterOrganizations = ->
+          $scope.organizations = $scope.data
+          if $scope.currentPage >= $scope.numberOfPages()
+            $scope.currentPage = $scope.numberOfPages()-1
+
+        tq = $http.get('/api/v1/organizations.json')
+        tq.error ->
+          $scope.error = "Unable to retrieve organizations."
+        tq.success (data) ->
+          data = (org for org in data when org?.value != "")
+          for organization in data
+            organization.description = $sce.trustAsHtml(organization.description)
+          $scope.data = data
+          filterOrganizations()
+      ]
+    app.filter 'startFrom', ->
+      (input, start) ->
+        start = parseInt(start, 10)
+        input.slice(start)
+    
