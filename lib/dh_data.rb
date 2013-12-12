@@ -11,6 +11,9 @@ class DHData < Middleman::Extension
   end
 
   def manipulate_resource_list(resources)
+    return resources if @resource_list_manipulated
+    @resource_list_manipulated = true
+    #resources = @app.sitemap.resources
     content = resources.select{|p| p.path =~ /^content\// && p.data.published }.group_by { |p| p.path.split('/')[1] }
     ['categories', 'recipes', 'organizations', 'datasets', 'groups'].each do |section|
       content[section] = [] if content[section].nil?
@@ -25,29 +28,31 @@ class DHData < Middleman::Extension
       @app.ignore page.path
     end
 
+
     content['recipes'].group_by { |p| p.data.category }.each do |category, pages|
       if "#{category}" != "" && category_names.include?(category)
         pages.each do |page|
-          @app.proxy "/cookbook/#{category}/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
+          recipe_name = page.path.split(/\//).last
+          @app.proxy "/cookbook/#{category}/#{recipe_name}", page.path, :ignore => true
           @app.ignore page.path
         end
       end
     end
 
     content['organizations'].each do |page|
-      @app.proxy "/organization/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
+      @app.proxy "/organization/#{page.path.split(/\//).last}", page.path, :ignore => true
       @app.ignore page.path
     end
     content['datasets'].each do |page|
-      @app.proxy "/dataset/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
+      @app.proxy "/dataset/#{page.path.split(/\//).last}", page.path, :ignore => true
       @app.ignore page.path
       # This is where we should add paths to 'virtual' pages for resource previews
     end
     content['groups'].each do |page|
-      @app.proxy "/group/#{page.destination_path.split(/\//).last}", page.path, :ignore => true
+      @app.proxy "/group/#{page.path.split(/\//).last}", page.path, :ignore => true
       @app.ignore page.path
     end
-    resources
+    #@app.sitemap.resources
   end
 
   helpers do

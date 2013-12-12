@@ -33,6 +33,8 @@ gem "builder", "~>3.0"
 #gem "reverse_markdown"
 gem "nokogiri"
 
+gem "rouge"
+
 # Cross-templating language block fix for Ruby 1.8
 platforms :mri_18 do
   gem "ruby18_source_location"
