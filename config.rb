@@ -76,6 +76,8 @@ sprockets.append_path File.join "#{root}", "bower_components"
 
 I18n.enforce_available_locales = false
 
+page "/api/v1/*", :layout => false
+
 # Build-specific configuration
 configure :build do
   # For example, change the Compass output style for deployment
