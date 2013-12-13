@@ -13,33 +13,22 @@ prose:
         field:
           element: "hidden"
           value: "recipe_collection"
-    source/content/datasets:
+    source/content/recipes:
       - name: "title"
         field:
-          label: "Name"
-          placeholder: "Dataset Name"
+          label: "Title"
+          placeholder: "Recipe Title"
           element: "text"
           value: ""
+      - name: "category"
+        field:
+          label: "Section"
+          element: "select"
+          options: "http://www.dhdata.org/api/v1/categories.jsonp"
       - name: "layout"
         field:
           element: "hidden"
-          value: "dataset"
-      - name: "license"
-        field:
-          label: "License"
-          elenent: "select"
-          options: "http://www.dhdata.org/api/v1/licenses.json"
-      - name: "tags"
-        field:
-          label: "Tags"
-          element: "multiselect"
-          options: "http://www.dhdata.org/api/v1/tags.json"
-          alterable: true
-      - name: "organization"
-        field:
-          label: "Organization"
-          element: "select"
-          options: "http://www.dhdata.org/api/v1/organizations.json"
+          value: "recipe"
     source/content/organizations:
       - name: "title"
         field:
@@ -63,19 +52,41 @@ prose:
           placeholder: "Organization Logo"
           element: "text"
           value: ""
-    source/content/recipes:
+    source/content/groups:
       - name: "title"
         field:
-          label: "Title"
-          placeholder: "Recipe Title"
+          label: "Name"
+          placeholder: "Group Name"
           element: "text"
           value: ""
-      - name: "category"
-        field:
-          label: "Section"
-          element: "select"
-          options: "http://www.dhdata.org/api/v1/categories.json"
       - name: "layout"
         field:
           element: "hidden"
-          value: "recipe"
+          value: "group"
+    source/content/datasets:
+      - name: "title"
+        field:
+          label: "Name"
+          placeholder: "Dataset Name"
+          element: "text"
+          value: ""
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "dataset"
+      - name: "license"
+        field:
+          label: "License"
+          elenent: "select"
+          options: "http://www.dhdata.org/api/v1/licenses.jsonp"
+      - name: "tags"
+        field:
+          label: "Tags"
+          element: "multiselect"
+          options: "http://www.dhdata.org/api/v1/tags.jsonp"
+          alterable: true
+      - name: "organization"
+        field:
+          label: "Organization"
+          element: "select"
+          options: "http://www.dhdata.org/api/v1/organizations.jsonp"

@@ -1,0 +1,1 @@
+callback(<%= (recipe_categories.sort_by {|p| p[:name]} + [{name: 'Uncategorized', value: 'uncategorized' }]).to_json %>)
