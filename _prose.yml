@@ -77,7 +77,7 @@ prose:
       - name: "license"
         field:
           label: "License"
-          elenent: "select"
+          element: "select"
           options: "http://www.dhdata.org/api/v1/licenses.jsonp?callback=set_licenses"
       - name: "tags"
         field:
