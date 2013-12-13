@@ -1,57 +1,32 @@
-.row(ng-app="dataSetListApp")
-  .col-md-6(ng-controller="dataSetListCtrl")
-    %h2 Datasets
-    / this part needs to be driven by javascript since we need to query the CKAN api
-    %form.form-horizontal(method="GET" action="/dataset")
-      .form-group
-        .col-sm-12
-          %label.sr-only(for="dataset-search") Find datasets
-          %input.form-control#dataset-search(type="text" placeholder="Find datasets" name="q")
-          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
-            %span.sr-only Search
-    %div.alert.alert-warning(ng-show="error")
-      %strong Uh oh!
-      {{ error }}
-    %ul.list-unstyled.list-inline
-      %li(ng-repeat="tag in tags")
-        %a.btn.btn-primary.btn-xs(href="/dataset?tags={{tag}}") {{tag}}
-
-    %dl
-      %dt(ng-repeat-start="package in packages")
-        %a(href="/dataset/{{ package.name }}") {{ package.title }}
-      %dd(ng-repeat-end ng-bind-html="package.description")
-
-  .col-md-6
-    %h2 Recipes
-    %form.form-horizontal(method="GET" action="/search.html")
-      .form-group
-        .col-sm-12
-          %label.sr-only(for="recipe-search") Find recipes
-          %input.form-control#recipe-search(type="text" placeholder="Find recipes" name="q")
-          %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
-            %span.sr-only Search
-
-    %dl
-    - (find_recipes.sort_by { |p| p.data.date }.reverse).take(5).each do |p|
-      %dt
-        %a{:href => [ '/', p.path ].join('')}= p.data.title
-      %dd
-        - stuff = p.render({:layout => false}).split(/<\/?h2.*?>/)
-        = stuff[2]
-
 - content_for :banner do
   .container
     .row
       .col-md-4
         .well.well-sm
-          %h1 Share Data
+          %h1 Find Datasets or Recipes
+
+          %form.form-horizontal(method="GET" action="/search.html")
+            .form-group
+              .col-sm-12
+                %labdl.sr-only(for="search") Find datasets or recipes
+                %input.form-control#search(type="text" placeholder="Find datasets or recipes" name="q")
+                %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
+                  %span.sr-only Search
+          .clearfix
+
+      
+      .col-md-4
+        .well.well-sm
+          %h1 Share Code and Data
 
           %p
-            Add your own datasets to share them with others and to find other people interested in your data.
+            Fork this website on GitHub, add your datasets or data processing solutions,
+            and send a pull request. See [the DH Data Guide](/dhdata) for more details.
 
-          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="/user") 
-            Sign in to CKAN &raquo;
+          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="https://github.com/dhdata/dhdata-site") 
+            Fork on GitHub &raquo;
           .clearfix
+          
       .col-md-4
         .well.well-sm
           %h1 Collaborate
@@ -63,64 +38,3 @@
             %li= link_to 'DH Data Guide', '/dhdata'
             %li= link_to 'DH Curation Guide', 'http://dhcuration.org/'
             %li= link_to 'School of Data Handbook', 'http://datapatterns.org/'
-      .col-md-4
-        .well.well-sm
-          %h1 Share Code
-
-          %p
-            Add your data processing solutions to the Data Cookbook by forking this website on GitHub, adding your recipes, and sending a pull request.
-
-          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="https://github.com/dhdata/dhdata-site") 
-            Fork on GitHub &raquo;
-          .clearfix
-
-- content_for :scripts do
-  :coffeescript
-    (angular.module 'dataSetListApp', []).controller 'dataSetListCtrl', [ 
-      '$scope', '$http', '$sce'
-      ($scope ,  $http ,  $sce) ->
-        tags = []
-        displayTags = ->
-          tag_names = (tag for tag of tags).sort (a,b) -> tags[b] - tags[a]
-          tag_names = tag_names[0...Math.min(tag_names.length,5)]
-          tag_names = tag_names.sort (a,b) ->
-            switch
-              when a.toLowerCase() < b.toLowerCase() then -1
-              when a.toLowerCase() > b.toLowerCase() then 1
-              else 0
-          $scope.tags = tag_names
-          $scope.packages = packages
-
-        packages = []
-
-        tq = $http.get('https://www.dhdata.org/api/3/action/package_list')
-        tq.error ->
-          $scope.error = "Unable to retrieve datasets."
-        tq.success (data) ->
-          if data?.success and data?.result?
-            tags = {}
-            nomsRemaining = 5
-
-            for i in [0...nomsRemaining]
-              do (i) ->
-                nom = data.result[i]
-                q = $http.get("https://www.dhdata.org/api/3/action/package_show?id=" + nom)
-                q.error ->
-                  nomsRemaining -= 1
-                  if nomsRemaining < 1
-                    displayTags()
-                q.success (info) ->
-                  if info?.success and info?.result?
-                    packages[i] =
-                      name: nom
-                      title: info.result.title
-                      description: $sce.trustAsHtml markdown.toHTML(info.result.notes)
-
-                    if info.result.tags?
-                      for tag in info.result.tags
-                        tags[tag.display_name] = (tag[tag.display_name] or 0) + 1
-
-                  nomsRemaining -= 1
-                  if nomsRemaining < 1
-                    displayTags()
-      ]
