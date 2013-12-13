@@ -23,7 +23,7 @@
           - if !resource[:url].blank?
             %li
               %a{:href => resource[:url] }
-                - if resource[:mimetype] == 'text/html'
+                - if resource[:mimetype] == 'text/html' || resource[:format] == "Interactive Resource"
                   Browse
                   %i.glyphicon.glyphicon-cloud
                 - else
