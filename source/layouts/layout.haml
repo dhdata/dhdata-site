@@ -16,11 +16,6 @@
 
     = stylesheet_link_tag "all"
 
-    - if current_page.data.exhibit
-      %link{:href => current_page.data.exhibit, :type => "application/json", :rel => "exhibit/data" }
-      = javascript_include_tag  "all"
-      /= javascript_include_tag "http://code.jquery.com/jquery-migrate-1.2.1.js"
-      = javascript_include_tag "http://static.simile.mit.edu/exhibit/api-2.0/exhibit-api.js"
   %body{:class => page_classes}
     %a.sr-only(href="#main-content") Skip to main content
 
@@ -113,8 +108,6 @@
           %ul.list-unstyled
             %li
               = link_to 'About', '/about'
-              and
-              = link_to 'Policies', '/policies'
             %li
               = link_to 'GitHub Repository', 'https://github.com/dhdata/dhdata-site'
         .col-xs-12.col-sm-4
@@ -132,8 +125,7 @@
               Released under the
               %a(href="http://creativecommons.org/licenses/by/4.0/") CC-BY
               license
-    - if !current_page.data.exhibit
-      = javascript_include_tag  "all"
+    = javascript_include_tag  "all"
     - if content_for?(:scripts)
       = yield_content :scripts
     = javascript_include_tag "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
