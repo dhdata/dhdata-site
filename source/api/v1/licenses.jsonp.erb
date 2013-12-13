@@ -1,1 +1,1 @@
-callback(<%= data.licenses.sort_by(&:name).map { |l| { name: l.name, value: l.value } }.to_json %>)
+set_licenses(<%= data.licenses.sort_by(&:name).map { |l| { name: l.name, value: l.value } }.to_json %>);

@@ -1,4 +1,4 @@
-callback(<%=
+set_organizations(<%=
   ([{ name: "None", value: "" }] + find_organizations.map { |o| {
     name: o.data.title,
     value: o.path.sub(/\.html$/, '').split('/').last,
@@ -9,4 +9,4 @@ callback(<%=
     },
     description: o.render({:layout => false}).split(/<\/?h2.*?>/).first
   }}.sort_by { |o| o[:name] }).to_json
-%>)
+%>);

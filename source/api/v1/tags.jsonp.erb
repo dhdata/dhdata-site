@@ -1,5 +1,5 @@
-callback(<%= dataset_tags.sort_by(&:downcase).map{ |t| {
+set_tags(<%= dataset_tags.sort_by(&:downcase).map{ |t| {
   name: t,
   value: t
   }
-}.to_json %>)
+}.to_json %>);
