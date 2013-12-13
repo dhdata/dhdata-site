@@ -1,1 +1,1 @@
-<%= data.licenses.sort_by(&:name).map { |l| { name: l.name, value: l.value } }.to_json %>
+<%= ( [{ name: "Unlicensed", value: "" }] + data.licenses.sort_by(&:name).map { |l| { name: l.name, value: l.value } }).to_json %>
