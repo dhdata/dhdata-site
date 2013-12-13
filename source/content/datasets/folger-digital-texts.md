@@ -2,7 +2,6 @@
 title: Folger Digital Texts
 layout: dataset
 organization: folger
-url: http://www.folgerdigitaltexts.org/
 license: cc-nc
 published: true
 tags:
