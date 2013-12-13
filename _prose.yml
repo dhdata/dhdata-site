@@ -1,7 +1,7 @@
 prose:
   rooturl: "source/content"
   media: "source/images/contributed"
-  metadata:
+  metadataa:
     source/content/categories:
       - name: "title"
         field:
