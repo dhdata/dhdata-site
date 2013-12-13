@@ -36,6 +36,17 @@ prose:
           placeholder: "Organization Logo"
           element: "text"
           value: ""
+    source/content/groups:
+      - name: "title"
+        field:
+          label: "Name"
+          placeholder: "Group Name"
+          element: "text"
+          value: ""
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "group"
   metadataa:
     source/content/datasets:
       - name: "title"
@@ -64,17 +75,6 @@ prose:
           label: "Organization"
           element: "select"
           options: "http://www.dhdata.org/api/v1/organizations.json"
-    source/content/groups:
-      - name: "title"
-        field:
-          label: "Name"
-          placeholder: "Group Name"
-          element: "text"
-          value: ""
-      - name: "layout"
-        field:
-          element: "hidden"
-          value: "group"
     source/content/recipes:
       - name: "title"
         field:
