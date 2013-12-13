@@ -1,7 +1,7 @@
 prose:
   rooturl: "source/content"
   media: "source/images/contributed"
-  metadataa:
+  metadata:
     source/content/categories:
       - name: "title"
         field:
@@ -13,6 +13,7 @@ prose:
         field:
           element: "hidden"
           value: "recipe_collection"
+  metadataa:
     source/content/datasets:
       - name: "title"
         field:
