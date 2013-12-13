@@ -24,7 +24,7 @@ prose:
         field:
           label: "Section"
           element: "select"
-          options: "http://www.dhdata.org/api/v1/categories.json"
+          options: "http://www.dhdata.org/api/v1/categories.jsonp"
       - name: "layout"
         field:
           element: "hidden"
@@ -63,7 +63,6 @@ prose:
         field:
           element: "hidden"
           value: "group"
-  metadataa:
     source/content/datasets:
       - name: "title"
         field:
@@ -79,15 +78,15 @@ prose:
         field:
           label: "License"
           elenent: "select"
-          options: "http://www.dhdata.org/api/v1/licenses.json"
+          options: "http://www.dhdata.org/api/v1/licenses.jsonp"
       - name: "tags"
         field:
           label: "Tags"
           element: "multiselect"
-          options: "http://www.dhdata.org/api/v1/tags.json"
+          options: "http://www.dhdata.org/api/v1/tags.jsonp"
           alterable: true
       - name: "organization"
         field:
           label: "Organization"
           element: "select"
-          options: "http://www.dhdata.org/api/v1/organizations.json"
+          options: "http://www.dhdata.org/api/v1/organizations.jsonp"
