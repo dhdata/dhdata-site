@@ -13,6 +13,22 @@ prose:
         field:
           element: "hidden"
           value: "recipe_collection"
+    source/content/recipes:
+      - name: "title"
+        field:
+          label: "Title"
+          placeholder: "Recipe Title"
+          element: "text"
+          value: ""
+      - name: "category"
+        field:
+          label: "Section"
+          element: "select"
+          options: "http://www.dhdata.org/api/v1/categories.json"
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "recipe"
     source/content/organizations:
       - name: "title"
         field:
@@ -75,19 +91,3 @@ prose:
           label: "Organization"
           element: "select"
           options: "http://www.dhdata.org/api/v1/organizations.json"
-    source/content/recipes:
-      - name: "title"
-        field:
-          label: "Title"
-          placeholder: "Recipe Title"
-          element: "text"
-          value: ""
-      - name: "category"
-        field:
-          label: "Section"
-          element: "select"
-          options: "http://www.dhdata.org/api/v1/categories.json"
-      - name: "layout"
-        field:
-          element: "hidden"
-          value: "recipe"
