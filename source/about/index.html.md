@@ -30,13 +30,14 @@ submit a recipe.
 
 ### Prose.io
 
-We've added a configuration file to the site repository for
-[Prose.io](http://prose.io/). After forking the site repostory into your
-GitHub account, you can add and edit recipes by going to
-[Prose.io](http://prose.io/) and selecting "dhdata-site" from your list of
+We've created a custom build of [Prose.io](http://prose.io/). 
+After forking the site repostory into your
+GitHub account, you can add and edit recipes and other content by going to
+[the site editor](http://www.dhdata.org/editor/) and selecting "dhdata-site" 
+from your list of
 repositories. You will be placed in the content directory into which you can
-add your recipe or dataset information. Please follow the templates in each
-section.
+add your recipe or dataset information. The editor will use the appropriate
+template when creating a new file.
 
 ### Recipe Licensing
 
