@@ -108,7 +108,8 @@ particular algorithm would be a useful Image resource.
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
 | GIF | [Specification](http://www.w3.org/Graphics/GIF/spec-gif89a.txt) | $*$ |
-| JPG| [Specifications](http://www.w3.org/Graphics/JPEG/) | $*$ |
+| JPG | [Specifications](http://www.w3.org/Graphics/JPEG/) | $*$ |
+| JP2 | | $*$ |
 | PNG | [Specifications](http://www.libpng.org/pub/png/spec/) | $*$ |
 | TIFF | [Specification](http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf) | $*$ |
 
