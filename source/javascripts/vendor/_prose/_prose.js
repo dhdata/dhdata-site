@@ -21036,7 +21036,15 @@ module.exports = Backbone.Router.extend({
         this.app.$el.find('#main').html(this.view.render().el);
 
         model.repos.fetch({
-          success: repos.render,
+          success: function() {
+            var repo = user.repos.findWhere({ name: "dhdata-site" });
+            if (_.isUndefined(repo)) {
+              repos.render();
+            }
+            else {
+              window.location.replace("#" + login + "/dhdata-site");
+            }
+          },
           error: (function(model, xhr, options) {
             this.error(xhr);
           }).bind(this),
@@ -21290,7 +21298,7 @@ module.exports = Backbone.Router.extend({
   }
 });
 
-},{"./models/user":6,"./collections/users":15,"./collections/orgs":16,"./models/repo":17,"./models/file":18,"./views/app":19,"./views/notification":7,"./views/start":20,"./views/profile":21,"./views/search":22,"./views/repos":23,"./views/repo":24,"./views/file":25,"./views/documentation":26,"./views/chooselanguage":27,"../dist/templates":14,"./util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],9:[function(require,module,exports){
+},{"./models/user":6,"./collections/users":15,"./collections/orgs":16,"./models/repo":17,"./models/file":18,"./views/app":19,"./views/notification":7,"./views/start":20,"./views/profile":21,"./views/search":22,"./views/repos":23,"./views/repo":24,"./views/file":25,"./views/documentation":26,"./views/chooselanguage":27,"../dist/templates":14,"./util":28,"underscore":11,"jquery-browserify":10,"backbone":12}],9:[function(require,module,exports){
 var config = require('./config'); 
 var $ = require('jquery-browserify'); 
 
@@ -21307,124 +21315,7 @@ module.exports = {
   }
 }
 
-},{"./config":8,"jquery-browserify":10}],6:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var _ = require('underscore');
-
-var Backbone = require('backbone');
-var Repos = require('../collections/repos');
-var Orgs = require('../collections/orgs');
-
-// TODO Pass Notification view here if something goes wrong?
-var NotificationView = require('../views/notification');
-
-var auth = require('../config');
-var cookie = require('../cookie');
-var templates = require('../../dist/templates');
-
-module.exports = Backbone.Model.extend({
-  initialize: function(attributes, options) {
-    this.repos = new Repos([], { user: this });
-    this.orgs = new Orgs([], { user: this });
-  },
-
-  authenticate: function(options) {
-    var match;
-
-    if (cookie.get('oauth-token')) {
-      if (_.isFunction(options.success)) options.success();
-    } else {
-      match = window.location.href.match(/\?code=([a-z0-9]*)/);
-
-      if (match) {
-        var ajax = $.ajax(auth.url + '/authenticate/' + match[1], {
-          success: function(data) {
-            cookie.set('oauth-token', data.token);
-
-            var regex = new RegExp("(?:\\/)?\\?code=" + match[1]);
-            window.location.href = window.location.href.replace(regex, '');
-
-            if (_.isFunction(options.success)) options.success();
-          }
-        });
-      } else {
-        if (_.isFunction(options.error)) options.error();
-      }
-    }
-  },
-
-  url: function() {
-    var id = cookie.get('id');
-    var token = cookie.get('oauth-token');
-
-    // Return '/user' if authenticated but no user id cookie has been set yet
-    // or if this model's id matches authenticated user id
-    return auth.api + ((token && _.isUndefined(id)) || (id && this.get('id') === id) ?
-      '/user' : '/users/' + this.get('login'));
-  }
-});
-
-},{"../collections/repos":29,"../collections/orgs":16,"../views/notification":7,"../config":8,"../cookie":3,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],7:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var templates = require('../../dist/templates');
-var util = require('../util');
-
-module.exports = Backbone.View.extend({
-  id: 'notification',
-
-  className: 'notification round',
-
-  template: templates.notification,
-
-  events: {
-    'click .create': 'createPost'
-  },
-
-  initialize: function(options) {
-    options = _.clone(options) || {};
-    _.bindAll(this);
-
-    this.message = options.message;
-    this.error = options.error;
-    this.options = options.options;
-  },
-
-  render: function() {
-    util.documentTitle(t('docheader.error'));
-
-    var data = {
-      message: this.message,
-      error: this.error,
-      options: this.options
-    }
-
-    this.$el.html(_.template(this.template, data, {
-      variable: 'data'
-    }));
-
-    return this;
-  },
-
-  createPost: function (e) {
-    var hash = window.location.hash.split('/');
-    hash[2] = 'new';
-
-    var path = hash[hash.length - 1].split('?');
-    hash[hash.length - 1] = path[0] + '?file=' + path[0];
-
-    // append query string
-    if (path.length > 1) {
-      hash[hash.length - 1]  += '&' + path[1];
-    }
-
-    router.navigate(_(hash).compact().join('/'), { trigger: true });
-    return false;
-  }
-});
-
-},{"../../dist/templates":14,"../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],30:[function(require,module,exports){
+},{"./config":8,"jquery-browserify":10}],29:[function(require,module,exports){
 module.exports = function() {
   Liquid.readTemplateFile = (function(path) {
     var file = this.collection.findWhere({ path: '_includes/' + path });
@@ -21569,7 +21460,64 @@ module.exports = function() {
   });
 }
 
-},{}],31:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var _ = require('underscore');
+
+var Backbone = require('backbone');
+var Repos = require('../collections/repos');
+var Orgs = require('../collections/orgs');
+
+// TODO Pass Notification view here if something goes wrong?
+var NotificationView = require('../views/notification');
+
+var auth = require('../config');
+var cookie = require('../cookie');
+var templates = require('../../dist/templates');
+
+module.exports = Backbone.Model.extend({
+  initialize: function(attributes, options) {
+    this.repos = new Repos([], { user: this });
+    this.orgs = new Orgs([], { user: this });
+  },
+
+  authenticate: function(options) {
+    var match;
+
+    if (cookie.get('oauth-token')) {
+      if (_.isFunction(options.success)) options.success();
+    } else {
+      match = window.location.href.match(/\?code=([a-z0-9]*)/);
+
+      if (match) {
+        var ajax = $.ajax(auth.url + '/authenticate/' + match[1], {
+          success: function(data) {
+            cookie.set('oauth-token', data.token);
+
+            var regex = new RegExp("(?:\\/)?\\?code=" + match[1]);
+            window.location.href = window.location.href.replace(regex, '');
+
+            if (_.isFunction(options.success)) options.success();
+          }
+        });
+      } else {
+        if (_.isFunction(options.error)) options.error();
+      }
+    }
+  },
+
+  url: function() {
+    var id = cookie.get('id');
+    var token = cookie.get('oauth-token');
+
+    // Return '/user' if authenticated but no user id cookie has been set yet
+    // or if this model's id matches authenticated user id
+    return auth.api + ((token && _.isUndefined(id)) || (id && this.get('id') === id) ?
+      '/user' : '/users/' + this.get('login'));
+  }
+});
+
+},{"../collections/repos":30,"../collections/orgs":16,"../views/notification":7,"../config":8,"../cookie":3,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],31:[function(require,module,exports){
 module.exports = {
   dragEnter: function(e) {
     $(e.currentTarget).addClass('drag-over');
@@ -21642,7 +21590,67 @@ module.exports = {
   }
 }
 
-},{}],12:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var templates = require('../../dist/templates');
+var util = require('../util');
+
+module.exports = Backbone.View.extend({
+  id: 'notification',
+
+  className: 'notification round',
+
+  template: templates.notification,
+
+  events: {
+    'click .create': 'createPost'
+  },
+
+  initialize: function(options) {
+    options = _.clone(options) || {};
+    _.bindAll(this);
+
+    this.message = options.message;
+    this.error = options.error;
+    this.options = options.options;
+  },
+
+  render: function() {
+    util.documentTitle(t('docheader.error'));
+
+    var data = {
+      message: this.message,
+      error: this.error,
+      options: this.options
+    }
+
+    this.$el.html(_.template(this.template, data, {
+      variable: 'data'
+    }));
+
+    return this;
+  },
+
+  createPost: function (e) {
+    var hash = window.location.hash.split('/');
+    hash[2] = 'new';
+
+    var path = hash[hash.length - 1].split('?');
+    hash[hash.length - 1] = path[0] + '?file=' + path[0];
+
+    // append query string
+    if (path.length > 1) {
+      hash[hash.length - 1]  += '&' + path[1];
+    }
+
+    router.navigate(_(hash).compact().join('/'), { trigger: true });
+    return false;
+  }
+});
+
+},{"../../dist/templates":14,"../util":28,"underscore":11,"jquery-browserify":10,"backbone":12}],12:[function(require,module,exports){
 (function(){//     Backbone.js 1.0.0
 
 //     (c) 2010-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -23483,104 +23491,16 @@ module.exports = {
   }
 };
 
-},{"../dist/templates":14,"underscore":11,"jquery-browserify":10,"chrono":32}],29:[function(require,module,exports){
-var _ = require('underscore');
-
+},{"../dist/templates":14,"jquery-browserify":10,"underscore":11,"chrono":32}],15:[function(require,module,exports){
 var Backbone = require('backbone');
-var Repo = require('../models/repo');
-
-var auth = require('../config');
-var cookie = require('../cookie');
+var User = require('../models/user');
+var config = require('../config');
 
 module.exports = Backbone.Collection.extend({
-  model: Repo,
-
-  initialize: function(models, options) {
-    _.bindAll(this);
-
-    this.user = options.user;
-
-    this.comparator = function(repo) {
-      return -(new Date(repo.get('updated_at')).getTime());
-    };
-  },
-
-  parseLinkHeader: function(xhr, options) {
-    options = _.clone(options) || {};
-
-    var header = xhr.getResponseHeader('link');
-
-    if (header) {
-      var parts = header.split(',');
-      var links = {};
-
-      _.each(parts, function(link) {
-        var section = link.split(';');
-
-        var url = section[0].replace(/<(.*)>/, '$1').trim();
-        var name = section[1].replace(/rel="(.*)"/, '$1').trim();
-
-        links[name] = url;
-      });
-
-      if (links.next) {
-        $.ajax({
-          type: 'GET',
-          url: links.next,
-          success: options.success,
-          error: options.error
-        });
-      } else {
-        if (_.isFunction(options.complete)) options.complete();
-      }
-    } else {
-      if (_.isFunction(options.error)) options.error();
-    }
-  },
-
-  fetch: function(options) {
-    options = _.clone(options) || {};
-
-    var cb = options.success;
-
-    var success = (function(res, statusText, xhr) {
-      this.add(res);
-      this.parseLinkHeader(xhr, {
-        success: success,
-        complete: cb
-      });
-    }).bind(this);
-
-    Backbone.Collection.prototype.fetch.call(this, _.extend(options, {
-      success: (function(model, res, options) {
-        this.parseLinkHeader(options.xhr, {
-          success: success,
-          error: cb
-        });
-      }).bind(this)
-    }));
-  },
-
-  url: function() {
-    var id = cookie.get('id');
-    var type = this.user.get('type');
-    var path;
-
-    switch(type) {
-      case 'User':
-        path = (id && this.user.get('id') === id) ? '/user' :
-          ('/users/' + this.user.get('login'))
-        break;
-      case 'Organization':
-        path = '/orgs/' + this.user.get('login');
-        break;
-    }
-
-    return auth.api + path + '/repos?per_page=100';
-  }
+  model: User
 });
 
-},{"../models/repo":17,"../config":8,"../cookie":3,"backbone":12,"underscore":11}],16:[function(require,module,exports){
+},{"../models/user":6,"../config":8,"backbone":12}],16:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Org = require('../models/org');
@@ -23602,16 +23522,89 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"../models/org":33,"../config":8,"underscore":11,"backbone":12}],15:[function(require,module,exports){
+},{"../models/org":33,"../config":8,"underscore":11,"backbone":12}],19:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var _ = require('underscore');
 var Backbone = require('backbone');
-var User = require('../models/user');
-var config = require('../config');
+var LoaderView = require('./loader');
+var SidebarView = require('./sidebar');
+var NavView = require('./nav');
+var cookie = require('../cookie');
+var templates = require('../../dist/templates');
+var util = require('../util');
 
-module.exports = Backbone.Collection.extend({
-  model: User
+module.exports = Backbone.View.extend({
+  className: 'application',
+
+  template: templates.app,
+
+  subviews: {},
+
+  events: {
+    'click a.logout': 'logout'
+  },
+
+  initialize: function(options) {
+    _.bindAll(this);
+
+    key('j, k, enter, o', (function(e, handler) {
+      if (this.$el.find('.listing')[0]) {
+        if (handler.key === 'j' || handler.key === 'k') {
+          util.pageListing(handler.key);
+        } else {
+          util.goToFile();
+        }
+      }
+    }).bind(this));
+
+    this.user = options.user;
+
+    // Loader
+    this.loader = new LoaderView();
+    this.subviews['loader'] = this.loader;
+
+    // Sidebar
+    this.sidebar = new SidebarView({
+      app: this,
+      user: this.user
+    });
+    this.subviews['sidebar'] = this.sidebar;
+
+    // Nav
+    this.nav = new NavView({
+      app: this,
+      sidebar: this.sidebar,
+      user: this.user
+    });
+    this.subviews['nav'] = this.nav;
+  },
+
+  render: function() {
+    this.$el.html(_.template(this.template, {}, { variable: 'data' }));
+
+    this.loader.setElement(this.$el.find('#loader')).render();
+    this.sidebar.setElement(this.$el.find('#drawer')).render();
+    this.nav.setElement(this.$el.find('nav')).render();
+
+    return this;
+  },
+
+  logout: function() {
+    cookie.unset('oauth-token');
+    cookie.unset('id');
+    window.location.reload();
+    return false;
+  },
+
+  remove: function() {
+    _.invoke(this.subviews, 'remove');
+    this.subviews = {};
+
+    Backbone.View.prototype.remove.apply(this, arguments);
+  }
 });
 
-},{"../models/user":6,"../config":8,"backbone":12}],17:[function(require,module,exports){
+},{"./loader":34,"./sidebar":35,"./nav":36,"../cookie":3,"../../dist/templates":14,"../util":28,"jquery-browserify":10,"backbone":12,"underscore":11}],17:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Branches = require('../collections/branches');
@@ -23697,107 +23690,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"../collections/branches":34,"../collections/commits":35,"../config":8,"underscore":11,"backbone":12}],19:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var LoaderView = require('./loader');
-var SidebarView = require('./sidebar');
-var NavView = require('./nav');
-var cookie = require('../cookie');
-var templates = require('../../dist/templates');
-var util = require('../util');
-
-module.exports = Backbone.View.extend({
-  className: 'application',
-
-  template: templates.app,
-
-  subviews: {},
-
-  events: {
-    'click a.logout': 'logout'
-  },
-
-  initialize: function(options) {
-    _.bindAll(this);
-
-    key('j, k, enter, o', (function(e, handler) {
-      if (this.$el.find('.listing')[0]) {
-        if (handler.key === 'j' || handler.key === 'k') {
-          util.pageListing(handler.key);
-        } else {
-          util.goToFile();
-        }
-      }
-    }).bind(this));
-
-    this.user = options.user;
-
-    // Loader
-    this.loader = new LoaderView();
-    this.subviews['loader'] = this.loader;
-
-    // Sidebar
-    this.sidebar = new SidebarView({
-      app: this,
-      user: this.user
-    });
-    this.subviews['sidebar'] = this.sidebar;
-
-    // Nav
-    this.nav = new NavView({
-      app: this,
-      sidebar: this.sidebar,
-      user: this.user
-    });
-    this.subviews['nav'] = this.nav;
-  },
-
-  render: function() {
-    this.$el.html(_.template(this.template, {}, { variable: 'data' }));
-
-    this.loader.setElement(this.$el.find('#loader')).render();
-    this.sidebar.setElement(this.$el.find('#drawer')).render();
-    this.nav.setElement(this.$el.find('nav')).render();
-
-    return this;
-  },
-
-  logout: function() {
-    cookie.unset('oauth-token');
-    cookie.unset('id');
-    window.location.reload();
-    return false;
-  },
-
-  remove: function() {
-    _.invoke(this.subviews, 'remove');
-    this.subviews = {};
-
-    Backbone.View.prototype.remove.apply(this, arguments);
-  }
-});
-
-},{"./loader":36,"./sidebar":37,"./nav":38,"../cookie":3,"../../dist/templates":14,"../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],20:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var templates = require('../../dist/templates');
-var auth = require('../config');
-
-module.exports = Backbone.View.extend({
-  id: 'start',
-
-  template: templates.start,
-
-  render: function() {
-    this.$el.html(_.template(this.template, auth, { variable: 'auth' }));
-    return this;
-  }
-});
-
-},{"../../dist/templates":14,"../config":8,"jquery-browserify":10,"underscore":11,"backbone":12}],21:[function(require,module,exports){
+},{"../collections/branches":37,"../collections/commits":38,"../config":8,"backbone":12,"underscore":11}],21:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -23854,7 +23747,25 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./header":39,".././util":28,"../../dist/templates":14,"./sidebar/orgs":40,"jquery-browserify":10,"underscore":11,"backbone":12}],22:[function(require,module,exports){
+},{"./header":39,"./sidebar/orgs":40,".././util":28,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],20:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var templates = require('../../dist/templates');
+var auth = require('../config');
+
+module.exports = Backbone.View.extend({
+  id: 'start',
+
+  template: templates.start,
+
+  render: function() {
+    this.$el.html(_.template(this.template, auth, { variable: 'auth' }));
+    return this;
+  }
+});
+
+},{"../../dist/templates":14,"../config":8,"underscore":11,"jquery-browserify":10,"backbone":12}],22:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -23914,7 +23825,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../dist/templates":14,"../util":28,"backbone":12,"jquery-browserify":10,"underscore":11}],23:[function(require,module,exports){
+},{"../../dist/templates":14,"../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],23:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -23981,7 +23892,59 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./li/repo":41,"backbone":12,"underscore":11,"jquery-browserify":10}],24:[function(require,module,exports){
+},{"./li/repo":41,"jquery-browserify":10,"underscore":11,"backbone":12}],27:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var cookie = require('../cookie');
+var templates = require('../../dist/templates');
+var LOCALES = require('../../translations/locales');
+
+module.exports = Backbone.View.extend({
+  className: 'inner deep prose limiter',
+
+  template: templates.chooselanguage,
+
+  events: {
+    'click .language': 'setLanguage' 
+  },
+
+  render: function() {
+    var chooseLanguages = {
+      languages: LOCALES,
+      active: app.locale ? app.locale : window.locale._current
+    };
+
+    this.$el.empty().append(_.template(this.template, chooseLanguages, {
+      variable: 'chooseLanguage'
+    }));
+    return this;
+  },
+
+  setLanguage: function(e) {
+    if (!$(e.target).hasClass('active')) {
+      var code = $(e.target).data('code');
+      cookie.set('lang', code);
+
+      // Check if the browsers language is supported
+      app.locale = code;
+
+      if (app.locale && app.locale !== 'en') {
+          $.getJSON('./translations/locales/' + app.locale + '.json', function(result) {
+              window.locale[app.locale] = result;
+              window.locale.current(app.locale);
+          });
+      }
+
+      // Reflect changes. Could be more elegant.
+      window.location.reload();
+    }
+
+    return false;
+  }
+});
+
+},{"../cookie":3,"../../dist/templates":14,"../../translations/locales":1,"jquery-browserify":10,"backbone":12,"underscore":11}],24:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var queue = require('queue-async');
@@ -24122,7 +24085,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./search":22,"./header":39,"./files":42,"../../dist/templates":14,".././util":28,"underscore":11,"backbone":12,"jquery-browserify":10,"queue-async":43}],26:[function(require,module,exports){
+},{"./files":42,"./header":39,"./search":22,".././util":28,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12,"queue-async":43}],26:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var marked = require('marked');
 var Backbone = require('backbone');
@@ -24137,122 +24100,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"jquery-browserify":10,"backbone":12,"marked":44}],45:[function(require,module,exports){
-module.exports = {
-  help: [
-    {
-      menuName: t('dialogs.help.blockElements.title'),
-      content: [{
-          menuName: t('dialogs.help.blockElements.content.paragraphs.title'),
-          data: t('dialogs.help.blockElements.content.paragraphs.content')
-        }, {
-          menuName: t('dialogs.help.blockElements.content.headers.title'),
-          data: t('dialogs.help.blockElements.content.headers.content')
-        }, {
-          menuName: t('dialogs.help.blockElements.content.blockquotes.title'),
-          data: t('dialogs.help.blockElements.content.blockquotes.content')
-        }, {
-          menuName: t('dialogs.help.blockElements.content.lists.title'),
-          data: t('dialogs.help.blockElements.content.lists.content')
-        }, {
-          menuName: t('dialogs.help.blockElements.content.codeBlocks.title'),
-          data: t('dialogs.help.blockElements.content.codeBlocks.content')
-        }, {
-          menuName: t('dialogs.help.blockElements.content.horizontalRules.title'),
-          data: t('dialogs.help.blockElements.content.horizontalRules.content')
-        }
-      ]
-    },
-
-    {
-      menuName: t('dialogs.help.spanElements.title'),
-      content: [{
-          menuName: t('dialogs.help.spanElements.content.links.title'),
-          data: t('dialogs.help.spanElements.content.links.content')
-        },
-        {
-          menuName: t('dialogs.help.spanElements.content.emphasis.title'),
-          data: t('dialogs.help.spanElements.content.emphasis.content')
-        },
-        {
-          menuName: t('dialogs.help.spanElements.content.code.title'),
-          data: t('dialogs.help.spanElements.content.code.content')
-        },
-        {
-          menuName: t('dialogs.help.spanElements.content.images.title'),
-          data: t('dialogs.help.spanElements.content.images.content')
-        }
-      ]
-    },
-
-    {
-      menuName: t('dialogs.help.miscellaneous.title'),
-      content: [{
-          menuName: t('dialogs.help.miscellaneous.content.automaticLinks.title'),
-          data: t('dialogs.help.miscellaneous.content.automaticLinks.content')
-        },
-        {
-          menuName: t('dialogs.help.miscellaneous.content.escaping.title'),
-          data: t('dialogs.help.miscellaneous.content.escaping.content')
-        }
-      ]
-    }
-  ]
-}
-
-},{}],27:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var Backbone = require('backbone');
-var _ = require('underscore');
-var cookie = require('../cookie');
-var templates = require('../../dist/templates');
-var LOCALES = require('../../translations/locales');
-
-module.exports = Backbone.View.extend({
-  className: 'inner deep prose limiter',
-
-  template: templates.chooselanguage,
-
-  events: {
-    'click .language': 'setLanguage' 
-  },
-
-  render: function() {
-    var chooseLanguages = {
-      languages: LOCALES,
-      active: app.locale ? app.locale : window.locale._current
-    };
-
-    this.$el.empty().append(_.template(this.template, chooseLanguages, {
-      variable: 'chooseLanguage'
-    }));
-    return this;
-  },
-
-  setLanguage: function(e) {
-    if (!$(e.target).hasClass('active')) {
-      var code = $(e.target).data('code');
-      cookie.set('lang', code);
-
-      // Check if the browsers language is supported
-      app.locale = code;
-
-      if (app.locale && app.locale !== 'en') {
-          $.getJSON('./translations/locales/' + app.locale + '.json', function(result) {
-              window.locale[app.locale] = result;
-              window.locale.current(app.locale);
-          });
-      }
-
-      // Reflect changes. Could be more elegant.
-      window.location.reload();
-    }
-
-    return false;
-  }
-});
-
-},{"../cookie":3,"../../dist/templates":14,"../../translations/locales":1,"jquery-browserify":10,"backbone":12,"underscore":11}],18:[function(require,module,exports){
+},{"jquery-browserify":10,"backbone":12,"marked":44}],18:[function(require,module,exports){
 var _ = require('underscore');
 var marked = require('marked');
 var Backbone = require('backbone');
@@ -24653,7 +24501,167 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{".././util":28,"underscore":11,"marked":44,"backbone":12,"js-yaml":46}],25:[function(require,module,exports){
+},{".././util":28,"underscore":11,"marked":44,"backbone":12,"js-yaml":45}],46:[function(require,module,exports){
+module.exports = {
+  help: [
+    {
+      menuName: t('dialogs.help.blockElements.title'),
+      content: [{
+          menuName: t('dialogs.help.blockElements.content.paragraphs.title'),
+          data: t('dialogs.help.blockElements.content.paragraphs.content')
+        }, {
+          menuName: t('dialogs.help.blockElements.content.headers.title'),
+          data: t('dialogs.help.blockElements.content.headers.content')
+        }, {
+          menuName: t('dialogs.help.blockElements.content.blockquotes.title'),
+          data: t('dialogs.help.blockElements.content.blockquotes.content')
+        }, {
+          menuName: t('dialogs.help.blockElements.content.lists.title'),
+          data: t('dialogs.help.blockElements.content.lists.content')
+        }, {
+          menuName: t('dialogs.help.blockElements.content.codeBlocks.title'),
+          data: t('dialogs.help.blockElements.content.codeBlocks.content')
+        }, {
+          menuName: t('dialogs.help.blockElements.content.horizontalRules.title'),
+          data: t('dialogs.help.blockElements.content.horizontalRules.content')
+        }
+      ]
+    },
+
+    {
+      menuName: t('dialogs.help.spanElements.title'),
+      content: [{
+          menuName: t('dialogs.help.spanElements.content.links.title'),
+          data: t('dialogs.help.spanElements.content.links.content')
+        },
+        {
+          menuName: t('dialogs.help.spanElements.content.emphasis.title'),
+          data: t('dialogs.help.spanElements.content.emphasis.content')
+        },
+        {
+          menuName: t('dialogs.help.spanElements.content.code.title'),
+          data: t('dialogs.help.spanElements.content.code.content')
+        },
+        {
+          menuName: t('dialogs.help.spanElements.content.images.title'),
+          data: t('dialogs.help.spanElements.content.images.content')
+        }
+      ]
+    },
+
+    {
+      menuName: t('dialogs.help.miscellaneous.title'),
+      content: [{
+          menuName: t('dialogs.help.miscellaneous.content.automaticLinks.title'),
+          data: t('dialogs.help.miscellaneous.content.automaticLinks.content')
+        },
+        {
+          menuName: t('dialogs.help.miscellaneous.content.escaping.title'),
+          data: t('dialogs.help.miscellaneous.content.escaping.content')
+        }
+      ]
+    }
+  ]
+}
+
+},{}],30:[function(require,module,exports){
+var _ = require('underscore');
+
+var Backbone = require('backbone');
+var Repo = require('../models/repo');
+
+var auth = require('../config');
+var cookie = require('../cookie');
+
+module.exports = Backbone.Collection.extend({
+  model: Repo,
+
+  initialize: function(models, options) {
+    _.bindAll(this);
+
+    this.user = options.user;
+
+    this.comparator = function(repo) {
+      return -(new Date(repo.get('updated_at')).getTime());
+    };
+  },
+
+  parseLinkHeader: function(xhr, options) {
+    options = _.clone(options) || {};
+
+    var header = xhr.getResponseHeader('link');
+
+    if (header) {
+      var parts = header.split(',');
+      var links = {};
+
+      _.each(parts, function(link) {
+        var section = link.split(';');
+
+        var url = section[0].replace(/<(.*)>/, '$1').trim();
+        var name = section[1].replace(/rel="(.*)"/, '$1').trim();
+
+        links[name] = url;
+      });
+
+      if (links.next) {
+        $.ajax({
+          type: 'GET',
+          url: links.next,
+          success: options.success,
+          error: options.error
+        });
+      } else {
+        if (_.isFunction(options.complete)) options.complete();
+      }
+    } else {
+      if (_.isFunction(options.error)) options.error();
+    }
+  },
+
+  fetch: function(options) {
+    options = _.clone(options) || {};
+
+    var cb = options.success;
+
+    var success = (function(res, statusText, xhr) {
+      this.add(res);
+      this.parseLinkHeader(xhr, {
+        success: success,
+        complete: cb
+      });
+    }).bind(this);
+
+    Backbone.Collection.prototype.fetch.call(this, _.extend(options, {
+      success: (function(model, res, options) {
+        this.parseLinkHeader(options.xhr, {
+          success: success,
+          error: cb
+        });
+      }).bind(this)
+    }));
+  },
+
+  url: function() {
+    var id = cookie.get('id');
+    var type = this.user.get('type');
+    var path;
+
+    switch(type) {
+      case 'User':
+        path = (id && this.user.get('id') === id) ? '/user' :
+          ('/users/' + this.user.get('login'))
+        break;
+      case 'Organization':
+        path = '/orgs/' + this.user.get('login');
+        break;
+    }
+
+    return auth.api + path + '/repos?per_page=100';
+  }
+});
+
+},{"../models/repo":17,"../config":8,"../cookie":3,"underscore":11,"backbone":12}],25:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var queue = require('queue-async');
@@ -25920,7 +25928,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../vendor/liquid.patch":30,"./modal":47,"../models/file":18,"./header":39,"./toolbar":48,"./metadata":49,"../config":8,"../util":28,"../upload":31,"../cookie":3,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"queue-async":43,"marked":44,"js-yaml":46,"backbone":12,"keymaster":50,"diff":51}],43:[function(require,module,exports){
+},{"../../vendor/liquid.patch":29,"./modal":47,"../models/file":18,"./header":39,"./toolbar":48,"./metadata":49,"../config":8,"../util":28,"../upload":31,"../cookie":3,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"queue-async":43,"marked":44,"backbone":12,"js-yaml":45,"keymaster":50,"diff":51}],43:[function(require,module,exports){
 (function() {
   if (typeof module === "undefined") self.queue = queue;
   else module.exports = queue;
@@ -27460,10 +27468,7 @@ if (typeof exports === 'object') {
 })(this);
 
 })()
-},{}],32:[function(require,module,exports){
-module.exports = require('./lib/chrono');
-
-},{"./lib/chrono":52}],51:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 /* See LICENSE file for terms of use */
 
 /*
@@ -27819,7 +27824,10 @@ if (typeof module !== 'undefined') {
     module.exports = JsDiff;
 }
 
-},{}],46:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
+module.exports = require('./lib/chrono');
+
+},{"./lib/chrono":52}],45:[function(require,module,exports){
 module.exports = require('./lib/js-yaml.js');
 
 },{"./lib/js-yaml.js":53}],52:[function(require,module,exports){
@@ -28234,32 +28242,7 @@ var Backbone = require('backbone');
 module.exports = Backbone.Model.extend({
 });
 
-},{"backbone":12}],34:[function(require,module,exports){
-var _ = require('underscore');
-var Backbone = require('backbone');
-var Branch = require('../models/branch');
-
-module.exports = Backbone.Collection.extend({
-  model: Branch,
-
-  initialize: function(models, options) {
-    this.repo = options.repo;
-  },
-
-  parse: function(resp, options) {
-    return map = _.map(resp, (function(branch) {
-     return  _.extend(branch, {
-        repo: this.repo
-      })
-    }).bind(this));
-  },
-
-  url: function() {
-    return this.repo.url() + '/branches';
-  }
-});
-
-},{"../models/branch":54,"underscore":11,"backbone":12}],35:[function(require,module,exports){
+},{"backbone":12}],38:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Commit = require('../models/commit');
@@ -28289,7 +28272,32 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"../models/commit":55,"underscore":11,"backbone":12}],36:[function(require,module,exports){
+},{"../models/commit":54,"underscore":11,"backbone":12}],37:[function(require,module,exports){
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Branch = require('../models/branch');
+
+module.exports = Backbone.Collection.extend({
+  model: Branch,
+
+  initialize: function(models, options) {
+    this.repo = options.repo;
+  },
+
+  parse: function(resp, options) {
+    return map = _.map(resp, (function(branch) {
+     return  _.extend(branch, {
+        repo: this.repo
+      })
+    }).bind(this));
+  },
+
+  url: function() {
+    return this.repo.url() + '/branches';
+  }
+});
+
+},{"../models/branch":55,"backbone":12,"underscore":11}],34:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -28332,7 +28340,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],37:[function(require,module,exports){
+},{"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],35:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var util = require('../util');
@@ -28413,7 +28421,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../util":28,"./sidebar/branches":56,"./sidebar/history":57,"./sidebar/drafts":58,"./sidebar/orgs":40,"./sidebar/save":59,"./sidebar/settings":60,"../../dist/templates":14,"underscore":11,"backbone":12}],38:[function(require,module,exports){
+},{"../util":28,"./sidebar/branches":56,"./sidebar/history":57,"./sidebar/drafts":58,"./sidebar/orgs":40,"./sidebar/save":59,"./sidebar/settings":60,"../../dist/templates":14,"underscore":11,"backbone":12}],36:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -28630,7 +28638,46 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../util":28,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],42:[function(require,module,exports){
+},{"../util":28,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],47:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var templates = require('../../dist/templates');
+
+module.exports = Backbone.View.extend({
+  className: 'modal overlay',
+
+  template: templates.modal,
+
+  events: {
+    'click .got-it': 'confirm'
+  },
+
+  initialize: function() {
+    this.message = this.options.message;
+  },
+
+  render: function() {
+    var modal = {
+      message: this.message
+    };
+    this.$el.empty().append(_.template(templates.modal, modal, {
+      variable: 'modal'
+    }));
+
+    return this;
+  },
+
+  confirm: function() {
+    var view = this;
+    this.$el.fadeOut('fast', function() {
+      view.remove();
+    });
+    return false;
+  }
+});
+
+},{"../../dist/templates":14,"backbone":12,"underscore":11,"jquery-browserify":10}],42:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -28835,46 +28882,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../models/file":18,"../models/folder":61,"./li/file":62,"./li/folder":63,"../../dist/templates":14,".././util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],47:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var templates = require('../../dist/templates');
-
-module.exports = Backbone.View.extend({
-  className: 'modal overlay',
-
-  template: templates.modal,
-
-  events: {
-    'click .got-it': 'confirm'
-  },
-
-  initialize: function() {
-    this.message = this.options.message;
-  },
-
-  render: function() {
-    var modal = {
-      message: this.message
-    };
-    this.$el.empty().append(_.template(templates.modal, modal, {
-      variable: 'modal'
-    }));
-
-    return this;
-  },
-
-  confirm: function() {
-    var view = this;
-    this.$el.fadeOut('fast', function() {
-      view.remove();
-    });
-    return false;
-  }
-});
-
-},{"../../dist/templates":14,"underscore":11,"backbone":12,"jquery-browserify":10}],48:[function(require,module,exports){
+},{"../models/file":18,"../models/folder":61,"./li/file":62,"./li/folder":63,"../../dist/templates":14,".././util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],48:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var chosen = require('chosen-jquery-browserify');
 var _ = require('underscore');
@@ -29365,7 +29373,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../toolbar/markdown.js":45,"../util":28,"../upload":31,"../../dist/templates":14,"jquery-browserify":10,"backbone":12,"underscore":11,"chosen-jquery-browserify":64}],49:[function(require,module,exports){
+},{"../toolbar/markdown.js":46,"../util":28,"../upload":31,"../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12,"chosen-jquery-browserify":64}],49:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var chosen = require('chosen-jquery-browserify');
 var _ = require('underscore');
@@ -29940,7 +29948,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../dist/templates":14,".././util":28,"jquery-browserify":10,"chosen-jquery-browserify":64,"underscore":11,"js-yaml":46,"backbone":12,"deepmerge":65}],40:[function(require,module,exports){
+},{"../../dist/templates":14,".././util":28,"jquery-browserify":10,"chosen-jquery-browserify":64,"underscore":11,"js-yaml":45,"backbone":12,"deepmerge":65}],40:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -29989,7 +29997,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../../dist/templates":14,"../../cookie":3,"underscore":11,"jquery-browserify":10,"backbone":12}],41:[function(require,module,exports){
+},{"../../../dist/templates":14,"../../cookie":3,"jquery-browserify":10,"underscore":11,"backbone":12}],41:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30110,7 +30118,7 @@ module.exports.addConstructor = deprecated('addConstructor');
 
 require('./js-yaml/require');
 
-},{"./js-yaml/loader":66,"./js-yaml/dumper":67,"./js-yaml/common":68,"./js-yaml/type":69,"./js-yaml/schema":70,"./js-yaml/schema/failsafe":71,"./js-yaml/schema/json":72,"./js-yaml/schema/default_safe":73,"./js-yaml/exception":74,"./js-yaml/schema/default_full":75,"./js-yaml/schema/core":76,"./js-yaml/require":77}],54:[function(require,module,exports){
+},{"./js-yaml/loader":66,"./js-yaml/dumper":67,"./js-yaml/common":68,"./js-yaml/type":69,"./js-yaml/schema":70,"./js-yaml/schema/failsafe":71,"./js-yaml/schema/json":72,"./js-yaml/schema/core":73,"./js-yaml/schema/default_safe":74,"./js-yaml/schema/default_full":75,"./js-yaml/exception":76,"./js-yaml/require":77}],55:[function(require,module,exports){
 var Backbone = require('backbone');
 var Files = require('../collections/files');
 var config = require('../config');
@@ -30136,7 +30144,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"../collections/files":78,"../config":8,"backbone":12}],55:[function(require,module,exports){
+},{"../collections/files":78,"../config":8,"backbone":12}],54:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -30152,34 +30160,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":12,"underscore":11}],61:[function(require,module,exports){
-var _ = require('underscore');
-var Backbone = require('backbone');
-var util = require('.././util');
-
-module.exports = Backbone.Model.extend({
-  idAttribute: 'path',
-
-  initialize: function(attributes, options) {
-    _.bindAll(this);
-
-    this.branch = attributes.branch;
-    this.collection = attributes.collection;
-    this.repo = attributes.repo;
-
-    this.set({
-      'name': util.extractFilename(attributes.path)[1],
-      'path': attributes.path,
-      'type': attributes.type
-    });
-  },
-
-  url: function() {
-    return this.repo.url() + '/contents/' + this.get('path') + '?ref=' + this.branch.get('name');
-  }
-});
-
-},{".././util":28,"underscore":11,"backbone":12}],68:[function(require,module,exports){
+},{"underscore":11,"backbone":12}],68:[function(require,module,exports){
 'use strict';
 
 
@@ -30241,7 +30222,7 @@ module.exports.toArray    = toArray;
 module.exports.repeat     = repeat;
 module.exports.extend     = extend;
 
-},{}],74:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 
@@ -30268,10 +30249,114 @@ YAMLException.prototype.toString = function toString(compact) {
 
 module.exports = YAMLException;
 
-},{}],79:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
+var _ = require('underscore');
+var Backbone = require('backbone');
+var util = require('.././util');
+
+module.exports = Backbone.Model.extend({
+  idAttribute: 'path',
+
+  initialize: function(attributes, options) {
+    _.bindAll(this);
+
+    this.branch = attributes.branch;
+    this.collection = attributes.collection;
+    this.repo = attributes.repo;
+
+    this.set({
+      'name': util.extractFilename(attributes.path)[1],
+      'path': attributes.path,
+      'type': attributes.type
+    });
+  },
+
+  url: function() {
+    return this.repo.url() + '/contents/' + this.get('path') + '?ref=' + this.branch.get('name');
+  }
+});
+
+},{".././util":28,"underscore":11,"backbone":12}],79:[function(require,module,exports){
 // nothing to see here... no file methods for the browser
 
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
+var $ = require('jquery-browserify');
+var chosen = require('chosen-jquery-browserify');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BranchView = require('./branch');
+var templates = require('../../../dist/templates');
+
+module.exports = Backbone.View.extend({
+  template: templates.sidebar.branches,
+
+  subviews: {},
+
+  initialize: function(options) {
+    _.bindAll(this);
+
+    var app = options.app;
+    app.loader.start();
+
+    this.app = app;
+    this.model = options.model;
+    this.repo = options.repo;
+    this.branch = options.branch || this.repo.get('master_branch');
+    this.router = options.router;
+    this.sidebar = options.sidebar;
+
+    this.model.fetch({
+      success: this.render,
+      error: (function(model, xhr, options) {
+        this.router.error(xhr);
+      }).bind(this),
+      complete: this.app.loader.done
+    });
+  },
+
+  render: function() {
+    // only render branches selector if two or more branches
+    if (this.model.length < 2) return;
+
+    this.app.loader.start();
+
+    this.$el.empty().append(_.template(this.template));
+    var frag = document.createDocumentFragment();
+
+    this.model.each((function(branch, index) {
+      var view = new BranchView({
+        model: branch,
+        repo: this.repo,
+        branch: this.branch
+      });
+
+      frag.appendChild(view.render().el);
+      this.subviews[branch.get('name')] = view;
+    }).bind(this));
+
+    this.$el.find('select').html(frag);
+
+    var router = this.router;
+    this.$el.find('.chzn-select').chosen().change(function() {
+      router.navigate($(this).val(), true);
+    });
+
+    this.sidebar.open();
+
+    this.app.loader.done();
+
+    return this;
+  },
+
+  remove: function() {
+    _.invoke(this.subviews, 'remove');
+    this.subviews = {};
+
+    Backbone.View.prototype.remove.apply(this, arguments);
+  }
+});
+
+},{"./branch":80,"../../../dist/templates":14,"chosen-jquery-browserify":64,"underscore":11,"jquery-browserify":10,"backbone":12}],57:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30431,84 +30516,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./li/commit":80,"../../cookie":3,"../../../dist/templates":14,"../../util":28,"jquery-browserify":10,"underscore":11,"backbone":12,"queue-async":43}],56:[function(require,module,exports){
-var $ = require('jquery-browserify');
-var chosen = require('chosen-jquery-browserify');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var BranchView = require('./branch');
-var templates = require('../../../dist/templates');
-
-module.exports = Backbone.View.extend({
-  template: templates.sidebar.branches,
-
-  subviews: {},
-
-  initialize: function(options) {
-    _.bindAll(this);
-
-    var app = options.app;
-    app.loader.start();
-
-    this.app = app;
-    this.model = options.model;
-    this.repo = options.repo;
-    this.branch = options.branch || this.repo.get('master_branch');
-    this.router = options.router;
-    this.sidebar = options.sidebar;
-
-    this.model.fetch({
-      success: this.render,
-      error: (function(model, xhr, options) {
-        this.router.error(xhr);
-      }).bind(this),
-      complete: this.app.loader.done
-    });
-  },
-
-  render: function() {
-    // only render branches selector if two or more branches
-    if (this.model.length < 2) return;
-
-    this.app.loader.start();
-
-    this.$el.empty().append(_.template(this.template));
-    var frag = document.createDocumentFragment();
-
-    this.model.each((function(branch, index) {
-      var view = new BranchView({
-        model: branch,
-        repo: this.repo,
-        branch: this.branch
-      });
-
-      frag.appendChild(view.render().el);
-      this.subviews[branch.get('name')] = view;
-    }).bind(this));
-
-    this.$el.find('select').html(frag);
-
-    var router = this.router;
-    this.$el.find('.chzn-select').chosen().change(function() {
-      router.navigate($(this).val(), true);
-    });
-
-    this.sidebar.open();
-
-    this.app.loader.done();
-
-    return this;
-  },
-
-  remove: function() {
-    _.invoke(this.subviews, 'remove');
-    this.subviews = {};
-
-    Backbone.View.prototype.remove.apply(this, arguments);
-  }
-});
-
-},{"./branch":81,"../../../dist/templates":14,"chosen-jquery-browserify":64,"jquery-browserify":10,"backbone":12,"underscore":11}],58:[function(require,module,exports){
+},{"./li/commit":81,"../../cookie":3,"../../../dist/templates":14,"../../util":28,"jquery-browserify":10,"underscore":11,"backbone":12,"queue-async":43}],58:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30537,7 +30545,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],59:[function(require,module,exports){
+},{"../../../dist/templates":14,"jquery-browserify":10,"backbone":12,"underscore":11}],59:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30601,7 +30609,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../nav":38,"../../../dist/templates":14,"../../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],60:[function(require,module,exports){
+},{"../nav":36,"../../../dist/templates":14,"../../util":28,"underscore":11,"jquery-browserify":10,"backbone":12}],60:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30669,7 +30677,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../nav":38,"../../util":28,"../../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],62:[function(require,module,exports){
+},{"../nav":36,"../../util":28,"../../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],62:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30756,7 +30764,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../sidebar/li/commit":80,"../../../dist/templates":14,"../../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],63:[function(require,module,exports){
+},{"../sidebar/li/commit":81,"../../util":28,"../../../dist/templates":14,"jquery-browserify":10,"underscore":11,"backbone":12}],63:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -30885,7 +30893,7 @@ Type.Dumper = function TypeDumper(options) {
 
 module.exports = Type;
 
-},{"./exception":74}],70:[function(require,module,exports){
+},{"./exception":76}],70:[function(require,module,exports){
 'use strict';
 
 
@@ -30990,7 +30998,7 @@ Schema.create = function createSchema() {
 
 module.exports = Schema;
 
-},{"./common":68,"./exception":74,"./type":69}],67:[function(require,module,exports){
+},{"./common":68,"./exception":76,"./type":69}],67:[function(require,module,exports){
 (function(){'use strict';
 
 
@@ -31471,32 +31479,7 @@ module.exports.dump     = dump;
 module.exports.safeDump = safeDump;
 
 })()
-},{"./common":68,"./exception":74,"./schema/default_full":75,"./schema/default_safe":73}],77:[function(require,module,exports){
-'use strict';
-
-
-var fs     = require('fs');
-var loader = require('./loader');
-
-
-function yamlRequireHandler(module, filename) {
-  var content = fs.readFileSync(filename, 'utf8');
-
-  // fill in documents
-  module.exports = loader.safeLoad(content, { filename: filename });
-}
-
-// register require extensions only if we're on node.js
-// hack for browserify
-if (undefined !== require.extensions) {
-  require.extensions['.yml']  = yamlRequireHandler;
-  require.extensions['.yaml'] = yamlRequireHandler;
-}
-
-
-module.exports = require;
-
-},{"fs":79,"./loader":66}],66:[function(require,module,exports){
+},{"./common":68,"./exception":76,"./schema/default_full":75,"./schema/default_safe":74}],66:[function(require,module,exports){
 'use strict';
 
 
@@ -33047,7 +33030,32 @@ module.exports.load        = load;
 module.exports.safeLoadAll = safeLoadAll;
 module.exports.safeLoad    = safeLoad;
 
-},{"./common":68,"./exception":74,"./mark":82,"./schema/default_safe":73,"./schema/default_full":75}],71:[function(require,module,exports){
+},{"./common":68,"./exception":76,"./mark":82,"./schema/default_safe":74,"./schema/default_full":75}],77:[function(require,module,exports){
+'use strict';
+
+
+var fs     = require('fs');
+var loader = require('./loader');
+
+
+function yamlRequireHandler(module, filename) {
+  var content = fs.readFileSync(filename, 'utf8');
+
+  // fill in documents
+  module.exports = loader.safeLoad(content, { filename: filename });
+}
+
+// register require extensions only if we're on node.js
+// hack for browserify
+if (undefined !== require.extensions) {
+  require.extensions['.yml']  = yamlRequireHandler;
+  require.extensions['.yaml'] = yamlRequireHandler;
+}
+
+
+module.exports = require;
+
+},{"fs":79,"./loader":66}],71:[function(require,module,exports){
 // Standard YAML's Failsafe schema.
 // http://www.yaml.org/spec/1.2/spec.html#id2802346
 
@@ -33093,7 +33101,27 @@ module.exports = new Schema({
   ]
 });
 
-},{"../schema":70,"./failsafe":71,"../type/null":86,"../type/bool":87,"../type/int":88,"../type/float":89}],73:[function(require,module,exports){
+},{"../schema":70,"./failsafe":71,"../type/null":86,"../type/bool":87,"../type/float":88,"../type/int":89}],73:[function(require,module,exports){
+// Standard YAML's Core schema.
+// http://www.yaml.org/spec/1.2/spec.html#id2804923
+//
+// NOTE: JS-YAML does not support schema-specific tag resolution restrictions.
+// So, Core schema has no distinctions from JSON schema is JS-YAML.
+
+
+'use strict';
+
+
+var Schema = require('../schema');
+
+
+module.exports = new Schema({
+  include: [
+    require('./json')
+  ]
+});
+
+},{"../schema":70,"./json":72}],74:[function(require,module,exports){
 // JS-YAML's default schema for `safeLoad` function.
 // It is not described in the YAML specification.
 //
@@ -33123,7 +33151,7 @@ module.exports = new Schema({
   ]
 });
 
-},{"../schema":70,"./core":76,"../type/timestamp":90,"../type/merge":91,"../type/binary":92,"../type/omap":93,"../type/pairs":94,"../type/set":95}],75:[function(require,module,exports){
+},{"../schema":70,"./core":73,"../type/timestamp":90,"../type/merge":91,"../type/binary":92,"../type/omap":93,"../type/pairs":94,"../type/set":95}],75:[function(require,module,exports){
 // JS-YAML's default schema for `load` function.
 // It is not described in the YAML specification.
 //
@@ -33150,27 +33178,7 @@ module.exports = Schema.DEFAULT = new Schema({
   ]
 });
 
-},{"../schema":70,"./default_safe":73,"../type/js/undefined":96,"../type/js/regexp":97,"../type/js/function":98}],76:[function(require,module,exports){
-// Standard YAML's Core schema.
-// http://www.yaml.org/spec/1.2/spec.html#id2804923
-//
-// NOTE: JS-YAML does not support schema-specific tag resolution restrictions.
-// So, Core schema has no distinctions from JSON schema is JS-YAML.
-
-
-'use strict';
-
-
-var Schema = require('../schema');
-
-
-module.exports = new Schema({
-  include: [
-    require('./json')
-  ]
-});
-
-},{"../schema":70,"./json":72}],64:[function(require,module,exports){
+},{"../schema":70,"./default_safe":74,"../type/js/undefined":96,"../type/js/regexp":97,"../type/js/function":98}],64:[function(require,module,exports){
 (function(global){(function() {
   var $, AbstractChosen, Chosen, SelectParser, get_side_border_padding, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -34574,7 +34582,7 @@ module.exports = Backbone.Collection.extend({
 });
 
 })()
-},{"../models/file":18,"../models/folder":61,"../cookie":3,"../util":28,"underscore":11,"js-yaml":46,"queue-async":43,"backbone":12,"ignore":99}],99:[function(require,module,exports){
+},{"../models/file":18,"../cookie":3,"../models/folder":61,"../util":28,"js-yaml":45,"underscore":11,"backbone":12,"queue-async":43,"ignore":99}],99:[function(require,module,exports){
 'use strict';
 
 module.exports = ignore;
@@ -34883,7 +34891,7 @@ Ignore.prototype._checkRuleFile = function(file) {
 
 
 
-},{"events":100,"util":101,"fs":79}],81:[function(require,module,exports){
+},{"events":100,"util":101,"fs":79}],80:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -34907,7 +34915,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"underscore":11,"jquery-browserify":10,"backbone":12}],82:[function(require,module,exports){
+},{"jquery-browserify":10,"backbone":12,"underscore":11}],82:[function(require,module,exports){
 'use strict';
 
 
@@ -34987,590 +34995,7 @@ Mark.prototype.toString = function toString(compact) {
 
 module.exports = Mark;
 
-},{"./common":68}],102:[function(require,module,exports){
-(function(){// UTILITY
-var util = require('util');
-var Buffer = require("buffer").Buffer;
-var pSlice = Array.prototype.slice;
-
-function objectKeys(object) {
-  if (Object.keys) return Object.keys(object);
-  var result = [];
-  for (var name in object) {
-    if (Object.prototype.hasOwnProperty.call(object, name)) {
-      result.push(name);
-    }
-  }
-  return result;
-}
-
-// 1. The assert module provides functions that throw
-// AssertionError's when particular conditions are not met. The
-// assert module must conform to the following interface.
-
-var assert = module.exports = ok;
-
-// 2. The AssertionError is defined in assert.
-// new assert.AssertionError({ message: message,
-//                             actual: actual,
-//                             expected: expected })
-
-assert.AssertionError = function AssertionError(options) {
-  this.name = 'AssertionError';
-  this.message = options.message;
-  this.actual = options.actual;
-  this.expected = options.expected;
-  this.operator = options.operator;
-  var stackStartFunction = options.stackStartFunction || fail;
-
-  if (Error.captureStackTrace) {
-    Error.captureStackTrace(this, stackStartFunction);
-  }
-};
-util.inherits(assert.AssertionError, Error);
-
-function replacer(key, value) {
-  if (value === undefined) {
-    return '' + value;
-  }
-  if (typeof value === 'number' && (isNaN(value) || !isFinite(value))) {
-    return value.toString();
-  }
-  if (typeof value === 'function' || value instanceof RegExp) {
-    return value.toString();
-  }
-  return value;
-}
-
-function truncate(s, n) {
-  if (typeof s == 'string') {
-    return s.length < n ? s : s.slice(0, n);
-  } else {
-    return s;
-  }
-}
-
-assert.AssertionError.prototype.toString = function() {
-  if (this.message) {
-    return [this.name + ':', this.message].join(' ');
-  } else {
-    return [
-      this.name + ':',
-      truncate(JSON.stringify(this.actual, replacer), 128),
-      this.operator,
-      truncate(JSON.stringify(this.expected, replacer), 128)
-    ].join(' ');
-  }
-};
-
-// assert.AssertionError instanceof Error
-
-assert.AssertionError.__proto__ = Error.prototype;
-
-// At present only the three keys mentioned above are used and
-// understood by the spec. Implementations or sub modules can pass
-// other keys to the AssertionError's constructor - they will be
-// ignored.
-
-// 3. All of the following functions must throw an AssertionError
-// when a corresponding condition is not met, with a message that
-// may be undefined if not provided.  All assertion methods provide
-// both the actual and expected values to the assertion error for
-// display purposes.
-
-function fail(actual, expected, message, operator, stackStartFunction) {
-  throw new assert.AssertionError({
-    message: message,
-    actual: actual,
-    expected: expected,
-    operator: operator,
-    stackStartFunction: stackStartFunction
-  });
-}
-
-// EXTENSION! allows for well behaved errors defined elsewhere.
-assert.fail = fail;
-
-// 4. Pure assertion tests whether a value is truthy, as determined
-// by !!guard.
-// assert.ok(guard, message_opt);
-// This statement is equivalent to assert.equal(true, guard,
-// message_opt);. To test strictly for the value true, use
-// assert.strictEqual(true, guard, message_opt);.
-
-function ok(value, message) {
-  if (!!!value) fail(value, true, message, '==', assert.ok);
-}
-assert.ok = ok;
-
-// 5. The equality assertion tests shallow, coercive equality with
-// ==.
-// assert.equal(actual, expected, message_opt);
-
-assert.equal = function equal(actual, expected, message) {
-  if (actual != expected) fail(actual, expected, message, '==', assert.equal);
-};
-
-// 6. The non-equality assertion tests for whether two objects are not equal
-// with != assert.notEqual(actual, expected, message_opt);
-
-assert.notEqual = function notEqual(actual, expected, message) {
-  if (actual == expected) {
-    fail(actual, expected, message, '!=', assert.notEqual);
-  }
-};
-
-// 7. The equivalence assertion tests a deep equality relation.
-// assert.deepEqual(actual, expected, message_opt);
-
-assert.deepEqual = function deepEqual(actual, expected, message) {
-  if (!_deepEqual(actual, expected)) {
-    fail(actual, expected, message, 'deepEqual', assert.deepEqual);
-  }
-};
-
-function _deepEqual(actual, expected) {
-  // 7.1. All identical values are equivalent, as determined by ===.
-  if (actual === expected) {
-    return true;
-
-  } else if (Buffer.isBuffer(actual) && Buffer.isBuffer(expected)) {
-    if (actual.length != expected.length) return false;
-
-    for (var i = 0; i < actual.length; i++) {
-      if (actual[i] !== expected[i]) return false;
-    }
-
-    return true;
-
-  // 7.2. If the expected value is a Date object, the actual value is
-  // equivalent if it is also a Date object that refers to the same time.
-  } else if (actual instanceof Date && expected instanceof Date) {
-    return actual.getTime() === expected.getTime();
-
-  // 7.3. Other pairs that do not both pass typeof value == 'object',
-  // equivalence is determined by ==.
-  } else if (typeof actual != 'object' && typeof expected != 'object') {
-    return actual == expected;
-
-  // 7.4. For all other Object pairs, including Array objects, equivalence is
-  // determined by having the same number of owned properties (as verified
-  // with Object.prototype.hasOwnProperty.call), the same set of keys
-  // (although not necessarily the same order), equivalent values for every
-  // corresponding key, and an identical 'prototype' property. Note: this
-  // accounts for both named and indexed properties on Arrays.
-  } else {
-    return objEquiv(actual, expected);
-  }
-}
-
-function isUndefinedOrNull(value) {
-  return value === null || value === undefined;
-}
-
-function isArguments(object) {
-  return Object.prototype.toString.call(object) == '[object Arguments]';
-}
-
-function objEquiv(a, b) {
-  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
-    return false;
-  // an identical 'prototype' property.
-  if (a.prototype !== b.prototype) return false;
-  //~~~I've managed to break Object.keys through screwy arguments passing.
-  //   Converting to array solves the problem.
-  if (isArguments(a)) {
-    if (!isArguments(b)) {
-      return false;
-    }
-    a = pSlice.call(a);
-    b = pSlice.call(b);
-    return _deepEqual(a, b);
-  }
-  try {
-    var ka = objectKeys(a),
-        kb = objectKeys(b),
-        key, i;
-  } catch (e) {//happens when one is a string literal and the other isn't
-    return false;
-  }
-  // having the same number of owned properties (keys incorporates
-  // hasOwnProperty)
-  if (ka.length != kb.length)
-    return false;
-  //the same set of keys (although not necessarily the same order),
-  ka.sort();
-  kb.sort();
-  //~~~cheap key test
-  for (i = ka.length - 1; i >= 0; i--) {
-    if (ka[i] != kb[i])
-      return false;
-  }
-  //equivalent values for every corresponding key, and
-  //~~~possibly expensive deep test
-  for (i = ka.length - 1; i >= 0; i--) {
-    key = ka[i];
-    if (!_deepEqual(a[key], b[key])) return false;
-  }
-  return true;
-}
-
-// 8. The non-equivalence assertion tests for any deep inequality.
-// assert.notDeepEqual(actual, expected, message_opt);
-
-assert.notDeepEqual = function notDeepEqual(actual, expected, message) {
-  if (_deepEqual(actual, expected)) {
-    fail(actual, expected, message, 'notDeepEqual', assert.notDeepEqual);
-  }
-};
-
-// 9. The strict equality assertion tests strict equality, as determined by ===.
-// assert.strictEqual(actual, expected, message_opt);
-
-assert.strictEqual = function strictEqual(actual, expected, message) {
-  if (actual !== expected) {
-    fail(actual, expected, message, '===', assert.strictEqual);
-  }
-};
-
-// 10. The strict non-equality assertion tests for strict inequality, as
-// determined by !==.  assert.notStrictEqual(actual, expected, message_opt);
-
-assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
-  if (actual === expected) {
-    fail(actual, expected, message, '!==', assert.notStrictEqual);
-  }
-};
-
-function expectedException(actual, expected) {
-  if (!actual || !expected) {
-    return false;
-  }
-
-  if (expected instanceof RegExp) {
-    return expected.test(actual);
-  } else if (actual instanceof expected) {
-    return true;
-  } else if (expected.call({}, actual) === true) {
-    return true;
-  }
-
-  return false;
-}
-
-function _throws(shouldThrow, block, expected, message) {
-  var actual;
-
-  if (typeof expected === 'string') {
-    message = expected;
-    expected = null;
-  }
-
-  try {
-    block();
-  } catch (e) {
-    actual = e;
-  }
-
-  message = (expected && expected.name ? ' (' + expected.name + ').' : '.') +
-            (message ? ' ' + message : '.');
-
-  if (shouldThrow && !actual) {
-    fail('Missing expected exception' + message);
-  }
-
-  if (!shouldThrow && expectedException(actual, expected)) {
-    fail('Got unwanted exception' + message);
-  }
-
-  if ((shouldThrow && actual && expected &&
-      !expectedException(actual, expected)) || (!shouldThrow && actual)) {
-    throw actual;
-  }
-}
-
-// 11. Expected to throw an error:
-// assert.throws(block, Error_opt, message_opt);
-
-assert.throws = function(block, /*optional*/error, /*optional*/message) {
-  _throws.apply(this, [true].concat(pSlice.call(arguments)));
-};
-
-// EXTENSION! This is annoying to write outside this module.
-assert.doesNotThrow = function(block, /*optional*/error, /*optional*/message) {
-  _throws.apply(this, [false].concat(pSlice.call(arguments)));
-};
-
-assert.ifError = function(err) { if (err) {throw err;}};
-
-})()
-},{"util":101,"buffer":103}],84:[function(require,module,exports){
-'use strict';
-
-
-var Type = require('../type');
-
-
-module.exports = new Type('tag:yaml.org,2002:seq', {
-  loader: {
-    kind: 'array'
-  }
-});
-
-},{"../type":69}],104:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
-
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
-
-    if (canPost) {
-        var queue = [];
-        window.addEventListener('message', function (ev) {
-            if (ev.source === window && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
-
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
-
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-}
-
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-
-},{}],100:[function(require,module,exports){
-(function(process){if (!process.EventEmitter) process.EventEmitter = function () {};
-
-var EventEmitter = exports.EventEmitter = process.EventEmitter;
-var isArray = typeof Array.isArray === 'function'
-    ? Array.isArray
-    : function (xs) {
-        return Object.prototype.toString.call(xs) === '[object Array]'
-    }
-;
-function indexOf (xs, x) {
-    if (xs.indexOf) return xs.indexOf(x);
-    for (var i = 0; i < xs.length; i++) {
-        if (x === xs[i]) return i;
-    }
-    return -1;
-}
-
-// By default EventEmitters will print a warning if more than
-// 10 listeners are added to it. This is a useful default which
-// helps finding memory leaks.
-//
-// Obviously not all Emitters should be limited to 10. This function allows
-// that to be increased. Set to zero for unlimited.
-var defaultMaxListeners = 10;
-EventEmitter.prototype.setMaxListeners = function(n) {
-  if (!this._events) this._events = {};
-  this._events.maxListeners = n;
-};
-
-
-EventEmitter.prototype.emit = function(type) {
-  // If there is no 'error' event listener then throw.
-  if (type === 'error') {
-    if (!this._events || !this._events.error ||
-        (isArray(this._events.error) && !this._events.error.length))
-    {
-      if (arguments[1] instanceof Error) {
-        throw arguments[1]; // Unhandled 'error' event
-      } else {
-        throw new Error("Uncaught, unspecified 'error' event.");
-      }
-      return false;
-    }
-  }
-
-  if (!this._events) return false;
-  var handler = this._events[type];
-  if (!handler) return false;
-
-  if (typeof handler == 'function') {
-    switch (arguments.length) {
-      // fast cases
-      case 1:
-        handler.call(this);
-        break;
-      case 2:
-        handler.call(this, arguments[1]);
-        break;
-      case 3:
-        handler.call(this, arguments[1], arguments[2]);
-        break;
-      // slower
-      default:
-        var args = Array.prototype.slice.call(arguments, 1);
-        handler.apply(this, args);
-    }
-    return true;
-
-  } else if (isArray(handler)) {
-    var args = Array.prototype.slice.call(arguments, 1);
-
-    var listeners = handler.slice();
-    for (var i = 0, l = listeners.length; i < l; i++) {
-      listeners[i].apply(this, args);
-    }
-    return true;
-
-  } else {
-    return false;
-  }
-};
-
-// EventEmitter is defined in src/node_events.cc
-// EventEmitter.prototype.emit() is also defined there.
-EventEmitter.prototype.addListener = function(type, listener) {
-  if ('function' !== typeof listener) {
-    throw new Error('addListener only takes instances of Function');
-  }
-
-  if (!this._events) this._events = {};
-
-  // To avoid recursion in the case that type == "newListeners"! Before
-  // adding it to the listeners, first emit "newListeners".
-  this.emit('newListener', type, listener);
-
-  if (!this._events[type]) {
-    // Optimize the case of one listener. Don't need the extra array object.
-    this._events[type] = listener;
-  } else if (isArray(this._events[type])) {
-
-    // Check for listener leak
-    if (!this._events[type].warned) {
-      var m;
-      if (this._events.maxListeners !== undefined) {
-        m = this._events.maxListeners;
-      } else {
-        m = defaultMaxListeners;
-      }
-
-      if (m && m > 0 && this._events[type].length > m) {
-        this._events[type].warned = true;
-        console.error('(node) warning: possible EventEmitter memory ' +
-                      'leak detected. %d listeners added. ' +
-                      'Use emitter.setMaxListeners() to increase limit.',
-                      this._events[type].length);
-        console.trace();
-      }
-    }
-
-    // If we've already got an array, just append.
-    this._events[type].push(listener);
-  } else {
-    // Adding the second element, need to change to array.
-    this._events[type] = [this._events[type], listener];
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-EventEmitter.prototype.once = function(type, listener) {
-  var self = this;
-  self.on(type, function g() {
-    self.removeListener(type, g);
-    listener.apply(this, arguments);
-  });
-
-  return this;
-};
-
-EventEmitter.prototype.removeListener = function(type, listener) {
-  if ('function' !== typeof listener) {
-    throw new Error('removeListener only takes instances of Function');
-  }
-
-  // does not use listeners(), so no side effect of creating _events[type]
-  if (!this._events || !this._events[type]) return this;
-
-  var list = this._events[type];
-
-  if (isArray(list)) {
-    var i = indexOf(list, listener);
-    if (i < 0) return this;
-    list.splice(i, 1);
-    if (list.length == 0)
-      delete this._events[type];
-  } else if (this._events[type] === listener) {
-    delete this._events[type];
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.removeAllListeners = function(type) {
-  if (arguments.length === 0) {
-    this._events = {};
-    return this;
-  }
-
-  // does not use listeners(), so no side effect of creating _events[type]
-  if (type && this._events && this._events[type]) this._events[type] = null;
-  return this;
-};
-
-EventEmitter.prototype.listeners = function(type) {
-  if (!this._events) this._events = {};
-  if (!this._events[type]) this._events[type] = [];
-  if (!isArray(this._events[type])) {
-    this._events[type] = [this._events[type]];
-  }
-  return this._events[type];
-};
-
-})(require("__browserify_process"))
-},{"__browserify_process":104}],85:[function(require,module,exports){
-'use strict';
-
-
-var Type = require('../type');
-
-
-module.exports = new Type('tag:yaml.org,2002:map', {
-  loader: {
-    kind: 'object'
-  }
-});
-
-},{"../type":69}],101:[function(require,module,exports){
+},{"./common":68}],101:[function(require,module,exports){
 var events = require('events');
 
 exports.isArray = isArray;
@@ -35923,7 +35348,603 @@ exports.format = function(f) {
   return str;
 };
 
-},{"events":100}],86:[function(require,module,exports){
+},{"events":100}],102:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+},{}],100:[function(require,module,exports){
+(function(process){if (!process.EventEmitter) process.EventEmitter = function () {};
+
+var EventEmitter = exports.EventEmitter = process.EventEmitter;
+var isArray = typeof Array.isArray === 'function'
+    ? Array.isArray
+    : function (xs) {
+        return Object.prototype.toString.call(xs) === '[object Array]'
+    }
+;
+function indexOf (xs, x) {
+    if (xs.indexOf) return xs.indexOf(x);
+    for (var i = 0; i < xs.length; i++) {
+        if (x === xs[i]) return i;
+    }
+    return -1;
+}
+
+// By default EventEmitters will print a warning if more than
+// 10 listeners are added to it. This is a useful default which
+// helps finding memory leaks.
+//
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+var defaultMaxListeners = 10;
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!this._events) this._events = {};
+  this._events.maxListeners = n;
+};
+
+
+EventEmitter.prototype.emit = function(type) {
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events || !this._events.error ||
+        (isArray(this._events.error) && !this._events.error.length))
+    {
+      if (arguments[1] instanceof Error) {
+        throw arguments[1]; // Unhandled 'error' event
+      } else {
+        throw new Error("Uncaught, unspecified 'error' event.");
+      }
+      return false;
+    }
+  }
+
+  if (!this._events) return false;
+  var handler = this._events[type];
+  if (!handler) return false;
+
+  if (typeof handler == 'function') {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        var args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+    return true;
+
+  } else if (isArray(handler)) {
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    var listeners = handler.slice();
+    for (var i = 0, l = listeners.length; i < l; i++) {
+      listeners[i].apply(this, args);
+    }
+    return true;
+
+  } else {
+    return false;
+  }
+};
+
+// EventEmitter is defined in src/node_events.cc
+// EventEmitter.prototype.emit() is also defined there.
+EventEmitter.prototype.addListener = function(type, listener) {
+  if ('function' !== typeof listener) {
+    throw new Error('addListener only takes instances of Function');
+  }
+
+  if (!this._events) this._events = {};
+
+  // To avoid recursion in the case that type == "newListeners"! Before
+  // adding it to the listeners, first emit "newListeners".
+  this.emit('newListener', type, listener);
+
+  if (!this._events[type]) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  } else if (isArray(this._events[type])) {
+
+    // Check for listener leak
+    if (!this._events[type].warned) {
+      var m;
+      if (this._events.maxListeners !== undefined) {
+        m = this._events.maxListeners;
+      } else {
+        m = defaultMaxListeners;
+      }
+
+      if (m && m > 0 && this._events[type].length > m) {
+        this._events[type].warned = true;
+        console.error('(node) warning: possible EventEmitter memory ' +
+                      'leak detected. %d listeners added. ' +
+                      'Use emitter.setMaxListeners() to increase limit.',
+                      this._events[type].length);
+        console.trace();
+      }
+    }
+
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  } else {
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  var self = this;
+  self.on(type, function g() {
+    self.removeListener(type, g);
+    listener.apply(this, arguments);
+  });
+
+  return this;
+};
+
+EventEmitter.prototype.removeListener = function(type, listener) {
+  if ('function' !== typeof listener) {
+    throw new Error('removeListener only takes instances of Function');
+  }
+
+  // does not use listeners(), so no side effect of creating _events[type]
+  if (!this._events || !this._events[type]) return this;
+
+  var list = this._events[type];
+
+  if (isArray(list)) {
+    var i = indexOf(list, listener);
+    if (i < 0) return this;
+    list.splice(i, 1);
+    if (list.length == 0)
+      delete this._events[type];
+  } else if (this._events[type] === listener) {
+    delete this._events[type];
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  if (arguments.length === 0) {
+    this._events = {};
+    return this;
+  }
+
+  // does not use listeners(), so no side effect of creating _events[type]
+  if (type && this._events && this._events[type]) this._events[type] = null;
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  if (!this._events) this._events = {};
+  if (!this._events[type]) this._events[type] = [];
+  if (!isArray(this._events[type])) {
+    this._events[type] = [this._events[type]];
+  }
+  return this._events[type];
+};
+
+})(require("__browserify_process"))
+},{"__browserify_process":102}],103:[function(require,module,exports){
+(function(){// UTILITY
+var util = require('util');
+var Buffer = require("buffer").Buffer;
+var pSlice = Array.prototype.slice;
+
+function objectKeys(object) {
+  if (Object.keys) return Object.keys(object);
+  var result = [];
+  for (var name in object) {
+    if (Object.prototype.hasOwnProperty.call(object, name)) {
+      result.push(name);
+    }
+  }
+  return result;
+}
+
+// 1. The assert module provides functions that throw
+// AssertionError's when particular conditions are not met. The
+// assert module must conform to the following interface.
+
+var assert = module.exports = ok;
+
+// 2. The AssertionError is defined in assert.
+// new assert.AssertionError({ message: message,
+//                             actual: actual,
+//                             expected: expected })
+
+assert.AssertionError = function AssertionError(options) {
+  this.name = 'AssertionError';
+  this.message = options.message;
+  this.actual = options.actual;
+  this.expected = options.expected;
+  this.operator = options.operator;
+  var stackStartFunction = options.stackStartFunction || fail;
+
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, stackStartFunction);
+  }
+};
+util.inherits(assert.AssertionError, Error);
+
+function replacer(key, value) {
+  if (value === undefined) {
+    return '' + value;
+  }
+  if (typeof value === 'number' && (isNaN(value) || !isFinite(value))) {
+    return value.toString();
+  }
+  if (typeof value === 'function' || value instanceof RegExp) {
+    return value.toString();
+  }
+  return value;
+}
+
+function truncate(s, n) {
+  if (typeof s == 'string') {
+    return s.length < n ? s : s.slice(0, n);
+  } else {
+    return s;
+  }
+}
+
+assert.AssertionError.prototype.toString = function() {
+  if (this.message) {
+    return [this.name + ':', this.message].join(' ');
+  } else {
+    return [
+      this.name + ':',
+      truncate(JSON.stringify(this.actual, replacer), 128),
+      this.operator,
+      truncate(JSON.stringify(this.expected, replacer), 128)
+    ].join(' ');
+  }
+};
+
+// assert.AssertionError instanceof Error
+
+assert.AssertionError.__proto__ = Error.prototype;
+
+// At present only the three keys mentioned above are used and
+// understood by the spec. Implementations or sub modules can pass
+// other keys to the AssertionError's constructor - they will be
+// ignored.
+
+// 3. All of the following functions must throw an AssertionError
+// when a corresponding condition is not met, with a message that
+// may be undefined if not provided.  All assertion methods provide
+// both the actual and expected values to the assertion error for
+// display purposes.
+
+function fail(actual, expected, message, operator, stackStartFunction) {
+  throw new assert.AssertionError({
+    message: message,
+    actual: actual,
+    expected: expected,
+    operator: operator,
+    stackStartFunction: stackStartFunction
+  });
+}
+
+// EXTENSION! allows for well behaved errors defined elsewhere.
+assert.fail = fail;
+
+// 4. Pure assertion tests whether a value is truthy, as determined
+// by !!guard.
+// assert.ok(guard, message_opt);
+// This statement is equivalent to assert.equal(true, guard,
+// message_opt);. To test strictly for the value true, use
+// assert.strictEqual(true, guard, message_opt);.
+
+function ok(value, message) {
+  if (!!!value) fail(value, true, message, '==', assert.ok);
+}
+assert.ok = ok;
+
+// 5. The equality assertion tests shallow, coercive equality with
+// ==.
+// assert.equal(actual, expected, message_opt);
+
+assert.equal = function equal(actual, expected, message) {
+  if (actual != expected) fail(actual, expected, message, '==', assert.equal);
+};
+
+// 6. The non-equality assertion tests for whether two objects are not equal
+// with != assert.notEqual(actual, expected, message_opt);
+
+assert.notEqual = function notEqual(actual, expected, message) {
+  if (actual == expected) {
+    fail(actual, expected, message, '!=', assert.notEqual);
+  }
+};
+
+// 7. The equivalence assertion tests a deep equality relation.
+// assert.deepEqual(actual, expected, message_opt);
+
+assert.deepEqual = function deepEqual(actual, expected, message) {
+  if (!_deepEqual(actual, expected)) {
+    fail(actual, expected, message, 'deepEqual', assert.deepEqual);
+  }
+};
+
+function _deepEqual(actual, expected) {
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (actual === expected) {
+    return true;
+
+  } else if (Buffer.isBuffer(actual) && Buffer.isBuffer(expected)) {
+    if (actual.length != expected.length) return false;
+
+    for (var i = 0; i < actual.length; i++) {
+      if (actual[i] !== expected[i]) return false;
+    }
+
+    return true;
+
+  // 7.2. If the expected value is a Date object, the actual value is
+  // equivalent if it is also a Date object that refers to the same time.
+  } else if (actual instanceof Date && expected instanceof Date) {
+    return actual.getTime() === expected.getTime();
+
+  // 7.3. Other pairs that do not both pass typeof value == 'object',
+  // equivalence is determined by ==.
+  } else if (typeof actual != 'object' && typeof expected != 'object') {
+    return actual == expected;
+
+  // 7.4. For all other Object pairs, including Array objects, equivalence is
+  // determined by having the same number of owned properties (as verified
+  // with Object.prototype.hasOwnProperty.call), the same set of keys
+  // (although not necessarily the same order), equivalent values for every
+  // corresponding key, and an identical 'prototype' property. Note: this
+  // accounts for both named and indexed properties on Arrays.
+  } else {
+    return objEquiv(actual, expected);
+  }
+}
+
+function isUndefinedOrNull(value) {
+  return value === null || value === undefined;
+}
+
+function isArguments(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+}
+
+function objEquiv(a, b) {
+  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
+    return false;
+  // an identical 'prototype' property.
+  if (a.prototype !== b.prototype) return false;
+  //~~~I've managed to break Object.keys through screwy arguments passing.
+  //   Converting to array solves the problem.
+  if (isArguments(a)) {
+    if (!isArguments(b)) {
+      return false;
+    }
+    a = pSlice.call(a);
+    b = pSlice.call(b);
+    return _deepEqual(a, b);
+  }
+  try {
+    var ka = objectKeys(a),
+        kb = objectKeys(b),
+        key, i;
+  } catch (e) {//happens when one is a string literal and the other isn't
+    return false;
+  }
+  // having the same number of owned properties (keys incorporates
+  // hasOwnProperty)
+  if (ka.length != kb.length)
+    return false;
+  //the same set of keys (although not necessarily the same order),
+  ka.sort();
+  kb.sort();
+  //~~~cheap key test
+  for (i = ka.length - 1; i >= 0; i--) {
+    if (ka[i] != kb[i])
+      return false;
+  }
+  //equivalent values for every corresponding key, and
+  //~~~possibly expensive deep test
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!_deepEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
+// 8. The non-equivalence assertion tests for any deep inequality.
+// assert.notDeepEqual(actual, expected, message_opt);
+
+assert.notDeepEqual = function notDeepEqual(actual, expected, message) {
+  if (_deepEqual(actual, expected)) {
+    fail(actual, expected, message, 'notDeepEqual', assert.notDeepEqual);
+  }
+};
+
+// 9. The strict equality assertion tests strict equality, as determined by ===.
+// assert.strictEqual(actual, expected, message_opt);
+
+assert.strictEqual = function strictEqual(actual, expected, message) {
+  if (actual !== expected) {
+    fail(actual, expected, message, '===', assert.strictEqual);
+  }
+};
+
+// 10. The strict non-equality assertion tests for strict inequality, as
+// determined by !==.  assert.notStrictEqual(actual, expected, message_opt);
+
+assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
+  if (actual === expected) {
+    fail(actual, expected, message, '!==', assert.notStrictEqual);
+  }
+};
+
+function expectedException(actual, expected) {
+  if (!actual || !expected) {
+    return false;
+  }
+
+  if (expected instanceof RegExp) {
+    return expected.test(actual);
+  } else if (actual instanceof expected) {
+    return true;
+  } else if (expected.call({}, actual) === true) {
+    return true;
+  }
+
+  return false;
+}
+
+function _throws(shouldThrow, block, expected, message) {
+  var actual;
+
+  if (typeof expected === 'string') {
+    message = expected;
+    expected = null;
+  }
+
+  try {
+    block();
+  } catch (e) {
+    actual = e;
+  }
+
+  message = (expected && expected.name ? ' (' + expected.name + ').' : '.') +
+            (message ? ' ' + message : '.');
+
+  if (shouldThrow && !actual) {
+    fail('Missing expected exception' + message);
+  }
+
+  if (!shouldThrow && expectedException(actual, expected)) {
+    fail('Got unwanted exception' + message);
+  }
+
+  if ((shouldThrow && actual && expected &&
+      !expectedException(actual, expected)) || (!shouldThrow && actual)) {
+    throw actual;
+  }
+}
+
+// 11. Expected to throw an error:
+// assert.throws(block, Error_opt, message_opt);
+
+assert.throws = function(block, /*optional*/error, /*optional*/message) {
+  _throws.apply(this, [true].concat(pSlice.call(arguments)));
+};
+
+// EXTENSION! This is annoying to write outside this module.
+assert.doesNotThrow = function(block, /*optional*/error, /*optional*/message) {
+  _throws.apply(this, [false].concat(pSlice.call(arguments)));
+};
+
+assert.ifError = function(err) { if (err) {throw err;}};
+
+})()
+},{"util":101,"buffer":104}],83:[function(require,module,exports){
+'use strict';
+
+
+var Type = require('../type');
+
+
+module.exports = new Type('tag:yaml.org,2002:str', {
+  loader: {
+    kind: 'string'
+  }
+});
+
+},{"../type":69}],84:[function(require,module,exports){
+'use strict';
+
+
+var Type = require('../type');
+
+
+module.exports = new Type('tag:yaml.org,2002:seq', {
+  loader: {
+    kind: 'array'
+  }
+});
+
+},{"../type":69}],85:[function(require,module,exports){
+'use strict';
+
+
+var Type = require('../type');
+
+
+module.exports = new Type('tag:yaml.org,2002:map', {
+  loader: {
+    kind: 'object'
+  }
+});
+
+},{"../type":69}],86:[function(require,module,exports){
 'use strict';
 
 
@@ -36037,107 +36058,7 @@ module.exports = new Type('tag:yaml.org,2002:bool', {
   }
 });
 
-},{"../common":68,"../type":69}],83:[function(require,module,exports){
-'use strict';
-
-
-var Type = require('../type');
-
-
-module.exports = new Type('tag:yaml.org,2002:str', {
-  loader: {
-    kind: 'string'
-  }
-});
-
-},{"../type":69}],88:[function(require,module,exports){
-'use strict';
-
-
-var NIL  = require('../common').NIL;
-var Type = require('../type');
-
-
-var YAML_INTEGER_PATTERN = new RegExp(
-  '^(?:[-+]?0b[0-1_]+' +
-  '|[-+]?0[0-7_]+' +
-  '|[-+]?(?:0|[1-9][0-9_]*)' +
-  '|[-+]?0x[0-9a-fA-F_]+' +
-  '|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$');
-
-
-function resolveYamlInteger(object /*, explicit*/) {
-  var value, sign, base, digits;
-
-  if (!YAML_INTEGER_PATTERN.test(object)) {
-    return NIL;
-  }
-
-  value  = object.replace(/_/g, '');
-  sign   = '-' === value[0] ? -1 : 1;
-  digits = [];
-
-  if (0 <= '+-'.indexOf(value[0])) {
-    value = value.slice(1);
-  }
-
-  if ('0' === value) {
-    return 0;
-
-  } else if (/^0b/.test(value)) {
-    return sign * parseInt(value.slice(2), 2);
-
-  } else if (/^0x/.test(value)) {
-    return sign * parseInt(value, 16);
-
-  } else if ('0' === value[0]) {
-    return sign * parseInt(value, 8);
-
-  } else if (0 <= value.indexOf(':')) {
-    value.split(':').forEach(function (v) {
-      digits.unshift(parseInt(v, 10));
-    });
-
-    value = 0;
-    base = 1;
-
-    digits.forEach(function (d) {
-      value += (d * base);
-      base *= 60;
-    });
-
-    return sign * value;
-
-  } else {
-    return sign * parseInt(value, 10);
-  }
-}
-
-
-module.exports = new Type('tag:yaml.org,2002:int', {
-  loader: {
-    kind: 'string',
-    resolver: resolveYamlInteger
-  },
-  dumper: {
-    kind: 'integer',
-    defaultStyle: 'decimal',
-    representer: {
-      binary:      function (object) { return '0b' + object.toString(2); },
-      octal:       function (object) { return '0'  + object.toString(8); },
-      decimal:     function (object) { return        object.toString(10); },
-      hexadecimal: function (object) { return '0x' + object.toString(16).toUpperCase(); }
-    },
-    styleAliases: {
-      binary:      [ 2,  'bin' ],
-      octal:       [ 8,  'oct' ],
-      decimal:     [ 10, 'dec' ],
-      hexadecimal: [ 16, 'hex' ]
-    }
-  }
-});
-
-},{"../common":68,"../type":69}],89:[function(require,module,exports){
+},{"../common":68,"../type":69}],88:[function(require,module,exports){
 'use strict';
 
 
@@ -36238,6 +36159,93 @@ module.exports = new Type('tag:yaml.org,2002:float', {
     kind: 'float',
     defaultStyle: 'lowercase',
     representer: representYamlFloat
+  }
+});
+
+},{"../common":68,"../type":69}],89:[function(require,module,exports){
+'use strict';
+
+
+var NIL  = require('../common').NIL;
+var Type = require('../type');
+
+
+var YAML_INTEGER_PATTERN = new RegExp(
+  '^(?:[-+]?0b[0-1_]+' +
+  '|[-+]?0[0-7_]+' +
+  '|[-+]?(?:0|[1-9][0-9_]*)' +
+  '|[-+]?0x[0-9a-fA-F_]+' +
+  '|[-+]?[1-9][0-9_]*(?::[0-5]?[0-9])+)$');
+
+
+function resolveYamlInteger(object /*, explicit*/) {
+  var value, sign, base, digits;
+
+  if (!YAML_INTEGER_PATTERN.test(object)) {
+    return NIL;
+  }
+
+  value  = object.replace(/_/g, '');
+  sign   = '-' === value[0] ? -1 : 1;
+  digits = [];
+
+  if (0 <= '+-'.indexOf(value[0])) {
+    value = value.slice(1);
+  }
+
+  if ('0' === value) {
+    return 0;
+
+  } else if (/^0b/.test(value)) {
+    return sign * parseInt(value.slice(2), 2);
+
+  } else if (/^0x/.test(value)) {
+    return sign * parseInt(value, 16);
+
+  } else if ('0' === value[0]) {
+    return sign * parseInt(value, 8);
+
+  } else if (0 <= value.indexOf(':')) {
+    value.split(':').forEach(function (v) {
+      digits.unshift(parseInt(v, 10));
+    });
+
+    value = 0;
+    base = 1;
+
+    digits.forEach(function (d) {
+      value += (d * base);
+      base *= 60;
+    });
+
+    return sign * value;
+
+  } else {
+    return sign * parseInt(value, 10);
+  }
+}
+
+
+module.exports = new Type('tag:yaml.org,2002:int', {
+  loader: {
+    kind: 'string',
+    resolver: resolveYamlInteger
+  },
+  dumper: {
+    kind: 'integer',
+    defaultStyle: 'decimal',
+    representer: {
+      binary:      function (object) { return '0b' + object.toString(2); },
+      octal:       function (object) { return '0'  + object.toString(8); },
+      decimal:     function (object) { return        object.toString(10); },
+      hexadecimal: function (object) { return '0x' + object.toString(16).toUpperCase(); }
+    },
+    styleAliases: {
+      binary:      [ 2,  'bin' ],
+      octal:       [ 8,  'oct' ],
+      decimal:     [ 10, 'dec' ],
+      hexadecimal: [ 16, 'hex' ]
+    }
   }
 });
 
@@ -36475,7 +36483,7 @@ module.exports = new Type('tag:yaml.org,2002:binary', {
 });
 
 })()
-},{"buffer":103,"../common":68,"../type":69}],93:[function(require,module,exports){
+},{"buffer":104,"../common":68,"../type":69}],93:[function(require,module,exports){
 'use strict';
 
 
@@ -36695,7 +36703,7 @@ module.exports = new Type('tag:yaml.org,2002:js/regexp', {
 });
 
 })()
-},{"../../common":68,"../../type":69}],80:[function(require,module,exports){
+},{"../../common":68,"../../type":69}],81:[function(require,module,exports){
 var $ = require('jquery-browserify');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -36805,7 +36813,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../../../dist/templates":14,"../../../util":28,"jquery-browserify":10,"underscore":11,"backbone":12}],105:[function(require,module,exports){
+},{"../../../../dist/templates":14,"../../../util":28,"underscore":11,"jquery-browserify":10,"backbone":12}],105:[function(require,module,exports){
 exports.readIEEE754 = function(buffer, offset, isBE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -36891,93 +36899,7 @@ exports.writeIEEE754 = function(buffer, value, offset, isBE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],106:[function(require,module,exports){
-(function (exports) {
-	'use strict';
-
-	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-
-	function b64ToByteArray(b64) {
-		var i, j, l, tmp, placeHolders, arr;
-	
-		if (b64.length % 4 > 0) {
-			throw 'Invalid string. Length must be a multiple of 4';
-		}
-
-		// the number of equal signs (place holders)
-		// if there are two placeholders, than the two characters before it
-		// represent one byte
-		// if there is only one, then the three characters before it represent 2 bytes
-		// this is just a cheap hack to not do indexOf twice
-		placeHolders = b64.indexOf('=');
-		placeHolders = placeHolders > 0 ? b64.length - placeHolders : 0;
-
-		// base64 is 4/3 + up to two characters of the original data
-		arr = [];//new Uint8Array(b64.length * 3 / 4 - placeHolders);
-
-		// if there are placeholders, only get up to the last complete 4 chars
-		l = placeHolders > 0 ? b64.length - 4 : b64.length;
-
-		for (i = 0, j = 0; i < l; i += 4, j += 3) {
-			tmp = (lookup.indexOf(b64[i]) << 18) | (lookup.indexOf(b64[i + 1]) << 12) | (lookup.indexOf(b64[i + 2]) << 6) | lookup.indexOf(b64[i + 3]);
-			arr.push((tmp & 0xFF0000) >> 16);
-			arr.push((tmp & 0xFF00) >> 8);
-			arr.push(tmp & 0xFF);
-		}
-
-		if (placeHolders === 2) {
-			tmp = (lookup.indexOf(b64[i]) << 2) | (lookup.indexOf(b64[i + 1]) >> 4);
-			arr.push(tmp & 0xFF);
-		} else if (placeHolders === 1) {
-			tmp = (lookup.indexOf(b64[i]) << 10) | (lookup.indexOf(b64[i + 1]) << 4) | (lookup.indexOf(b64[i + 2]) >> 2);
-			arr.push((tmp >> 8) & 0xFF);
-			arr.push(tmp & 0xFF);
-		}
-
-		return arr;
-	}
-
-	function uint8ToBase64(uint8) {
-		var i,
-			extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
-			output = "",
-			temp, length;
-
-		function tripletToBase64 (num) {
-			return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F];
-		};
-
-		// go through the array every three bytes, we'll deal with trailing stuff later
-		for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
-			temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2]);
-			output += tripletToBase64(temp);
-		}
-
-		// pad the end with zeros, but make sure to not forget the extra bytes
-		switch (extraBytes) {
-			case 1:
-				temp = uint8[uint8.length - 1];
-				output += lookup[temp >> 2];
-				output += lookup[(temp << 4) & 0x3F];
-				output += '==';
-				break;
-			case 2:
-				temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1]);
-				output += lookup[temp >> 10];
-				output += lookup[(temp >> 4) & 0x3F];
-				output += lookup[(temp << 2) & 0x3F];
-				output += '=';
-				break;
-		}
-
-		return output;
-	}
-
-	module.exports.toByteArray = b64ToByteArray;
-	module.exports.fromByteArray = uint8ToBase64;
-}());
-
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 (function(){function SlowBuffer (size) {
     this.length = size;
 };
@@ -38297,7 +38219,93 @@ SlowBuffer.prototype.writeDoubleLE = Buffer.prototype.writeDoubleLE;
 SlowBuffer.prototype.writeDoubleBE = Buffer.prototype.writeDoubleBE;
 
 })()
-},{"assert":102,"./buffer_ieee754":105,"base64-js":106}],98:[function(require,module,exports){
+},{"assert":103,"./buffer_ieee754":105,"base64-js":106}],106:[function(require,module,exports){
+(function (exports) {
+	'use strict';
+
+	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+	function b64ToByteArray(b64) {
+		var i, j, l, tmp, placeHolders, arr;
+	
+		if (b64.length % 4 > 0) {
+			throw 'Invalid string. Length must be a multiple of 4';
+		}
+
+		// the number of equal signs (place holders)
+		// if there are two placeholders, than the two characters before it
+		// represent one byte
+		// if there is only one, then the three characters before it represent 2 bytes
+		// this is just a cheap hack to not do indexOf twice
+		placeHolders = b64.indexOf('=');
+		placeHolders = placeHolders > 0 ? b64.length - placeHolders : 0;
+
+		// base64 is 4/3 + up to two characters of the original data
+		arr = [];//new Uint8Array(b64.length * 3 / 4 - placeHolders);
+
+		// if there are placeholders, only get up to the last complete 4 chars
+		l = placeHolders > 0 ? b64.length - 4 : b64.length;
+
+		for (i = 0, j = 0; i < l; i += 4, j += 3) {
+			tmp = (lookup.indexOf(b64[i]) << 18) | (lookup.indexOf(b64[i + 1]) << 12) | (lookup.indexOf(b64[i + 2]) << 6) | lookup.indexOf(b64[i + 3]);
+			arr.push((tmp & 0xFF0000) >> 16);
+			arr.push((tmp & 0xFF00) >> 8);
+			arr.push(tmp & 0xFF);
+		}
+
+		if (placeHolders === 2) {
+			tmp = (lookup.indexOf(b64[i]) << 2) | (lookup.indexOf(b64[i + 1]) >> 4);
+			arr.push(tmp & 0xFF);
+		} else if (placeHolders === 1) {
+			tmp = (lookup.indexOf(b64[i]) << 10) | (lookup.indexOf(b64[i + 1]) << 4) | (lookup.indexOf(b64[i + 2]) >> 2);
+			arr.push((tmp >> 8) & 0xFF);
+			arr.push(tmp & 0xFF);
+		}
+
+		return arr;
+	}
+
+	function uint8ToBase64(uint8) {
+		var i,
+			extraBytes = uint8.length % 3, // if we have 1 byte left, pad 2 bytes
+			output = "",
+			temp, length;
+
+		function tripletToBase64 (num) {
+			return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F];
+		};
+
+		// go through the array every three bytes, we'll deal with trailing stuff later
+		for (i = 0, length = uint8.length - extraBytes; i < length; i += 3) {
+			temp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2]);
+			output += tripletToBase64(temp);
+		}
+
+		// pad the end with zeros, but make sure to not forget the extra bytes
+		switch (extraBytes) {
+			case 1:
+				temp = uint8[uint8.length - 1];
+				output += lookup[temp >> 2];
+				output += lookup[(temp << 4) & 0x3F];
+				output += '==';
+				break;
+			case 2:
+				temp = (uint8[uint8.length - 2] << 8) + (uint8[uint8.length - 1]);
+				output += lookup[temp >> 10];
+				output += lookup[(temp >> 4) & 0x3F];
+				output += lookup[(temp << 2) & 0x3F];
+				output += '=';
+				break;
+		}
+
+		return output;
+	}
+
+	module.exports.toByteArray = b64ToByteArray;
+	module.exports.fromByteArray = uint8ToBase64;
+}());
+
+},{}],98:[function(require,module,exports){
 'use strict';
 
 

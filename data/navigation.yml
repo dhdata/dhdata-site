@@ -11,5 +11,7 @@ links:
         name: "Data Cookbook"
       - link: "/dhdata"
         name: "DH Data Guide"
+  - link: "/editor"
+    name: Contribute
   - link: "/about"
     name: About
