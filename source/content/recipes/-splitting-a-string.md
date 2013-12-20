@@ -2,7 +2,7 @@
 layout: recipe
 published: false
 title: Splitting a String
-category: "dates-and-times"
+category: strings
 ---
 
 ## Problem
