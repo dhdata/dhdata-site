@@ -12,6 +12,10 @@ class DHData < Middleman::Extension
 
   def manipulate_resource_list(resources)
     return resources if @resource_list_manipulated
+    resources.select{ |p| p.path =~ /^content\// && !p.data.published }.each do |resource|
+      @app.ignore resource.path
+    end
+    
     @resource_list_manipulated = true
     #resources = @app.sitemap.resources
     content = resources.select{|p| p.path =~ /^content\// && p.data.published }.group_by { |p| p.path.split('/')[1] }
