@@ -1,6 +1,6 @@
 ---
 layout: recipe
-published: false
+published: true
 title: Splitting a String
 category: strings
 ---
