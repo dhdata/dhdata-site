@@ -125,6 +125,9 @@
               Released under the
               %a(href="http://creativecommons.org/licenses/by/4.0/") CC-BY
               license
+            - if !current_page.source_file.blank?
+              %li
+                %a{:href => "/editor#_/edit/master/#{Pathname(current_page.source_file).relative_path_from(Pathname(root))}"} Edit this page
     = javascript_include_tag  "all"
     - if content_for?(:scripts)
       = yield_content :scripts
