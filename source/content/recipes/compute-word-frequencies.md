@@ -2,7 +2,6 @@
 layout: recipe
 title: Compute word frequencies
 category: strings
-date: "2013-05-25"
 published: true
 ---
 
