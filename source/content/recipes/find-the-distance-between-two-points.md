@@ -2,7 +2,6 @@
 title: Find the distance between two points
 category: geometry
 layout: recipe
-date: "2013-07-04"
 published: true
 ---
 ## Problem

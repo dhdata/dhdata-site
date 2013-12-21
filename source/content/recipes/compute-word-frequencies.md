@@ -1,10 +1,10 @@
 ---
+layout: recipe
 title: Compute word frequencies
 category: strings
-layout: recipe
-date: "2013-05-25"
 published: true
 ---
+
 ## Problem
 
 You have a text and you want to see how often different words show up. You
@@ -108,6 +108,23 @@ wordlist = [w for w in wordlist if w not in stopwords]
 wordfreq = [wordlist.count(w) for w in wordlist]
 counts = dict(zip(wordlist,wordfreq))
 ```
+
+### Ruby
+
+We assume that your text is in the `text` variable and that your set of stop
+words is in the `stopWords` variable. The resulting frequencies (or counts)
+are the result of the following expression.
+
+```ruby
+counts = text.
+         downcase.
+         split(/\W+/).
+         reject{ |w| stopWords.include?(w) }.
+         group_by { |w| w }.
+         inject({}) { |h, (w, ws)| h[w] = ws.size; h }
+```
+
+
 
 ### Scala
 

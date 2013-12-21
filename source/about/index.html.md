@@ -33,9 +33,7 @@ submit a recipe.
 We've created a custom build of [Prose.io](http://prose.io/). 
 After forking the site repostory into your
 GitHub account, you can add and edit recipes and other content by going to
-[the site editor](http://www.dhdata.org/editor/) and selecting "dhdata-site" 
-from your list of
-repositories. You will be placed in the content directory into which you can
+[the site editor](/editor). You will be placed in the content directory into which you can
 add your recipe or dataset information. The editor will use the appropriate
 template when creating a new file.
 
