@@ -21,6 +21,7 @@ so on, you may consider:
 - Contacting prominent organisations or individuals who work/are interested in this area
 - Contacting relevant mailing lists or social networking groups
 - Directly contacting prospective users who you know may be interested in this data
+- [Create an index page on this site](/dhdata/datasets/3-contributing-a-dataset/)
 
 ## Understanding your audience
 

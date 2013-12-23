@@ -23,7 +23,7 @@
           - if !resource[:url].blank?
             %li
               %a{:href => resource[:url] }
-                - if resource[:mimetype] == 'text/html' || resource[:format] == "Interactive Resource"
+                - if resource[:"mime-type"] == 'text/html' || resource[:format] == "Interactive Resource"
                   Browse
                   %i.glyphicon.glyphicon-cloud
                 - else
@@ -39,7 +39,7 @@
         %th Key
         %th Value
       - resource.each do |k,v|
-        - if k != :description && k != :title && k != :mimetype
+        - if k != :description && k != :title && k != :"mime-type"
           %tr
             %td= k.to_s
             %td
