@@ -24,7 +24,7 @@ prose:
         field:
           label: "Section"
           element: "select"
-          options: "http://www.dhdata.org/api/v1/categories.jsonp?callback=set_categories"
+          options: "https://www.dhdata.org/api/v1/categories.jsonp?callback=set_categories"
       - name: "layout"
         field:
           element: "hidden"
@@ -78,15 +78,15 @@ prose:
         field:
           label: "License"
           element: "select"
-          options: "http://www.dhdata.org/api/v1/licenses.jsonp?callback=set_licenses"
+          options: "https://www.dhdata.org/api/v1/licenses.jsonp?callback=set_licenses"
       - name: "tags"
         field:
           label: "Tags"
           element: "multiselect"
-          options: "http://www.dhdata.org/api/v1/tags.jsonp?callback=set_tags"
+          options: "https://www.dhdata.org/api/v1/tags.jsonp?callback=set_tags"
           alterable: true
       - name: "organization"
         field:
           label: "Organization"
           element: "select"
-          options: "http://www.dhdata.org/api/v1/organizations.jsonp?callback=set_organizations"
+          options: "https://www.dhdata.org/api/v1/organizations.jsonp?callback=set_organizations"
