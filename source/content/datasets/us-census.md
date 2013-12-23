@@ -15,7 +15,7 @@ This Amazon Web Services public dataset is provided as a 5GB EBS snapshot.
 | Field | Value |
 | ----- | ----- |
 | format | Interactive Resource |
-| type | file |
+| type | Text |
 | mimetype | text/html |
 | url   | http://aws.amazon.com/datasets/2310 |
 
@@ -26,7 +26,7 @@ This Amazon Web Services public dataset is provided as a 50GB EBS snapshot.
 | Field | Value |
 | ----- | ----- |
 | format | Interactive Resource |
-| type | file |
+| type | Text |
 | mimetype | text/html |
 | url   | http://aws.amazon.com/datasets/2304 |
 
@@ -37,6 +37,6 @@ This Amazon Web Services public dataset is provided as a 200GB EBS snapshot.
 | Field | Value |
 | ----- | ----- |
 | format | Interactive Resource |
-| type | file |
+| type | Text |
 | mimetype | text/html |
 | url   | http://aws.amazon.com/datasets/2290 |

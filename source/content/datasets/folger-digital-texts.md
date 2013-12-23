@@ -30,6 +30,6 @@ Folger Library.
 | Field  | Value                           |
 | ------ | ------------------------------- |
 | format | Interactive Resource            |
-| type   | file                            |
-| mimetype | text/html                       |
+| type   | Text                            |
+| mime-type | text/html                       |
 | url    | http://www.folgerdigitaltexts.org/downloadsourcecode.html |

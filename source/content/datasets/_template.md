@@ -6,16 +6,20 @@ url: http://www.example.com/
 published: false
 ---
 
-Description of the dataset
+Description of the dataset.
 
 ## Data and Resources
 
 ### Resource Title
 
-Description of the resource
+Description of the resource.
 
-| Field  | Value                           |
-| ------ | ------------------------------- |
-| format | snapshot                        |
-| type   | file                            |
-| url    | http://example.com/dataset-file |
+The following metadata fields are described in the DH Data guide on
+[contributing a dataset](/dhdata/datasets/3-contributing-a-dataset/).
+
+| Field     | Value                           |
+| --------- | ------------------------------- |
+| format    | Interactive Resource            |
+| type      | Text                            |
+| mime-type | text/html                       |
+| url       | http://example.com/dataset-file |
