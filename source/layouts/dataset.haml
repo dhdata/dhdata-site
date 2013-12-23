@@ -1,5 +1,23 @@
 - wrap_layout :layout do
   
+  %div.text-muted.small
+    - org = find_organization(current_page.data.organization)
+    - if !org.nil?        
+      %a{:href => url_for(org)}
+        = org.data.title
+    - if !current_page.data.license.blank? 
+      - license = data.licenses.select{ |l| l[:value] == current_page.data.license }.first
+      - if !license.nil?
+        - if !license[:url].blank?
+          %a{:href => license[:url]} 
+            = license[:name]
+            - if !license[:logo].blank?
+              %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}
+        - else
+          = license[:name]
+          - if !license[:logo].blank?
+            %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}
+
   = current_page.render({:layout => false}).split(/<\/?h2.*?>/).first
 
   %h2 Resources
@@ -43,27 +61,10 @@
           %tr
             %td= k.to_s
             %td
-              - if /^(https?|ftp):\/\//.match(v)
-                = link_to v, v
+              - if /,/.match(v)
+                = v.split(/\s*,\s*/).map{ |vv| /^(https?|ftp):\/\//.match(vv) ? link_to(vv,vv) : vv }.join(", ")
               - else
-                = v
-
-  - content_for :sidebar do
-    - org = find_organization(current_page.data.organization)
-    - if !org.nil?
-      %h3 Organization
-      %a{:href => url_for(org)}
-        = org.data.title
-    - if !current_page.data.license.blank? 
-      - license = data.licenses.select{ |l| l[:value] == current_page.data.license }.first
-      - if !license.nil?
-        %h3 License
-        - if !license[:url].blank?
-          %a{:href => license[:url]} 
-            = license[:name]
-            - if !license[:logo].blank?
-              %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}
-        - else
-          = license[:name]
-          - if !license[:logo].blank?
-            %img{:src => license[:logo], :border => 0, :vspace => 0, :hspace => 0}
+                - if /^(https?|ftp):\/\//.match(v)
+                  = link_to v, v
+                - else
+                  = v
