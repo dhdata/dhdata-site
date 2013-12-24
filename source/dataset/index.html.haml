@@ -23,7 +23,7 @@ ng-controller: dataSetListCtrl
 
 - content_for :sidebar do
   / facets: license, tags, formats
-  %fieldset
+  %fieldset.ng-cloak
     %legend Tags
     .checkbox(ng-repeat="tag in tags")
       %label
