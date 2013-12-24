@@ -6,14 +6,14 @@ ng-app: groupListApp
 ng-controller: groupListCtrl
 ---
 
-%div(ng-repeat="group in groups | startFrom:currentPage*pageSize | limitTo:pageSize")
+.ng-cloak(ng-repeat="group in groups | startFrom:currentPage*pageSize | limitTo:pageSize")
   %div(style="float: right; margin-left: 5px; margin-bottom: 5px;")
     %img(src="{{ group.links.logo}}" hspace="0" vspace="0" border="0")
   %h2
     %a(href="{{ group.links.html }}") {{ group.name }}
   %div(ng-bind-html="group.description")
 
-.text-center
+.text-center.ng-cloak
   %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
     Previous
   {{currentPage+1}}/{{numberOfPages()}}
