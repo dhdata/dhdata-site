@@ -27,11 +27,23 @@ stars a typical resource can earn.
 Collections are resources aggregating other resources. For example, an RSS
 feed aggregates blog posts.
 
+When defining resource metadata in a dataset index page, the
+dominant type of the resource within the collection should be 
+combined with the word "Collection" to indicate the resource type. 
+For example, a TAR file containing TEI files would have a type of 
+"Text Collection" because TEI files are Text resources.
+
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
+| Archive | | <%= stars(1) => |
 | Atom | [Specification](http://www.ietf.org/rfc/rfc5023.txt) | <%= stars(1,5) %> |
 | ORE | [Specification](http://www.openarchives.org/ore/1.0/rdfxml.html) | <%= stars(3,5) %> |
 | RSS | [Specifications](http://www.rss-specifications.com/) | <%= stars(1,5) %> |
+
+### Archive
+
+An archive is a collection of resources that are compiled into a
+single resource using a structured format such as TAR or ZIP. When creating a dataset, the format metadata key can be set to the format of the individual resources concatenated with "Archive." For example, a TAR file containing TEI files can have a format of "TEI Archive."
 
 ## Dataset
 
