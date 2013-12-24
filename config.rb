@@ -78,6 +78,8 @@ I18n.enforce_available_locales = false
 
 page "/api/v1/*", :layout => false
 
+page "/sitemap.xml", :layout => false
+
 # Build-specific configuration
 configure :build do
   # For example, change the Compass output style for deployment

@@ -2,6 +2,7 @@
 title: Strings
 layout: recipe_collection
 published: true
+changefreq: weekly
 ---
 
 Strings are composed of characters, which sounds innocent enough until you

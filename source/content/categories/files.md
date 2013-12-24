@@ -2,6 +2,7 @@
 layout: recipe_collection
 title: Files
 published: true
+changefreq: weekly
 ---
 
 Different operating systems represent files in different ways. Older systems

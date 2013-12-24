@@ -29,6 +29,10 @@ prose:
         field:
           element: "hidden"
           value: "recipe"
+      - name: "changefreq"
+        field:
+          element: "hidden"
+          value: "weekly"
     source/content/organizations:
       - name: "title"
         field:
