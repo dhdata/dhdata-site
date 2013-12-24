@@ -43,3 +43,31 @@ table {
   color: #ffff00;
   text-shadow: 0px 1px #cccc00, 0px -1px #cccc00, 1px 0px #cccc00, -1px 0px #cccc00;
 }
+
+.logo {
+  max-width: @line-height-computed * 6;
+  max-height: @line-height-computed * 6;
+}
+
+.logo-left {
+  .logo;
+  float: left;
+  margin-right: floor(@line-height-computed / 4);
+  margin-bottom: 1px;
+  margin-top: floor(@line-height-computed / 4 - 1);
+}
+
+.logo-right {
+  .logo;
+  float: right;
+  margin-left: floor(@line-height-computed / 4);
+  margin-bottom: 1px;
+  margin-top: floor(@line-height-computed / 4 - 1);
+}
+
+.illustration {
+  text-align: center;
+  border: 1px solid silver; 
+  max-width: 100%; 
+  height: auto;
+}
