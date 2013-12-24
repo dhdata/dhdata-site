@@ -5,8 +5,8 @@ published: true
 ---
 
 _This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the [CC-
-BY](http://creativecommons.org/licenses/by/3.0/) license._
+Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 First and foremost, make sure that you promote the fact that you’ve embarked
 on a campaign to promote open data in your area of responsibility.

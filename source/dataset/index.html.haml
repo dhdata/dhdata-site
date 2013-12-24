@@ -6,9 +6,7 @@ ng-app: dataSetListApp
 ng-controller: dataSetListCtrl
 ---
 
-
-
-%div(ng-repeat="dataset in datasets | startFrom:currentPage*pageSize | limitTo:pageSize")
+.ng-cloak(ng-repeat="dataset in datasets | startFrom:currentPage*pageSize | limitTo:pageSize")
   %h2
     %a(href="{{ dataset.links.html }}") {{ dataset.name }}
   %ul.list-inline.list-unstyled
@@ -16,7 +14,7 @@ ng-controller: dataSetListCtrl
       .small.text-muted(ng-click="toggleTag(tag)") {{tag}}
   %div(ng-bind-html="dataset.description")
 
-.text-center
+.text-center.ng-cloak
   %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
     Previous
   {{currentPage+1}}/{{numberOfPages()}}

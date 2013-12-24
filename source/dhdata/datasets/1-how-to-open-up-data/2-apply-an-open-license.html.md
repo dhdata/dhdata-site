@@ -5,8 +5,8 @@ published: true
 ---
 
 _This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the [CC-
-BY](http://creativecommons.org/licenses/by/3.0/) license._
+Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 In most jurisdictions there are intellectual property rights in data that
 prevent third-parties from using, reusing and redistributing data without

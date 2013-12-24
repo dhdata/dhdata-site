@@ -5,8 +5,8 @@ published: true
 ---
 
 _This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the [CC-
-BY](http://creativecommons.org/licenses/by/3.0/) license._
+Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 Open data is a tremendous resource that is as yet largely untapped. Many
 individuals and organisations collect or generate a broad range of different
