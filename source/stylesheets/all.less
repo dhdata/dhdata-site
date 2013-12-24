@@ -5,6 +5,7 @@
 
 @import "vendor/bootstrap/_variables.less";
 @import "vendor/bootstrap/_mixins.less";
+@import "vendor/bootstrap/_tables.less";
 
 body {
   padding-top: @navbar-height + 5;
@@ -31,6 +32,11 @@ footer {
   margin-top: ceil(@font-size-base * 2.5);
   padding: ceil(@font-size-base * 0.85 * 3);
   border-top: 1px solid @gray-light;
+}
+
+table {
+  .table;
+  .table-condensed;
 }
 
 .gold {

@@ -29,9 +29,9 @@ feed aggregates blog posts.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| Atom | [Specification](http://www.ietf.org/rfc/rfc5023.txt) | $*(****)$ |
-| ORE | [Specification](http://www.openarchives.org/ore/1.0/rdfxml.html) | $***(**)$ |
-| RSS | [Specifications](http://www.rss-specifications.com/) | $*(****)$ |
+| Atom | [Specification](http://www.ietf.org/rfc/rfc5023.txt) | <%= stars(1,5) %> |
+| ORE | [Specification](http://www.openarchives.org/ore/1.0/rdfxml.html) | <%= stars(3,5) %> |
+| RSS | [Specifications](http://www.rss-specifications.com/) | <%= stars(1,5) %> |
 
 ## Dataset
 
@@ -40,17 +40,28 @@ databases. Datasets are useful for direct computation.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| CSV | [Specification](http://tools.ietf.org/html/rfc4180) | $***$ |
-| JSON | [Specification](http://www.ietf.org/rfc/rfc4627.txt) | $***$ |
-| JSON-LD | [Specifications](http://json-ld.org/spec/latest/) | $****(*)$ |
-| KML | [Specification](http://www.opengeospatial.org/standards/kml/) | $***(**)$ |
-| OWL/XML | | $*****$ |
-| RDF/JSON | |  $***(**)$ |
-| RDF/N3 | | $***(**)$ |
-| RDF/N-Triples | | $***(**)$ |
-| RDF/Turtle | | $***(**)$ |
-| RDF/XML | | $***(**)$ |
-| TSV | [Specification](http://www.iana.org/assignments/media-types/text/tab-separated-values) | $***$ |
+| CSV | [Specification](http://tools.ietf.org/html/rfc4180) | <%= stars(3) %> |
+| JSON | [Specification](http://www.ietf.org/rfc/rfc4627.txt) | <%= stars(3) %> |
+| JSON-LD | [Specifications](http://json-ld.org/spec/latest/) | <%= stars(4,5) %> |
+| KML | [Specification](http://www.opengeospatial.org/standards/kml/) | <%= stars(3,5) %> |
+| OWL/XML | | <%= stars(5) %> |
+| RDF/JSON | |  <%= stars(3,5) %> |
+| RDF/N3 | | <%= stars(3,5) %> |
+| RDF/N-Triples | | <%= stars(3,5) %> |
+| RDF/Turtle | | <%= stars(3,5) %> |
+| RDF/XML | | <%= stars(3,5) %> |
+| TSV | [Specification](http://www.iana.org/assignments/media-types/text/tab-separated-values) | <%= stars(3) %> |
+
+### Comma and Tab Separated Files
+
+CSV files can be a very useful format because it is compact and thus suitable
+to transfer large sets of data with the same structure. However, the format is
+so spartan that data are often useless without documentation since it can be
+almost impossible to guess the significance of the different columns. It is
+therefore particularly important for the comma-separated formats that
+documentation of the individual fields are accurate.
+
+Furthermore it is essential that the structure of the file is respected, as a single omission of a field may disturb the reading of all remaining data in the file without any real opportunity to rectify it, because it cannot be determined how the remaining data should be interpreted.
 
 ### JSON
 
@@ -73,8 +84,8 @@ of URLs as identifiers, which provides a convenient way to directly
 interconnect existing open data initiatives on the Web. RDF is still not
 widespread, but it has been a trend among Open Government initiatives,
 including the British and Spanish Government Linked Open Data projects. The
-inventor of the Web, Tim Berners-Lee, has recently proposed a [five-
-star](http://lab.linkeddata.deri.ie/2010/star-scheme-by-example/) scheme that
+inventor of the Web, Tim Berners-Lee, has recently proposed a 
+[five-star](http://lab.linkeddata.deri.ie/2010/star-scheme-by-example/) scheme that
 includes linked RDF data as a goal to be sought for open data initiatives.
 
 ### XML
@@ -86,17 +97,6 @@ without interfering with the reading of them. XML can be used as a
 serialization format for RDF as well as a native document format for (X)HTML,
 MEI, and TEI.
 
-### Comma and Tab Separated Files
-
-CSV files can be a very useful format because it is compact and thus suitable
-to transfer large sets of data with the same structure. However, the format is
-so spartan that data are often useless without documentation since it can be
-almost impossible to guess the significance of the different columns. It is
-therefore particularly important for the comma-separated formats that
-documentation of the individual fields are accurate.
-
-Furthermore it is essential that the structure of the file is respected, as a single omission of a field may disturb the reading of all remaining data in the file without any real opportunity to rectify it, because it cannot be determined how the remaining data should be interpreted.
-
 ## Image
 
 A visual representation other than text. Image resources should not be "lossy"
@@ -107,15 +107,15 @@ particular algorithm would be a useful Image resource.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| GIF | [Specification](http://www.w3.org/Graphics/GIF/spec-gif89a.txt) | $*$ |
-| JPG | [Specifications](http://www.w3.org/Graphics/JPEG/) | $*$ |
-| JP2 | | $*$ |
-| PNG | [Specifications](http://www.libpng.org/pub/png/spec/) | $*$ |
-| TIFF | [Specification](http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf) | $*$ |
+| GIF | [Specification](http://www.w3.org/Graphics/GIF/spec-gif89a.txt) | <%= stars(1) %> |
+| JPG | [Specifications](http://www.w3.org/Graphics/JPEG/) | <%= stars(1) %> |
+| JP2 | | <%= stars(1) %> |
+| PNG | [Specifications](http://www.libpng.org/pub/png/spec/) | <%= stars(1) %> |
+| TIFF | [Specification](http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf) | <%= stars(1) %> |
 
 ## Interactive Resource
 
-- Openness: $*$
+- Openness: <%= stars(1) %>
 
 A resource that requires a user to interact with it for it to be understood or
 useful. Examples include search pages that are not designed as a simple visual
@@ -124,20 +124,20 @@ pages.
 
 ## Moving Picture
 
-- Openness: $*$
+- Openness: <%= stars(1) %>
 
 ## Music
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| MEI | [Specifications](http://www.music-encoding.org/documentation/guidelines2013) | $***(**)$ |
+| MEI | [Specifications](http://www.music-encoding.org/documentation/guidelines2013) | <%= stars(3,5) %> |
 
 ## Service
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| REST | [Specification](http://en.wikipedia.org/wiki/Representational_state_transfer) | $***(**)$ |
-| SPARQL | [Specification](http://www.w3.org/TR/sparql11-service-description/) | $***(**)$ |
+| REST | [Specification](http://en.wikipedia.org/wiki/Representational_state_transfer) | <%= stars(3,5) %> |
+| SPARQL | [Specification](http://www.w3.org/TR/sparql11-service-description/) | <%= stars(3,5) %> |
 
 ## Still Image
 
@@ -145,11 +145,11 @@ pages.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
-| HTML | [Specifications](http://www.w3.org/community/webed/wiki/HTML/Specifications) | $***(**)$ |
-| PDF | | $*(*)$ |
-| Plain Text | | $*$ |
-| PostScript | | $*(*)$ |
-| TEI | [Specification](http://www.tei-c.org/Guidelines/) | $***(**)$ |
+| HTML | [Specifications](http://www.w3.org/community/webed/wiki/HTML/Specifications) | <%= stars(3,5) %>|
+| PDF | | <%= stars(1,2) %> |
+| Plain Text | | <%= stars(1) %> |
+| PostScript | | <%= stars(1,2) %> |
+| TEI | [Specification](http://www.tei-c.org/Guidelines/) | <%= stars(3,5) %> |
 
 ### HTML
 

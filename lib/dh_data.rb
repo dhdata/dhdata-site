@@ -246,6 +246,31 @@ class DHData < Middleman::Extension
       ret += "</div></div>"
       ret
     end
+
+    def stars(min, max = nil)
+      if max.nil?
+        max = min
+      end
+
+      if min > max
+        min, max = max, min
+      end
+
+      ret = '<span '
+      if min == max
+        ret += " title='#{min} star" + (min == 1 ? "" : "s") + "'"
+      else
+        ret += " title='#{min}-#{max} star" + (max == 1 ? "" : "s") + "'"
+      end
+      ret += ">"
+      ret += '<span class="gold">' + ('&#10029;' * min) + '</span>'
+      if max != min
+        ret += '(<span class="gold">' + ('&#10029;' * (max - min)) + '</span>)'
+      end
+      ret += '</span>'
+
+      ret
+    end
   end
 end
 

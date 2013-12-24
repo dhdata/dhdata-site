@@ -19,7 +19,7 @@ This is the webpage about the 2.2 TB EBS snapshot containing the n-gram data.
 
 | Field | Value |
 | ----- | ----- |
-| format | snapshot |
-| type | file |
-| mimetype | text/html |
+| format | Interactive Resource |
+| type | Text |
+| mime-type | text/html |
 | url   | http://aws.amazon.com/datasets/8172056142375670 |
