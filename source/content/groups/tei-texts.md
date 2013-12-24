@@ -9,4 +9,3 @@ This group gathers together all of the datasets containing texts marked up with 
 ## Datasets
 
 * folger-digital-texts
-* tcp-ecco-18th-century-texts
