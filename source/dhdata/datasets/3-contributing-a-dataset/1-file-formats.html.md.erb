@@ -29,9 +29,15 @@ feed aggregates blog posts.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
+| Archive | | <%= stars(1) => |
 | Atom | [Specification](http://www.ietf.org/rfc/rfc5023.txt) | <%= stars(1,5) %> |
 | ORE | [Specification](http://www.openarchives.org/ore/1.0/rdfxml.html) | <%= stars(3,5) %> |
 | RSS | [Specifications](http://www.rss-specifications.com/) | <%= stars(1,5) %> |
+
+### Archive
+
+An archive is a collection of resources that are compiled into a
+single resource using a structured format such as TAR or ZIP. When creating a dataset, the format metadata key can be set to the format of the individual resources concatenated with "Archive." For example, a TAR file containing TEI files can have a format of "TEI Archive."
 
 ## Dataset
 
