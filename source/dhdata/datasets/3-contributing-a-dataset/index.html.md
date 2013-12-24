@@ -23,7 +23,7 @@ All dataset pages are in the `datasets` folder. Selecting the folder will list a
 datasets.
 
 <div class="text-center">
-	<img src="/images/dhdata/datasets/folder-list.png" height="446" width="640" border="0" vspace="0" hspace="0" class="img-rounded" style="border: 1px solid silver;">
+	<img class="illustration" src="/images/dhdata/datasets/folder-list.png" height="446" width="640" border="0" vspace="0" hspace="0">
 </div>
 
 ## Step 2: Create a new document
@@ -31,8 +31,9 @@ datasets.
 Selecting the `New File` button at the top of the page will open up an edit window with
 the dataset template loaded.
 
+
 <div class="text-center">
-	<img src="/images/dhdata/datasets/new-file-button.png" height="222" width="640" border="0" vspace="0" hspace="0" class="img-rounded" style="border: 1px solid silver;">
+	<img src="/images/dhdata/datasets/new-file-button.png" height="222" width="640" border="0" vspace="0" hspace="0" class="illustration">
 </div>
 
 ## Step 3: Describe your dataset
