@@ -2,6 +2,7 @@
 title: Dates and Times
 layout: recipe_collection
 published: true
+changefreq: weekly
 ---
 
 Almost all digital humanities projects have to deal with times and dates in

@@ -2,6 +2,7 @@
 title: Geometry
 layout: recipe_collection
 published: true
+changefreq: weekly
 ---
 
 Geometry and geography are sufficiently different that they warrant different

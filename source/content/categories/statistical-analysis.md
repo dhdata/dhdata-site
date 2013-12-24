@@ -2,6 +2,7 @@
 title: Statistical Analysis
 layout: recipe_collection
 published: true
+changefreq: weekly
 ---
 
 Statistics is a mathematical endeavor that tries to provide quantitative
