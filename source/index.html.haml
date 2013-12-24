@@ -1,42 +1,41 @@
 - content_for :banner do
-  .container
-    .row
-      .col-md-4
-        .well.well-sm
-          %h1 Find Datasets or Recipes
+  .row
+    .col-md-4
+      .well.well-sm
+        %h1 Find Datasets or Recipes
 
-          %form.form-horizontal(method="GET" action="/search.html")
-            .form-group
-              .col-sm-12
-                %labdl.sr-only(for="search") Find datasets or recipes
-                %input.form-control#search(type="text" placeholder="Find datasets or recipes" name="q")
-                %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
-                  %span.sr-only Search
-          .clearfix
+        %form.form-horizontal(method="GET" action="/search.html")
+          .form-group
+            .col-sm-12
+              %labdl.sr-only(for="search") Find datasets or recipes
+              %input.form-control#search(type="text" placeholder="Find datasets or recipes" name="q")
+              %button.glyphicon.glyphicon-search#front-page-search-button(type="submit" value="Search")
+                %span.sr-only Search
+        .clearfix
 
-      
-      .col-md-4
-        .well.well-sm
-          %h1 Share Code and Data
+    
+    .col-md-4
+      .well.well-sm
+        %h1 Share Code and Data
 
-          %p
-            Fork this website on GitHub, add your datasets or data processing solutions,
-            and send a pull request. See 
-            %a(href="/dhdata") the DH Data Guide
-            for more details.
+        %p
+          Fork this website on GitHub, add your datasets or data processing solutions,
+          and send a pull request. See 
+          %a(href="/dhdata") the DH Data Guide
+          for more details.
 
-          %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="/editor") 
-            Contribute &raquo;
-          .clearfix
+        %a.btn.btn-primary.pull-right(style="margin: 0.5em;" href="/editor") 
+          Contribute &raquo;
+        .clearfix
 
-      .col-md-4
-        .well.well-sm
-          %h1 Collaborate
+    .col-md-4
+      .well.well-sm
+        %h1 Collaborate
 
-          %p
-            Find out more about working with open data and Digital Humanities by exploring these resources:
+        %p
+          Find out more about working with open data and Digital Humanities by exploring these resources:
 
-          %ul
-            %li= link_to 'DH Data Guide', '/dhdata'
-            %li= link_to 'DH Curation Guide', 'http://dhcuration.org/'
-            %li= link_to 'School of Data Handbook', 'http://datapatterns.org/'
+        %ul
+          %li= link_to 'DH Data Guide', '/dhdata'
+          %li= link_to 'DH Curation Guide', 'http://dhcuration.org/'
+          %li= link_to 'School of Data Handbook', 'http://datapatterns.org/'
