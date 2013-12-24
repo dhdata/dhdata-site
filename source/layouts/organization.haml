@@ -1,4 +1,21 @@
 - wrap_layout :layout do
+  - if !current_page.data.url.blank?
+    %p.small.text-muted
+      Website:
+      %a{:href => current_page.data.url}
+        = current_page.data.url
+
+  - if !current_page.data.logo.blank?
+    - if !current_page.data.url.blank?
+      %a.logo-left{:href => current_page.data.url}
+        %img.logo.img-rounded{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}"}
+    - else
+      %img.logo-left.img-rounded{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}" }
+
+  = yield
+
+  
+
   - datasets = find_datasets_for_organization(current_page)
   %h2= counter(datasets.length, '%d dataset%s found')
 
@@ -14,18 +31,4 @@
         - resources.each do |resource|
           %li
             %a.btn.btn-primary.btn-xs{"data-format" => resource[:format].to_s, :href => [ '/', dataset.path ].join('') }= resource[:type]
-  - content_for :sidebar do
-    - if !current_page.data.logo.blank?
-      - if !current_page.data.url.blank?
-        %a{:href => current_page.data.url}
-          %img.img-thumbnail{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}", :width => "100%"}
-      - else
-        %img.img-thumbnail{:src => current_page.data.logo, :alt => "Logo for #{current_page.data.title}", :width => "100%"}
 
-    = yield
-
-    - if !current_page.data.url.blank?
-      %p
-        Website:
-        %a{:href => current_page.data.url}
-          = current_page.data.url

@@ -2,34 +2,35 @@
 title: Datasets
 layout: layout
 published: true
+ng-app: dataSetListApp
+ng-controller: dataSetListCtrl
 ---
 
-.row(ng-app="dataSetListApp" ng-controller="dataSetListCtrl")
-  
-  .col-md-3
-    / facets: license, tags, formats
-    %fieldset
-      %legend Tags
-      .checkbox(ng-repeat="tag in tags")
-        %label
-          %input(type="checkbox" value="{{tag}}" ng-checked="isTagSelected(tag)" ng-click="toggleTag(tag)")
-          {{tag}} ({{tag_counts[tag]}})
-  
-  .col-md-9
-    %div(ng-repeat="dataset in datasets | startFrom:currentPage*pageSize | limitTo:pageSize")
-      %h2
-        %a(href="{{ dataset.links.html }}") {{ dataset.name }}
-      %ul.list-inline.list-unstyled
-        %li(ng-repeat="tag in dataset.tags")
-          .small.text-muted(ng-click="toggleTag(tag)") {{tag}}
-      %div(ng-bind-html="dataset.description")
-    
-    .text-center
-      %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
-        Previous
-      {{currentPage+1}}/{{numberOfPages()}}
-      %button.btn.btn-sm(ng-disabled="currentPage >= datasets.length/pageSize-1" ng-click="currentPage=currentPage+1")
-        Next
+
+
+%div(ng-repeat="dataset in datasets | startFrom:currentPage*pageSize | limitTo:pageSize")
+  %h2
+    %a(href="{{ dataset.links.html }}") {{ dataset.name }}
+  %ul.list-inline.list-unstyled
+    %li(ng-repeat="tag in dataset.tags")
+      .small.text-muted(ng-click="toggleTag(tag)") {{tag}}
+  %div(ng-bind-html="dataset.description")
+
+.text-center
+  %button.btn.btn-sm(ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1")
+    Previous
+  {{currentPage+1}}/{{numberOfPages()}}
+  %button.btn.btn-sm(ng-disabled="currentPage >= datasets.length/pageSize-1" ng-click="currentPage=currentPage+1")
+    Next
+
+- content_for :sidebar do
+  / facets: license, tags, formats
+  %fieldset
+    %legend Tags
+    .checkbox(ng-repeat="tag in tags")
+      %label
+        %input(type="checkbox" value="{{tag}}" ng-checked="isTagSelected(tag)" ng-click="toggleTag(tag)")
+        {{tag}} ({{tag_counts[tag]}})
 
 - content_for :scripts do
   :coffeescript
