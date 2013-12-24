@@ -110,16 +110,18 @@ class DHData < Middleman::Extension
 
     def find_datasets_for_group(current_page)
       bits = current_page.render({:layout => false}).split(/<\/?h2.*?>/)
-      datasets = Hash[
-        find_datasets().map { |d| [ d.path.sub(/\.(md|html)$/, '').split(/\//).last, d ]}
-      ]
+      
+      datasets = find_datasets().inject({}) { |h, d|
+        h[d.path.sub(/\.(md|html)$/, '').split(/\//).last] = d
+        h
+      }
 
       if bits.length > 2
         content = bits[2].strip
         doc = Nokogiri::HTML::DocumentFragment.parse("<html><body>#{content}</body></html>")
         doc.css('li').map { |item|
           datasets[item.inner_text.to_s.strip]
-        }
+        }.reject{ |d| d.nil? }
       else
         []
       end
