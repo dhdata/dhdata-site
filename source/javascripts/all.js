@@ -2,3 +2,4 @@
 //= require vendor/_angular
 //= require vendor/_bootstrap
 //= require vendor/_markdown
+//= require vendor/_hyphenator
