@@ -5,8 +5,8 @@ published: true
 ---
 
 _This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the [CC-
-BY](http://creativecommons.org/licenses/by/3.0/) license._
+Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 This section gives concrete, detailed advice on how data holders can open up
 data. We'll go through the basics, but also cover the pitfalls. Lastly, we

@@ -5,8 +5,8 @@ published: true
 ---
 
 _This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the [CC-
-BY](http://creativecommons.org/licenses/by/3.0/) license._
+Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 Open data needs to be technically open as well as legally open. Specifically,
 the data needs to be available in bulk in a machine-readable format.

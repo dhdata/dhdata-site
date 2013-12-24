@@ -4,9 +4,16 @@ layout: guide_page
 published: true
 ---
 
-_This section contains material from the [Open Data Handbook](http://opendatahandbook.org/) available under the [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
+_This section contains material from the 
+[Open Data Handbook](http://opendatahandbook.org/) available under the 
+[CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
-The structure of these competitions is that a number of datasets are released and programmers then have a short time-frame&mdash;running from as little as 48 hours to a few weeks&mdash;to develop applications using the data. A prize is then awarded to the best application. Competitions have been held in a number of countries including the UK, the US, Norway, Australia, Spain, Denmark and Finland.
+The structure of these competitions is that a number of datasets are released
+and programmers then have a short time-frame&mdash;running from as little as
+48 hours to a few weeks&mdash;to develop applications using the data. A prize
+is then awarded to the best application. Competitions have been held in a
+number of countries including the UK, the US, Norway, Australia, Spain,
+Denmark and Finland.
 
 ## Examples of competitions
 
