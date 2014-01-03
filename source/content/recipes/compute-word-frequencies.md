@@ -91,9 +91,9 @@ my %counts = $text.lc.match(/<alnum>+/, :g)
             .map({ $_.key => $_.value.elems });
 ```
 
-**N.B.: We've introduced whitespace into the above snippet to improve
-**readability. [Rakudo](http://rakudo.org/) may show parse errors unless you
-**remove the whitespace.
+**N.B.**: We've introduced whitespace into the above snippet to improve
+readability. [Rakudo](http://rakudo.org/) may show parse errors unless you
+remove the whitespace.
 
 ### Python
 

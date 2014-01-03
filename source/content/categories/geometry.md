@@ -46,7 +46,7 @@ $$ \mbox{atan2}(y,x) = \left\\{ \\begin{array}{ll}
 \tan^{-1}\left(\tfrac{y}{x}\right) - \pi & \mbox{if } x \lt 0 \mbox { and } y \lt 0 \\\\\\
 \tfrac{\pi}{2} & \mbox{if } x = 0 \mbox{ and } y \gt 0 \\\\\\
 -\tfrac{\pi}{2}& \mbox{if } x = 0 \mbox{ and } y \lt 0 \\\\\\
-\mbox{undefined} & \mbox{if } x = 0 \mbox{ and } y = 0
+\mbox{ unde}\mbox{fined } & \mbox{if } x = 0 \mbox{ and } y = 0
 \\end{array}\right.$$
 
 ### Spherical coordinates
