@@ -1,7 +1,10 @@
 - wrap_layout :layout do
 
   / partial '/layouts/outline', :locals => { :pages => current_page.children.sort_by(&:path) }
-  = make_outline_nav(current_page.children.sort_by(&:path))
   = yield
 
-  
+  - content_for :sidebar do
+    = make_cookbook_nav(current_page, { :title => 'Sections', :include_up => false, :include_siblings => false, :list_classes => 'list-unstyled small' })
+    
+    %a{:href => "/print" + url_for(current_page)} Print Version
+
