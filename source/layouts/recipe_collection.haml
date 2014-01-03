@@ -2,4 +2,6 @@
 
   = yield
   
-  = make_cookbook_nav(current_page, { :title => 'Recipes' })
+  - content_for :sidebar do
+    = make_cookbook_nav(current_page.parent, { :title => 'Sections', :include_up => false, :include_siblings => false, :list_classes => 'list-unstyled small'})
+    = make_cookbook_nav(current_page, { :title => 'Recipes', :include_up => false, :include_siblings => false, :list_classes => 'list-unstyled small' })

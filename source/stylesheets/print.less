@@ -1,0 +1,87 @@
+/*
+ * = require '_code.css'
+ */
+
+@import "vendor/bootstrap/_print_variables.less";
+@import "vendor/bootstrap/_mixins.less";
+@import "vendor/bootstrap/_scaffolding.less";
+@import "vendor/bootstrap/_tables.less";
+@import "vendor/bootstrap/_type.less";
+@import "vendor/bootstrap/_print.less";
+
+@page {
+  margin-top: 1.22in;
+  margin-left: 1.52in; /* 0.94in; */
+  margin-right: 2.46in; /* 1.88in; */
+  margin-bottom: 2.44in;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  page-break-after: avoid;
+}
+
+h2, h3 {
+  /* page-break-before: always; */
+}
+
+img {
+  max-width: 100% !important;
+}
+
+ul, img {
+  page-break-inside: avoid;
+}
+
+pre.highlight span {
+  page-break-inside: avoid;
+}
+
+pre.highlight {
+  .small
+}
+
+a[href^=http]:after {
+  content:" <" attr(href) "> ";
+  .small
+}
+
+a {
+  font-weight: bolder;
+  text-decoration: none;
+  word-wrap: break-word;
+  color: @gray-dark;
+}
+
+a[href^="#"]:after {
+  content: "";
+}
+
+pre.highlight {
+  border: 1px solid @gray-light;
+  padding: 1em;
+  page-break-inside: auto;
+}
+
+hr {
+  page-break-after: always;
+  border: none;
+  width: 0px;
+  height: 0px;
+}
+
+* {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.screen-only {
+  text-align: center;
+  color: @gray;
+  font-style: italic;
+}
+
+@media print {
+  .screen-only {
+    visibility: hidden;
+  }
+}
