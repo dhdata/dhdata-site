@@ -60,6 +60,7 @@ class DHData < Middleman::Extension
   end
 
   helpers do
+    
     def counter(count, text)
       t = text
       s = count == 1 ? '' : 's'
@@ -87,25 +88,24 @@ class DHData < Middleman::Extension
       sitemap.where(:layout.equal => 'organization', :published.equal => true).all
     end
 
+    # the path should be /organization/#{name}.html or /organization/#{name}/index.html
     def find_organization(name)
       find_organizations().
         select{ |o| 
-          o.
-            path.
-            sub(/\/?index.html$/, '').
-            split(/\//).
-            last.
-            sub(/\.html$/, '') == name 
+          o.path == "/organization/#{name}.html" ||
+          o.path == "/organization/#{name}/index.html"
         }.
         first
     end
 
     def find_groups()
-      sitemap.where(:layout.equal => 'group', :published.equal => true).all
+      @groups ||= sitemap.where(:layout.equal => 'group', :published.equal => true).all
+      @groups
     end
 
     def find_datasets()
-      sitemap.where(:layout.equal => 'dataset', :published.equal => true).all
+      @datasets ||= sitemap.where(:layout.equal => 'dataset', :published.equal => true).all
+      @datasets
     end
 
     def find_datasets_for_group(current_page)
@@ -129,7 +129,8 @@ class DHData < Middleman::Extension
           
 
     def find_recipes()
-      sitemap.where(:layout.equal => 'recipe', :published.equal => true).all.select{ |p| p.data.category != 'uncategorized' }
+      @recipes ||= sitemap.where(:layout.equal => 'recipe', :published.equal => true).all.select{ |p| p.data.category != 'uncategorized' }
+      @recipes
     end
 
     def dataset_tags()

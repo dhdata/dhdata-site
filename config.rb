@@ -55,6 +55,11 @@ ready do
       :current_page => book
     }
   end
+  sitemap.resources.select { |p| p.data.layout == "guide" }.each do |book|
+    proxy "print/" + book.path, book.path, :layout => 'guide-print', :locals => {
+      :current_page => book
+    }
+  end
 end
 
 
