@@ -50,7 +50,11 @@ set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => 
 #activate :directory_indexes
 
 ready do
-
+  sitemap.resources.select { |p| p.data.layout == "cookbook" }.each do |book|
+    proxy "print/" + book.path, book.path, :layout => 'cookbook-print', :locals => {
+      :current_page => book
+    }
+  end
 end
 
 

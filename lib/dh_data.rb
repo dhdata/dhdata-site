@@ -7,7 +7,7 @@ class DHData < Middleman::Extension
 
   def after_configuration
     #@app.sitemap.register_resource_list_manipulator(:"dhdata_sitemap_management", self, false)
-    
+    # do self-consistency check
   end
 
   def manipulate_resource_list(resources)
@@ -182,12 +182,17 @@ class DHData < Middleman::Extension
       resources
     end
 
-    def make_outline_nav(pages)
+    def make_outline_nav(pages, opts = {})
+      opts = { :make_links => true }.merge(opts)
       ret = "<ul>"
       pages.select{ |p| p.data.published }.each do |page|
-        ret += "<li><a href='#{['/', page.path].join('')}'>#{page.data.title}</a>"
+        if opts[:make_links]
+          ret += "<li><a href='#{['/', page.path].join('')}'>#{page.data.title}</a>"
+        else
+          ret += "<li>#{page.data.title}</li>"
+        end
         if page.children.select{ |p| p.data.published }.length > 0 then
-          ret += make_outline_nav(page.children.sort_by(&:path))
+          ret += make_outline_nav(page.children.sort_by(&:path), opts)
         end
         ret += "</li>"
       end
@@ -214,10 +219,10 @@ class DHData < Middleman::Extension
     end
 
     def make_cookbook_nav(page, opts = {})
-      opts = { :include_up => true, :include_siblings => true, :title => 'Sections' }.merge(opts)
+      opts = { :list_classes => 'list-unstyled', :include_up => true, :include_siblings => true, :include_children => true, :title => 'Sections' }.merge(opts)
       ret = ''
-      if page.children.select{ |p| p.data.published }.length > 0 then
-        ret += "<h3>#{opts[:title]}</h3><ul class='list-unstyled'>"
+      if opts[:include_children] && page.children.select{ |p| p.data.published }.length > 0 then
+        ret += "<h3>#{opts[:title]}</h3><ul class='#{opts[:list_classes]}'>"
         page.children.select{ |p| p.data.published }.sort_by(&:path).each do |child|
           ret += "<li><a href='#{['/', child.path].join('')}'>#{child.data.title}</a></li>"
         end

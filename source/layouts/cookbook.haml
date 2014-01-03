@@ -2,4 +2,7 @@
 
   = yield
 
-  = make_cookbook_nav(current_page, { :include_up => false, :include_siblings => false})
+  - content_for :sidebar do
+    = make_cookbook_nav(current_page, { :include_up => false, :include_siblings => false, :list_classes => 'list-unstyled small'})
+    / for now, we only have one cookbook
+    %a{:href => "/print" + url_for(current_page)} Print Version
