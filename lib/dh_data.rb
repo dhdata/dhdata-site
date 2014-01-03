@@ -184,7 +184,7 @@ class DHData < Middleman::Extension
     end
 
     def make_outline_nav(pages, opts = {})
-      opts = { :make_links => true }.merge(opts)
+      opts = { :make_links => true, :include_children => true }.merge(opts)
       ret = "<ul>"
       pages.select{ |p| p.data.published }.each do |page|
         if opts[:make_links]
@@ -192,7 +192,7 @@ class DHData < Middleman::Extension
         else
           ret += "<li>#{page.data.title}</li>"
         end
-        if page.children.select{ |p| p.data.published }.length > 0 then
+        if opts[:include_children] && page.children.select{ |p| p.data.published }.length > 0 then
           ret += make_outline_nav(page.children.sort_by(&:path), opts)
         end
         ret += "</li>"
