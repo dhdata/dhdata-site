@@ -1,9 +1,11 @@
 ---
-title: Check if a date lies within a range of days
-category: dates-and-times
+changefreq: weekly
 layout: recipe
+title: Check if a date lies within a range of days
+category: "dates-and-times"
 published: true
 ---
+
 ## Problem
 
 You want to know if a particular date lies within a range of days, and you
@@ -49,6 +51,19 @@ if($span->contains($date)) {
 }
 ```
 
+### Ruby
+
+```ruby
+startdate, enddate = enddate, startdate if startdate > enddate
+startdate = startdate.to_date
+enddate = enddate.to_date
+date = date.to_date
+
+if startdate <= date and date <= enddate
+  # date is in the range of days indicated by startdate and enddate
+end
+```
+
 ## Discussion
 
 The basic calculation here isn't difficult. It's a simple comparison against a
@@ -57,3 +72,7 @@ checking that a distance is between two values). However, because many
 date/time libraries track dates and times down to fractions of a second, you
 need to decide which units you want to use (seconds, minutes, hours, days,
 etc.) and truncate the date/time to those units before doing any comparisons.
+
+### Ruby
+
+Ruby date and time classes don't have an explicit truncation method. Instead, converting the `DateTime` value to a `Date` value using the `to_date` method accomplishes the desired truncation.

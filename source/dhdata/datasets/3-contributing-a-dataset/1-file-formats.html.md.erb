@@ -66,14 +66,14 @@ databases. Datasets are useful for direct computation.
 
 ### Comma and Tab Separated Files
 
-CSV files can be a very useful format because it is compact and thus suitable
-to transfer large sets of data with the same structure. However, the format is
-so spartan that data are often useless without documentation since it can be
-almost impossible to guess the significance of the different columns. It is
+CSV files can be a very useful format because they are compact and thus suitable
+for transfering large sets of data with the same structure. However, the format is
+so spartan that data are often useless without documentation. It can be
+almost impossible to guess the significance of the different columns without some knowledge about the context of the data. It is
 therefore particularly important for the comma-separated formats that
-documentation of the individual fields are accurate.
+documentation of the individual fields be accurate.
 
-Furthermore it is essential that the structure of the file is respected, as a single omission of a field may disturb the reading of all remaining data in the file without any real opportunity to rectify it, because it cannot be determined how the remaining data should be interpreted.
+Furthermore, it is essential that the structure of the file be respected, as a single omission of a field may disturb how an application interprets the remaining data in the file without any real opportunity to fix it because the application cannot determine how the remaining data should be interpreted.
 
 ### JSON
 
@@ -89,33 +89,38 @@ comparable to RDF, but it is not a simple JSON serialization of RDF.
 
 ### RDF
 
-A W3C-recommended format called RDF makes it possible to represent data in a
-form that makes it easier to combine data from multiple sources. RDF data can
+A W3C-recommended format called RDF (the Resource Description 
+Framework) makes it possible to represent data in a
+way that makes it easier to combine data from multiple sources. RDF data can
 be stored in XML and JSON, among other serializations. RDF encourages the use
 of URLs as identifiers, which provides a convenient way to directly
 interconnect existing open data initiatives on the Web. RDF is still not
 widespread, but it has been a trend among Open Government initiatives,
-including the British and Spanish Government Linked Open Data projects. The
-inventor of the Web, Tim Berners-Lee, has recently proposed a 
+including the British and Spanish Government Linked Open Data 
+projects. Recent developments in digital facsimile projects use 
+RDF-based data models such as Open Annotation and Shared Canvas. 
+The inventor of the Web, Tim Berners-Lee, has recently proposed a 
 [five-star](http://lab.linkeddata.deri.ie/2010/star-scheme-by-example/) scheme that
 includes linked RDF data as a goal to be sought for open data initiatives.
 
 ### XML
 
-XML is a widely used format for data exchange because it gives good
-opportunities to keep the structure in the data and the way files are built
-on, and allows developers to write parts of the documentation in with the data
-without interfering with the reading of them. XML can be used as a
-serialization format for RDF as well as a native document format for (X)HTML,
-MEI, and TEI.
+XML is a widely used format for data exchange because it provides good
+opportunities for building structure in data. Developers can mix 
+parts of the documentation in with the data
+without interfering with the reading of either. XML is used as a
+serialization format for RDF as well as the native document format 
+for (X)HTML, MEI, and TEI.
 
 ## Image
 
 A visual representation other than text. Image resources should not be "lossy"
 unless their particular compression demonstrates an issue with the compression
-or decompression algorithm. They should be useful for computation. For
-example, an exemplar image demonstrating some particular difficulty for a
+or decompression algorithm. They should be useful for computation. 
+For example, an exemplar image demonstrating some particular difficulty for a
 particular algorithm would be a useful Image resource.
+
+Any dataset composed of Images must explain in the description why the dataset is useful.
 
 | Format | Specification | Openness |
 | -------- | --------------- | ------------ |
@@ -137,6 +142,10 @@ pages.
 ## Moving Picture
 
 - Openness: <%= stars(1) %>
+
+As with Images, Moving Pictures are not considered open data unless they serve as exemplars for particular algorithms. Even so, no Moving Picture format fulfills any of the qualifying requirements for linked open data.
+
+Any dataset composed of Moving Pictures must explain in the description why the dataset is useful.
 
 ## Music
 
