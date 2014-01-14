@@ -50,15 +50,12 @@ set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => 
 #activate :directory_indexes
 
 ready do
-  sitemap.resources.select { |p| p.data.layout == "cookbook" }.each do |book|
-    proxy "print/" + book.path, book.path, :layout => 'cookbook-print', :locals => {
-      :current_page => book
-    }
-  end
-  sitemap.resources.select { |p| p.data.layout == "guide" }.each do |book|
-    proxy "print/" + book.path, book.path, :layout => 'guide-print', :locals => {
-      :current_page => book
-    }
+  %w(cookbook guide).each do |layout|
+    sitemap.resources.select { |p| p.data.layout == layout }.each do |book|
+      proxy "print/" + book.path, book.path, :layout => layout+'-print', :locals => {
+        :current_page => book
+      }
+    end
   end
 end
 
