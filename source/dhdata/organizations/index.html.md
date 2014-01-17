@@ -26,6 +26,10 @@ To create an index page for an organization, follow these steps.
 All organization pages are in the `organizations` folder. Selecting the folder will
 list all of the organizations.
 
+<div class="text-center">
+	<img class="illustration" src="/images/dhdata/organizations/folder-list.png" height="446" width="640" border="0" vspace="0" hspace="0">
+</div>
+
 ### Step 2: Create a new document
 
 Selecting the `New File` button at the top of the page will open up an edit window
