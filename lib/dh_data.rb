@@ -18,7 +18,6 @@ class DHData < Middleman::Extension
     content_resources.last.each do |resource|
       @app.ignore resource.path
     end
-    puts ({ published: content_resources.first.length, unpublished: content_resources.last.length}.to_yaml)
     content_resources.first
   end
 
@@ -282,19 +281,17 @@ class DHData < Middleman::Extension
     end
 
     def stars(min, max = nil)
-      max = min if max.nil?
-
-      min, max = max, min if min > max
-
-      ret = "<span title='#{min}"
+      range = [ min, max ].compact.sort.unique
+      range_q = range.length > 1
+      ret = "<span title='#{range.first}"
       
-      ret << "-#{max}" if max > min
+      ret << "-#{range.last}" if range_q
 
-      ret << " star" << (max == 1 ? "" : "s") << "'>"
+      ret << " star" << (range.last == 1 ? "" : "s") << "'>"
       
-      ret << star_line(min)
+      ret << star_line(range.first)
 
-      ret << '(' << star_line(max - min) << ')' if max > min
+      ret << '(' << star_line(range.last - range.first) << ')' if range_q
       
       ret << '</span>'
 
