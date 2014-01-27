@@ -4,8 +4,8 @@ layout: guide
 published: true
 ---
 
-_This section contains material from the [Open Data
-Handbook](http://opendatahandbook.org/) available under the 
+_This section contains material from the 
+[Open Data Handbook](http://opendatahandbook.org/) available under the 
 [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 The notion of open data&mdash;information, public or otherwise, which anyone
@@ -32,9 +32,9 @@ composing the content for that section.
 
 This book has a broad audience:
 
-- for those who have never heard of open data before and those who consider
-- themselves seasoned 'data professionals' for digital humanists for data
-- geeks and those who have never heard of an API.
+- for those who have never heard of open data before and those who consider themselves seasoned 'data professionals',
+- for data geeks and those who have never heard of an API, and
+- for digital humanists.
 
 Most of the information currently provided is focused on data held by digital
 textual scholarship projects. However, the authors intend to broaden this as
