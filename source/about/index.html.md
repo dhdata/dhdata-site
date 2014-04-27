@@ -3,65 +3,58 @@ title: About
 published: true
 ---
 
-Digital Humanities (DH) Data encourages the indexing and exploration of open
-data resources for humanities research. DH Data makes this easy for digital
-humanists and others conducting digital research by providing a growing number
-of visualizations and other tools or programming recipes for working with
-common forms of digital information arising from humanities research.
+We have designed Digital Humanities (DH) Data so that it is easier for you to
+explore open data resources. DH Data provides some data visualizations as well
+as programming recipes for working with open data.
 
 ## How it Works
 
-This site uses several open source software products including the static site
-building system, [Middleman](http://middlemanapp.com/), running behind
-[Nginx](http://nginx.org/). Content is managed in the [site git
-repository](https://github.com/dhdata/dhdata-site), including all recipes and
-dataset information pages.
+We use several open source software products including
+[Middleman](http://middlemanapp.com/). We use [Nginx](http://nginx.org/) as our
+web server. We manage content in the  [site
+repository](https://github.com/dhdata/dhdata-site). This includes all recipes
+and dataset information pages.
 
 ## Contributing
 
-Recipes in [the cookbook](/cookbook/) and [index information about
-datasets](/dataset/) are kept in the [site git
-repository](https://github.com/dhdata/dhdata-site). Before contributing a
-recipe or information about a dataset, fork this repository to your GitHub
-account. After creating your recipe or dataset page and ensuring everything
-builds, create a pull request to the primary site repository. See the
-instructions in the repository for more information about how to create and
-submit a recipe.
+We keep the [cookbook](/cookbook/) recipes and dataset [index](/dataset/) in the
+[site repository](https://github.com/dhdata/dhdata-site). Before contributing a
+recipe or dataset, you should fork this repository to your GitHub account. Then,
+after writing your contribution, create a pull request. See the instructions in
+the repository for more information about contributing.
 
 ### Prose.io
 
-We've created a custom build of [Prose.io](http://prose.io/). 
-After forking the site repostory into your
-GitHub account, you can add and edit recipes and other content by going to
-[the site editor](/editor). You will be placed in the content directory into which you can
-add your recipe or dataset information. The editor will use the appropriate
-template when creating a new file.
+We've created a custom build of [Prose.io](http://prose.io/). You can add and
+edit recipes and other content by going to [the site editor](/editor). The
+editor will guide you in forking the repository if you haven't done so.
+Otherwise, it will place you in the content directory into which you can add
+your recipe or dataset information. The editor will use the appropriate template
+when creating a new file.
 
 ### Recipe Licensing
 
-All recipe contributions are assumed to be made under a 
-[CC-BY](http://creativecommons.org/licenses/by/4.0/) license. If particular code
-snippets are available under a different Creative Commons license, then this
-should be noted in the recipe along with links to the source material from
-which the recipe is derived. Recipes not provided under a Creative Commons
-license will not be accepted.
+We assume that all recipe contributions are under a
+[CC-BY](http://creativecommons.org/licenses/by/4.0/) license. If you must
+contribute under a different license, then you should note this and include
+links to the original material. We will only accept contributions under a
+Creative Commons license.
 
 ### Dataset Licensing
 
-The index page pointing to the resources and discussing the dataset is covered
-by a [CC-BY](http://creativecommons.org/licenses/by/4.0/) license. This
-license does not apply to the resources pointed to by the page. All datasets
-are assumed to be licensed under an open license. Please select the
-appropriate license for each dataset as part of the page's metadata. If the
-resources within a dataset are covered by different licenses, split the
-dataset into two or more pages grouped by license.
-
-If an appropriate license is not available in the list of licenses, then
-select "Other Open License" if the resources are available under an open
-license. If they are not available under an open license, then do not list
-them on the page. You may include pointers to them in the discussion about the
-dataset, but you should mention that they are not available under an open
+We assume that all discussions about a dataset are under a
+[CC-BY](http://creativecommons.org/licenses/by/4.0/) license. We do not apply
+this license to the resources pointed to by the page. We assume that all
+datasets are under an open license. Please select the appropriate license for
+each dataset as part of the page's metadata. If the resources within a dataset
+use different licenses, split the dataset into two or more pages grouped by
 license.
+
+If you do not see an appropriate license, then select "Other Open License." You
+should only do this if the resources are available under an open license. If
+they are not available under an open license, then do not list them on the page.
+You may include pointers to them in the discussion about the dataset. If you do
+reference them, note that they aren't open data.
 
 ## Project Team
 
