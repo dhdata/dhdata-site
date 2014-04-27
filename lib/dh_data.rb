@@ -268,7 +268,7 @@ class DHData < Middleman::Extension
 
       ret << "<div class='col-sm-4 text-left'>"
 
-      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos != siblings.first
+      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos > 0
         ret << link_to_page(siblings[current_page_pos-1])
       end
 
@@ -278,7 +278,7 @@ class DHData < Middleman::Extension
 
       ret << "</div><div class='col-sm-4 text-right'>"
 
-      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos != siblings.last
+      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos < siblings.length-1
         ret << link_to_page(siblings[current_page_pos+1])
       end
       ret << "</div></div>"
