@@ -66,7 +66,7 @@ class DHData < Middleman::Extension
   end
 
   helpers do
-    
+
     def counter(count, text)
       t = text
       s = count == 1 ? '' : 's'
@@ -97,7 +97,7 @@ class DHData < Middleman::Extension
     # the path should be /organization/#{name}.html or /organization/#{name}/index.html
     def find_organization(name)
       find_organizations().
-        select{ |o| 
+        select{ |o|
           o.path == "/organization/#{name}.html" ||
           o.path == "/organization/#{name}/index.html"
         }.
@@ -125,7 +125,7 @@ class DHData < Middleman::Extension
 
     def find_datasets_for_group(current_page)
       bits = current_page.render({:layout => false}).split(/<\/?h2.*?>/)
-      
+
       datasets = datasets_by_name
 
       if bits.length > 2
@@ -138,7 +138,7 @@ class DHData < Middleman::Extension
         []
       end
     end
-          
+
 
     def find_recipes()
       @recipes ||= sitemap.where(:layout.equal => 'recipe', :published.equal => true).all.select{ |p| p.data.category != 'uncategorized' }
@@ -254,7 +254,7 @@ class DHData < Middleman::Extension
       end
 
       ret << "<div class='row'>"
-      
+
       siblings = get_siblings(page).
                    select{ |p| p.data.published }.
                    sort_by(&:path)
@@ -273,9 +273,9 @@ class DHData < Middleman::Extension
       end
 
       ret << "</div><div class='col-sm-4 text-center'>"
-      
+
       ret << "<a href='" + [ '/', page.parent.path ].join('') + "'>up</a>" if opts[:include_up]
-      
+
       ret << "</div><div class='col-sm-4 text-right'>"
 
       if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos != siblings.last
@@ -293,15 +293,15 @@ class DHData < Middleman::Extension
       range = [ min, max ].compact.sort.uniq
       range_q = range.length > 1
       ret = "<span title='#{range.first}"
-      
+
       ret << "-#{range.last}" if range_q
 
       ret << " star" << (range.last == 1 ? "" : "s") << "'>"
-      
+
       ret << star_line(range.first)
 
       ret << '(' << star_line(range.last - range.first) << ')' if range_q
-      
+
       ret << '</span>'
 
       ret
