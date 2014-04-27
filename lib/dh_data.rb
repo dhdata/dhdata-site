@@ -231,7 +231,11 @@ class DHData < Middleman::Extension
     end
 
     def link_to_page page
-      "<a href='" + [ '/', page.path ].join('') + "'>" + page.data.title + "</a>"
+      if page.nil?
+        ""
+      else
+        "<a href='" + [ '/', page.path ].join('') + "'>" + page.data.title + "</a>"
+      end
     end
 
     def get_siblings page
@@ -255,11 +259,16 @@ class DHData < Middleman::Extension
                    select{ |p| p.data.published }.
                    sort_by(&:path)
 
-      current_page_pos = siblings.bsearch { |p| p.path >= page.path }
+      current_page = siblings.bsearch { |p| p.path >= page.path }
+      if current_page.nil?
+        current_page_pos = nil
+      else
+        current_page_pos = siblings.index(current_page)
+      end
 
       ret << "<div class='col-sm-4 text-left'>"
 
-      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos > 0
+      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos != siblings.first
         ret << link_to_page(siblings[current_page_pos-1])
       end
 
@@ -269,7 +278,7 @@ class DHData < Middleman::Extension
       
       ret << "</div><div class='col-sm-4 text-right'>"
 
-      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos < siblings.length-1
+      if !current_page_pos.nil? && opts[:include_siblings] && current_page_pos != siblings.last
         ret << link_to_page(siblings[current_page_pos+1])
       end
       ret << "</div></div>"
@@ -281,7 +290,7 @@ class DHData < Middleman::Extension
     end
 
     def stars(min, max = nil)
-      range = [ min, max ].compact.sort.unique
+      range = [ min, max ].compact.sort.uniq
       range_q = range.length > 1
       ret = "<span title='#{range.first}"
       
