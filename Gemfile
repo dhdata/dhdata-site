@@ -2,38 +2,43 @@
 # the following line to use "https"
 source 'http://rubygems.org'
 
-gem "middleman", "~>3.1.6"
-
-# Live-reloading plugin
-gem "middleman-livereload", "~> 3.1.0"
-
-# For faster file watcher updates on Windows:
-gem "wdm", "~> 0.1.0", :platforms => [:mswin, :mingw]
-
-gem "middleman-minify-html"
-
-gem "multi_json"
-
-gem "redcarpet"
-
-gem "less"
-
-gem "therubyracer"
-
-#gem "middleman-bootstrap-navbar"
-
-#gem "middleman-blog"
-
-gem "middleman-syntax"
-
-gem "middleman-imageoptim", "~>0.1.3"
-
-gem "builder", "~>3.0"
-
-#gem "reverse_markdown"
-gem "nokogiri"
-
-gem "rouge"
+gem 'builder', '3.1.4'
+gem 'capybara', '2.2.0'
+gem 'chunky_png', '1.2.9'
+gem 'coffee-script', '2.2.0'
+gem 'coffee-script-source', '1.6.3'
+gem 'commonjs', '0.2.7'
+gem 'compass', '0.12.2'
+gem 'fspath', '2.0.5'
+gem 'haml', '4.0.4'
+gem 'image_optim', '0.9.1'
+gem 'image_size', '1.1.4'
+gem 'in_threads', '1.2.0'
+gem 'jbuilder', '1.5.2'
+gem 'json', '1.8.1'
+gem 'kgio', '2.8.1'
+gem 'kramdown', '1.2.0'
+gem 'less', '2.4.0'
+gem 'middleman', '3.1.6'
+gem 'middleman-blog', '3.3.0'
+gem 'middleman-bootstrap-navbar', '0.0.7'
+gem 'middleman-core', '3.1.6'
+gem 'middleman-imageoptim', '0.1.3'
+gem 'middleman-livereload', '3.1.0'
+gem 'middleman-minify-html', '3.1.1'
+gem 'middleman-syntax', '1.2.1'
+gem 'mini_portile', '0.5.2'
+gem 'multi_json', '1.8.2'
+gem 'nokogiri', '1.6.0'
+gem 'redcarpet', '3.0.0'
+gem 'rouge', '0.3.10'
+gem 'sass', '3.2.12'
+gem 'sprockets', '2.10.0'
+gem 'sprockets-sass', '1.0.2'
+gem 'therubyracer', '0.12.0'
+gem 'thor', '0.18.1'
+gem 'tilt', '1.3.7'
+gem 'uglifier', '2.1.2'
 
 # Cross-templating language block fix for Ruby 1.8
 platforms :mri_18 do
