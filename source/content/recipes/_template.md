@@ -2,9 +2,9 @@
 layout: recipe
 title: Recipe template
 category: uncategorized
-date: "YYYY-MM-DD"
 published: false
 ---
+
 ## Problem
 
 You want to share the solution to a problem you've encountered before and feel

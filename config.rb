@@ -43,22 +43,27 @@ activate :automatic_image_sizes
 activate :syntax
 
 set :markdown_engine, :redcarpet
-set :markdown, :smartypants => true, :fenced_code_blocks => true, :footnotes => true, :strikethrough => true, :disabe_indented_code_blocks => true, :tables => true, :no_intra_emphasis => true, :no_styles => true
+set :markdown,
+      :smartypants => true,
+      :fenced_code_blocks => true,
+      :footnotes => true,
+      :strikethrough => true,
+      :disabe_indented_code_blocks => true,
+      :tables => true,
+      :no_intra_emphasis => true,
+      :no_styles => true
 
 #require 'middleman-blog'
 
 #activate :directory_indexes
 
 ready do
-  sitemap.resources.select { |p| p.data.layout == "cookbook" }.each do |book|
-    proxy "print/" + book.path, book.path, :layout => 'cookbook-print', :locals => {
-      :current_page => book
-    }
-  end
-  sitemap.resources.select { |p| p.data.layout == "guide" }.each do |book|
-    proxy "print/" + book.path, book.path, :layout => 'guide-print', :locals => {
-      :current_page => book
-    }
+  %w(cookbook guide).each do |layout|
+    sitemap.resources.select { |p| p.data.layout == layout }.each do |book|
+      proxy "print/" + book.path, book.path, :layout => layout+'-print', :locals => {
+        :current_page => book
+      }
+    end
   end
 end
 
@@ -79,7 +84,10 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
-set :haml, { :ugly => true, :format => :xhtml }
+set :haml, {
+      :ugly => true,
+      :format => :xhtml
+    }
 
 sprockets.append_path File.join "#{root}", "bower_components"
 
@@ -107,7 +115,7 @@ configure :build do
   end
 
   # Enable cache buster
-  activate :asset_hash, :ignore => [ %r{^(images|fonts)/.*} ]
+  # activate :asset_hash, :ignore => [ %r{^(images|fonts)/.*} ]
 
   activate :gzip
 
