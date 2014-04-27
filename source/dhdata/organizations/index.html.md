@@ -4,18 +4,16 @@ layout: guide_page
 published: true
 ---
 
-Organizations act like publishing departments for datasets (for example, the
-Maryland Institute for Technology in the Humanities). This means that datasets 
-can be associated with an organization responsible for its maintenance, allowing
-you to discover other datasets that might be related because they are produced
-or maintained by the same group of people.
+Organizations act like publishing departments for datasets. For example, the
+Maryland Institute for Technology in the Humanities is an organization. You can
+associate datasets with the organization responsible for its maintenance. This
+allows you to find other related datasets produced or maintained by the same
+group of people.
 
-Datasets may only belong to at most one organization. Before you can associate
-a dataset with an organization, you must create a page describing the organization
-similar to the page describing a dataset or group. After the organization page is
-published, the organization will appear in the list of available organizations when
-editing the dataset page metadata, allowing you to associate the organization with
-the dataset.
+Datasets may only belong to only one organization. You must create a page for
+the organization before you can associate a dataset with it. Once we published
+the page, the organization will appear in the list of organizations when editing
+the dataset. This will let you associate the organization with the dataset.
 
 ## Creating an Organization
 
@@ -24,7 +22,7 @@ To create an index page for an organization, follow these steps.
 ### Step 1: Open the `organizations` folder
 
 All organization pages are in the `organizations` folder. Selecting the folder will
-list all of the organizations.
+list all the organizations.
 
 <div class="text-center">
 	<img class="illustration" src="/images/dhdata/organizations/folder-list.png" height="446" width="640" border="0" vspace="0" hspace="0">
@@ -38,8 +36,8 @@ with the organization template loaded. Use the organization's name as the title 
 ### Step 3: Describe the organization
 
 The document body is a prose description of the organization. You should not
-include any links to datasets in the document. When the organization page is built,
-this body will be followed by a list of datasets associated with the organization. 
+include any links to datasets in the document. When we publish the organization
+page, a list of associated datasets will follow this body.
 
 ### Step 4: Add organization metadata
 
@@ -47,12 +45,12 @@ In the metadata editor, add the URLs of the organization logo and homepage.
 
 ### Step 5: Save organization file
 
-Save the document. The suggested filename will reflect the name of the organization 
-as set in the document title. This will form the unique identifier for the 
+Save the document. The suggested filename will reflect the name of the organization
+as set in the document title. This will form the unique identifier for the
 organization in dataset metadata and elsewhere.
 
 ### Step 6: Submit a pull request
 
-Finally, submit a pull request for the organization page to be published. Once the 
-organization page is published, you may associate datasets with the organization by 
-editing the dataset metadata.
+Finally, submit a pull request for the organization page. Once we publish the
+organization page, you may associate a dataset with it by editing the dataset's
+metadata.

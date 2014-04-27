@@ -4,8 +4,8 @@ layout: guide
 published: true
 ---
 
-_This section contains material from the 
-[Open Data Handbook](http://opendatahandbook.org/) available under the 
+_This section contains material from the
+[Open Data Handbook](http://opendatahandbook.org/) available under the
 [CC-BY](http://creativecommons.org/licenses/by/3.0/) license._
 
 The notion of open data&mdash;information, public or otherwise, which anyone
