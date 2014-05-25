@@ -44,6 +44,7 @@ close $fh;
 ```
 
 `RDF::Trine` supports the following serialization formats:
+
 - CSV
 - N-Quads
 - N-Triples
@@ -68,6 +69,7 @@ fh.close()
 ```
 
 `rdflib` has serializers for the following formats:
+
 - N-Quads
 - N-Triples
 - RDF/XML
@@ -94,6 +96,7 @@ RDF::Writer.open(filename) { |writer| writer << graph }
 ```
 
 A number of extensions support serialization in the following formats:
+
 - JSON-LD
 - N-Quads
 - N-Triples
